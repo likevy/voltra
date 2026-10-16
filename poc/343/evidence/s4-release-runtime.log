@@ -1,0 +1,32 @@
+# S4 runtime: release APK installed over the debug build (adb install -r), tap on Invoke, 2026-10-15T13:34:29Z
+10-15 15:34:02.822 I/ActivityManager(  566): Force stopping com.callstackincubator.voltraexample appid=10210 user=-1: installPackageLI
+10-15 15:34:02.823 I/ActivityManager(  566): Killing 5056:com.callstackincubator.voltraexample/u0a210 (adj 905): stop com.callstackincubator.voltraexample due to installPackageLI
+10-15 15:34:02.838 V/ActivityManager(  566): Got obituary of 5056:com.callstackincubator.voltraexample
+10-15 15:34:03.680 I/ActivityManager(  566): Force stopping com.callstackincubator.voltraexample appid=10210 user=0: pkg removed
+10-15 15:34:03.726 I/ActivityManager(  566): Start proc 5187:com.callstackincubator.voltraexample/u0a210 for broadcast {com.callstackincubator.voltraexample/androidx.glance.appwidget.MyPackageReplacedReceiver}
+10-15 15:34:04.078 I/VoltraJSRenderer( 5187): standalone Hermes runtime created
+10-15 15:34:04.094 I/VoltraPoc343( 5187): PROVIDE_GLANCE widget=PocTodoSpike pid=5187 procStartUptimeMs=1946304 thread=main wall=1792071244094
+10-15 15:34:04.109 I/VoltraJSRenderer( 5187): evaluateBundle: render() captured for widgetId=PocTodoSpike (89326 chars)
+10-15 15:34:04.109 I/VoltraPoc343( 5187): PROVIDE_GLANCE_EVAL widget=PocTodoSpike bundleReady=true ms=14 thread=main
+10-15 15:34:04.333 I/VoltraPoc343( 5187): RENDER widget=PocTodoSpike awid=3 rev=11 size=255x316 live=true ms=5 pid=5187 thread=main wall=1792071244333
+10-15 15:34:04.338 I/VoltraPoc343( 5187): RENDER widget=PocTodoSpike awid=3 rev=11 size=255x315 live=true ms=3 pid=5187 thread=main wall=1792071244338
+10-15 15:34:04.342 I/VoltraPoc343( 5187): RENDER widget=PocTodoSpike awid=3 rev=11 size=457x200 live=true ms=3 pid=5187 thread=main wall=1792071244342
+10-15 15:34:04.344 I/VoltraPoc343( 5187): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792071244344
+10-15 15:34:04.344 I/VoltraPoc343( 5187): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792071244344
+10-15 15:34:04.344 I/VoltraPoc343( 5187): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792071244344
+10-15 15:34:20.502 I/VoltraPoc343( 5319): TAP_SENT S4-release-invoke
+10-15 15:34:20.533 I/VoltraPoc343( 5187): CB_ENTER widget=PocTodoSpike component=invoke awid=3 checked=null pid=5187 procStartUptimeMs=1946304 uptimeNowMs=1963093 thread=DefaultDispatcher-worker-6 wall=1792071260533
+10-15 15:34:20.586 I/VoltraJSRenderer( 5187): evaluateBundle: render() captured for widgetId=PocTodoSpike (89326 chars)
+10-15 15:34:20.586 I/VoltraPoc343( 5187): EVAL ok=true ms=52 thread=DefaultDispatcher-worker-6
+10-15 15:34:20.586 I/VoltraPoc343( 5187): nativeInvoke widget=PocTodoSpike export=interact payloadBytes=34 payloadNonAsciiHex=[f0 9f 8d 9e f0 9f 8d 9e ]
+10-15 15:34:20.586 I/VoltraPoc343( 5187): nativeInvoke typeof __voltraWidgets[PocTodoSpike].interact === 'function': true
+10-15 15:34:20.586 I/VoltraPoc343( 5187): nativeInvoke jsMs=0.14 resultBytes=128 resultNonAsciiHex=[f0 9f 8d 9e f0 9f 8d 9e f0 9f 8d 9e ] (about to NewStringUTF)
+10-15 15:34:20.586 I/VoltraPoc343( 5187): INVOKE ms=1 payloadUtf16Len=30 payloadCodePoints=28 resultUtf16Len=122 resultCodePoints=119 result={"handled":true,"result":{"echoNote":"🍞","noteUtf16Length":2,"noteCodePoints":[127838],"echoTitle":"Buy 🍞","back":"🍞"}}
+10-15 15:34:20.593 I/VoltraPoc343( 5187): STATE_BUMP rev=12 ms=7
+10-15 15:34:20.595 I/VoltraPoc343( 5187): UPDATE_RETURNED ms=2 callbackTotalMs=62 thread=DefaultDispatcher-worker-6
+10-15 15:34:20.607 I/VoltraPoc343( 5187): RENDER widget=PocTodoSpike awid=3 rev=12 size=255x316 live=true ms=8 pid=5187 thread=main wall=1792071260607
+10-15 15:34:20.618 I/VoltraPoc343( 5187): RENDER widget=PocTodoSpike awid=3 rev=12 size=255x315 live=true ms=5 pid=5187 thread=main wall=1792071260618
+10-15 15:34:20.631 I/VoltraPoc343( 5187): RENDER widget=PocTodoSpike awid=3 rev=12 size=457x200 live=true ms=9 pid=5187 thread=main wall=1792071260631
+
+## Late-enabling -Xcheck:jni lines for the release process (expect none: not debuggable)
+0

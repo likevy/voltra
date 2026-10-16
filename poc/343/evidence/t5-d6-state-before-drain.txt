@@ -1,0 +1,2 @@
+awid 4: {"voltra.dynamic_widget.props_revision": 9, "voltra.dynamic_widget.state": "{\"done\":{\"t1\":false,\"t2\":true,\"t3\":true}}", "voltra.dynamic_widget.state_revision": 8}
+awid 5: {"voltra.dynamic_widget.props_revision": 11, "voltra.dynamic_widget.state": "{\"done.t1\":false,\"done.t2\":false,\"done.t3\":false}", "voltra.dynamic_widget.state_revision": 10}

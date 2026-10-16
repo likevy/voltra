@@ -1,0 +1,45 @@
+16:47:27 killed: pidof empty after attempt 1
+Status: ok
+TotalTime: 2646
+pid after relaunch 10366
+awid 4: {"voltra.dynamic_widget.props_revision": 3, "voltra.dynamic_widget.state": "{\"done\":{\"t1\":true,\"t2\":true,\"t3\":true}}", "voltra.dynamic_widget.state_revision": 3}
+awid 5: {"voltra.dynamic_widget.props_revision": 3, "voltra.dynamic_widget.state": "{\"done.t1\":true,\"done.t2\":true,\"done.t3\":true}", "voltra.dynamic_widget.state_revision": 3}
+page C visible
+text="Todo · onInteraction" checked="false" bounds="[97,804][437,856]"
+text="Buy &#127838;" checked="true" bounds="[97,856][308,944]"
+text="Water the plants" checked="true" bounds="[97,944][470,1032]"
+text="Call the dentist" checked="true" bounds="[97,1032][444,1120]"
+text="Show completed" checked="true" bounds="[97,1120][514,1194]"
+page D visible
+text="Todo · stateKey" checked="false" bounds="[97,194][362,246]"
+text="Buy &#127838;" checked="true" bounds="[97,246][308,334]"
+text="Water the plants" checked="true" bounds="[97,334][470,422]"
+text="Call the dentist" checked="true" bounds="[97,422][444,510]"
+text="Show completed" checked="true" bounds="[97,510][514,584]"
+--- after android_reload_widgets (renders read stateRevision=3)
+page D visible
+text="Todo · stateKey" checked="false" bounds="[97,194][362,246]"
+text="Buy &#127838;" checked="true" bounds="[97,246][308,334]"
+text="Water the plants" checked="true" bounds="[97,334][470,422]"
+text="Call the dentist" checked="true" bounds="[97,422][444,510]"
+text="Show completed" checked="true" bounds="[97,510][514,584]"
+--- reboot 16:48:40
+boot_completed after loop 4 16:48:59
+host-16 tcp:8081 tcp:8081
+host-16 tcp:8443 tcp:8443
+
+--- after reboot
+page D visible
+text="Todo · stateKey" checked="false" bounds="[97,194][362,246]"
+text="Buy &#127838;" checked="true" bounds="[97,246][308,334]"
+text="Water the plants" checked="true" bounds="[97,334][470,422]"
+text="Call the dentist" checked="true" bounds="[97,422][444,510]"
+text="Show completed" checked="true" bounds="[97,510][514,584]"
+page C visible
+text="Todo · onInteraction" checked="false" bounds="[97,804][437,856]"
+text="Buy &#127838;" checked="true" bounds="[97,856][308,944]"
+text="Water the plants" checked="true" bounds="[97,944][470,1032]"
+text="Call the dentist" checked="true" bounds="[97,1032][444,1120]"
+text="Show completed" checked="true" bounds="[97,1120][514,1194]"
+awid 4: {"voltra.dynamic_widget.props_revision": 4, "voltra.dynamic_widget.state": "{\"done\":{\"t1\":true,\"t2\":true,\"t3\":true}}", "voltra.dynamic_widget.state_revision": 3}
+awid 5: {"voltra.dynamic_widget.props_revision": 4, "voltra.dynamic_widget.state": "{\"done.t1\":true,\"done.t2\":true,\"done.t3\":true}", "voltra.dynamic_widget.state_revision": 3}

@@ -1,0 +1,51 @@
+# S6: same suites on v22.15.0, pnpm 11.5.0, 2026-10-15T13:03:17Z
+
+## metro test script:
+node --import tsx --test
+## core test script:
+node --test
+
+## pnpm --filter @use-voltra/metro test (Node 22)
+# tests 0
+# suites 0
+# pass 0
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 11.641792
+exit=
+
+## pnpm --filter @use-voltra/core test (Node 22)
+# Subtest: pickLocalizedValue prefers an exact tag, then the language
+# Subtest: pickLocalizedValue falls back to en, then __default, then the first sorted key
+# Subtest: pickLocalizedValue skips empty values and accepts non-string values
+# Subtest: localeCandidates orders appLocale, preferredLanguages, then locale without duplicates
+# Subtest: resolveLocale gives the app override precedence
+# Subtest: resolveLocale walks the preferred languages from region to language
+# Subtest: resolveLocale accepts a messages object keyed by language
+# Subtest: resolveLocale tolerates ICU-style tags
+# Subtest: encodes modifiers as an ordered JSON string next to style
+# Subtest: treats false and falsy entries as no modifier
+# Subtest: treats numeric and string falsy conditions as no modifier
+# Subtest: omits empty and missing modifier lists
+# Subtest: encodes modifiers the same way in the multi-root renderer
+# Subtest: rejects modifier values that were not created by a factory
+# Subtest: renders stable payloads for equivalent trees and encodes props compactly
+# Subtest: supports fragments, function components, memo, forwardRef, lazy, and context
+# Subtest: deduplicates repeated element objects and reuses stylesheet entries
+# Subtest: rejects raw text outside text components
+# Subtest: rejects unsupported host and class components
+# Subtest: invokes validate with flattened rendered children and props, skipping id/children
+# Subtest: does not invoke validate in production
+# Subtest: does not crash when a voltra component has no validate option
+# Subtest: rejects strict mode, suspense, profiler, and portals with useful errors
+# tests 23
+# suites 0
+# pass 23
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 62.540709
+exit=

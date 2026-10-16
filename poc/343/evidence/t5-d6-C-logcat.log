@@ -1,0 +1,72 @@
+         1792077193.391   567   911 I ActivityManager: Killing 5985:com.callstackincubator.voltraexample/u0a210 (adj 700): kill background
+         1792077195.498  6250  6250 I Poc343Tap: TAP cold-C-t1
+         1792077195.544   567   634 I ActivityManager: Start proc 6256:com.callstackincubator.voltraexample/u0a210 for broadcast {com.callstackincubator.voltraexample/androidx.glance.appwidget.action.ActionCallbackBroadcastReceiver}
+         1792077196.347  6256  6275 D DynamicWidgetState: callback entered widgetId=TodoStateWidget componentId=task:t1 componentType=checkbox checked=true stateKey=- renderedRevision=8 thread=DefaultDispatcher-worker-1
+         1792077196.471  6256  6275 I VoltraClientGlanceWidget: [perf] metro fetch: 69.95 ms (288967 chars)
+         1792077196.489  6256  6275 I VoltraJSRenderer: standalone Hermes runtime created
+         1792077196.489  6256  6275 I VoltraJSRenderer: [perf] runtime init: 1.13 ms
+         1792077196.507  6256  6275 I VoltraJSRenderer: [perf] bundle eval: 17.66 ms (289973 chars)
+         1792077196.507  6256  6275 I VoltraJSRenderer: evaluateBundle: render() captured for widgetId=TodoStateWidget (289973 chars)
+         1792077196.508  6256  6275 D DynamicWidgetState: bundle widgetId=TodoStateWidget ready=true ms=114
+         1792077196.519  6256  6275 I VoltraJSRenderer: [perf] invoke interact: 0.66 ms (widgetId=TodoStateWidget)
+         1792077196.519  6256  6275 D DynamicWidgetState: interact widgetId=TodoStateWidget ms=1 returned=true
+         1792077196.530  6256  6276 D DynamicWidgetState: commit widgetId=TodoStateWidget appWidgetId=4 storage=placement wrote=true handled=true via=onInteraction stateRevision=9 renderedRevision=8 ms=10 sinceTapMs=183
+         1792077196.533  6256  6276 D DynamicWidgetState: event appended widgetId=TodoStateWidget seq=17 handledInWidget=true
+         1792077196.572  6256  6276 D DynamicWidgetState: update returned widgetId=TodoStateWidget ms=38 totalMs=225
+         1792077196.833  6256  6276 I VoltraClientGlanceWidget: [perf] metro fetch: 11.70 ms (288967 chars)
+         1792077196.854  6256  6256 I VoltraJSRenderer: [perf] bundle eval: 18.28 ms (289973 chars)
+         1792077196.854  6256  6256 I VoltraJSRenderer: evaluateBundle: render() captured for widgetId=TodoStateWidget (289973 chars)
+         1792077197.029  6256  6256 I VoltraJSRenderer: [perf] render: 7.46 ms (widgetId=TodoStateWidget)
+         1792077197.038  6256  6256 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=10 stateRevision=9 size=255x316 ms=16.77
+         1792077197.052  6256  6256 I VoltraJSRenderer: [perf] render: 0.30 ms (widgetId=TodoStateWidget)
+         1792077197.053  6256  6256 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=10 stateRevision=9 size=255x315 ms=1.90
+         1792077197.059  6256  6256 I VoltraJSRenderer: [perf] render: 0.26 ms (widgetId=TodoStateWidget)
+         1792077197.060  6256  6256 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=10 stateRevision=9 size=447x200 ms=1.53
+         1792077267.529   567   978 I ActivityManager: Killing 6256:com.callstackincubator.voltraexample/u0a210 (adj 905): kill background
+         1792077269.636  6355  6355 I Poc343Tap: TAP cold-C-t2
+         1792077269.695   567   634 I ActivityManager: Start proc 6361:com.callstackincubator.voltraexample/u0a210 for broadcast {com.callstackincubator.voltraexample/androidx.glance.appwidget.action.ActionCallbackBroadcastReceiver}
+         1792077270.438  6361  6379 D DynamicWidgetState: callback entered widgetId=TodoStateWidget componentId=task:t2 componentType=checkbox checked=false stateKey=- renderedRevision=9 thread=DefaultDispatcher-worker-1
+         1792077270.561  6361  6379 I VoltraClientGlanceWidget: [perf] metro fetch: 71.42 ms (288967 chars)
+         1792077270.580  6361  6382 I VoltraJSRenderer: standalone Hermes runtime created
+         1792077270.580  6361  6382 I VoltraJSRenderer: [perf] runtime init: 1.66 ms
+         1792077270.597  6361  6382 I VoltraJSRenderer: [perf] bundle eval: 17.78 ms (289973 chars)
+         1792077270.597  6361  6382 I VoltraJSRenderer: evaluateBundle: render() captured for widgetId=TodoStateWidget (289973 chars)
+         1792077270.598  6361  6382 D DynamicWidgetState: bundle widgetId=TodoStateWidget ready=true ms=113
+         1792077270.609  6361  6382 I VoltraJSRenderer: [perf] invoke interact: 0.91 ms (widgetId=TodoStateWidget)
+         1792077270.609  6361  6382 D DynamicWidgetState: interact widgetId=TodoStateWidget ms=1 returned=true
+         1792077270.621  6361  6380 D DynamicWidgetState: commit widgetId=TodoStateWidget appWidgetId=4 storage=placement wrote=true handled=true via=onInteraction stateRevision=10 renderedRevision=9 ms=11 sinceTapMs=183
+         1792077270.625  6361  6380 D DynamicWidgetState: event appended widgetId=TodoStateWidget seq=18 handledInWidget=true
+         1792077270.665  6361  6380 D DynamicWidgetState: update returned widgetId=TodoStateWidget ms=40 totalMs=228
+         1792077270.926  6361  6380 I VoltraClientGlanceWidget: [perf] metro fetch: 12.55 ms (288967 chars)
+         1792077270.949  6361  6361 I VoltraJSRenderer: [perf] bundle eval: 20.02 ms (289973 chars)
+         1792077270.949  6361  6361 I VoltraJSRenderer: evaluateBundle: render() captured for widgetId=TodoStateWidget (289973 chars)
+         1792077271.119  6361  6361 I VoltraJSRenderer: [perf] render: 6.12 ms (widgetId=TodoStateWidget)
+         1792077271.128  6361  6361 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=11 stateRevision=10 size=255x316 ms=16.38
+         1792077271.143  6361  6361 I VoltraJSRenderer: [perf] render: 0.25 ms (widgetId=TodoStateWidget)
+         1792077271.144  6361  6361 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=11 stateRevision=10 size=255x315 ms=1.36
+         1792077271.149  6361  6361 I VoltraJSRenderer: [perf] render: 0.35 ms (widgetId=TodoStateWidget)
+         1792077271.150  6361  6361 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=11 stateRevision=10 size=447x200 ms=1.63
+         1792077341.643   567  2154 I ActivityManager: Killing 6361:com.callstackincubator.voltraexample/u0a210 (adj 905): kill background
+         1792077343.746  6466  6466 I Poc343Tap: TAP cold-C-t3
+         1792077343.799   567   634 I ActivityManager: Start proc 6473:com.callstackincubator.voltraexample/u0a210 for broadcast {com.callstackincubator.voltraexample/androidx.glance.appwidget.action.ActionCallbackBroadcastReceiver}
+         1792077344.540  6473  6490 D DynamicWidgetState: callback entered widgetId=TodoStateWidget componentId=task:t3 componentType=checkbox checked=false stateKey=- renderedRevision=10 thread=DefaultDispatcher-worker-1
+         1792077344.658  6473  6490 I VoltraClientGlanceWidget: [perf] metro fetch: 70.36 ms (288967 chars)
+         1792077344.678  6473  6493 I VoltraJSRenderer: standalone Hermes runtime created
+         1792077344.678  6473  6493 I VoltraJSRenderer: [perf] runtime init: 1.71 ms
+         1792077344.700  6473  6493 I VoltraJSRenderer: [perf] bundle eval: 21.69 ms (289973 chars)
+         1792077344.700  6473  6493 I VoltraJSRenderer: evaluateBundle: render() captured for widgetId=TodoStateWidget (289973 chars)
+         1792077344.700  6473  6493 D DynamicWidgetState: bundle widgetId=TodoStateWidget ready=true ms=116
+         1792077344.711  6473  6493 I VoltraJSRenderer: [perf] invoke interact: 0.68 ms (widgetId=TodoStateWidget)
+         1792077344.711  6473  6493 D DynamicWidgetState: interact widgetId=TodoStateWidget ms=1 returned=true
+         1792077344.722  6473  6490 D DynamicWidgetState: commit widgetId=TodoStateWidget appWidgetId=4 storage=placement wrote=true handled=true via=onInteraction stateRevision=11 renderedRevision=10 ms=11 sinceTapMs=182
+         1792077344.728  6473  6490 D DynamicWidgetState: event appended widgetId=TodoStateWidget seq=19 handledInWidget=true
+         1792077344.767  6473  6490 D DynamicWidgetState: update returned widgetId=TodoStateWidget ms=39 totalMs=226
+         1792077345.023  6473  6490 I VoltraClientGlanceWidget: [perf] metro fetch: 10.91 ms (288967 chars)
+         1792077345.045  6473  6473 I VoltraJSRenderer: [perf] bundle eval: 20.16 ms (289973 chars)
+         1792077345.045  6473  6473 I VoltraJSRenderer: evaluateBundle: render() captured for widgetId=TodoStateWidget (289973 chars)
+         1792077345.218  6473  6473 I VoltraJSRenderer: [perf] render: 5.02 ms (widgetId=TodoStateWidget)
+         1792077345.226  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=12 stateRevision=11 size=255x316 ms=14.44
+         1792077345.241  6473  6473 I VoltraJSRenderer: [perf] render: 0.24 ms (widgetId=TodoStateWidget)
+         1792077345.241  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=12 stateRevision=11 size=255x315 ms=1.38
+         1792077345.246  6473  6473 I VoltraJSRenderer: [perf] render: 0.25 ms (widgetId=TodoStateWidget)
+         1792077345.247  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=12 stateRevision=11 size=447x200 ms=1.48

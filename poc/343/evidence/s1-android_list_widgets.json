@@ -1,0 +1,1 @@
+{"widgets":[{"widgetType":"AndroidClientDemoWidget","appWidgetId":2,"providerClassName":".widget.VoltraWidget_AndroidClientDemoWidgetReceiver","label":"Client Demo","width":165,"height":130},{"widgetType":"PocTodoSpike","appWidgetId":3,"providerClassName":".widget.VoltraWidget_PocTodoSpikeReceiver","label":"PoC 343 Spike","width":255,"height":200}]}

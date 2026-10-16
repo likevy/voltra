@@ -1,0 +1,62 @@
+# Task 5 test and check runs, 2026-10-15, Node v24.13.0, pnpm 11.5.0
+
+## pnpm --filter @use-voltra/core test (exit 0)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+
+## pnpm --filter @use-voltra/metro test (exit 0)
+ℹ tests 33
+ℹ suites 7
+ℹ pass 33
+ℹ fail 0
+
+## pnpm --filter @use-voltra/android-client test (exit 0)
+Test Suites: 8 passed, 8 total
+Tests:       34 passed, 34 total
+Test Suites: 11 passed, 11 total
+Tests:       57 passed, 57 total
+
+## Robolectric, default toolchain: cd example/android && ./gradlew :use-voltra_android-client:testDebugUnitTest --tests "voltra.dynamicwidget.state.*" (exit 1, verbatim)
+* What went wrong:
+A problem occurred configuring project ':use-voltra_android-client'.
+> Could not create task ':use-voltra_android-client:testDebugUnitTest'.
+   > Failed to calculate the value of task ':use-voltra_android-client:testDebugUnitTest' property 'javaLauncher'.
+      > Cannot find a Java installation on your machine (Mac OS X 26.6.2 aarch64) matching: {languageVersion=21, vendor=any vendor, implementation=vendor-specific, nativeImageCapable=false}. Toolchain download repositories have not been configured.
+
+## Robolectric on JDK 17 via init script (--init-script poc/343/scripts/jdk17-unit-tests.init.gradle) (exit 0)
+BUILD SUCCESSFUL in 9s
+62 actionable tasks: 14 executed, 48 up-to-date
+name="voltra.dynamicwidget.state.DynamicWidgetEventQueueTest" tests="4" skipped="0" failures="0" errors="0"
+name="voltra.dynamicwidget.state.DynamicWidgetPushStateResetTest" tests="2" skipped="0" failures="0" errors="0"
+name="voltra.dynamicwidget.state.DynamicWidgetStateFlagsTest" tests="3" skipped="0" failures="0" errors="0"
+name="voltra.dynamicwidget.state.DynamicWidgetStateInteractionTest" tests="7" skipped="0" failures="0" errors="0"
+name="voltra.dynamicwidget.state.DynamicWidgetStateStoreTest" tests="7" skipped="0" failures="0" errors="0"
+
+## pnpm run typecheck (exit 0)
+ Tasks:    12 successful, 12 total
+
+## pnpm run lint (exit 0)
+ Tasks:    12 successful, 12 total
+packages with "Found 0 warnings and 0 errors": 12
+
+## example app: pnpm exec tsc --noEmit -p . (not part of the root typecheck)
+error TS lines: 50 (all in files the PoC does not touch, see below); in PoC-touched files: 0
+   1 __tests__/ios/widget-snapshots.harness.tsx
+   1 components/live-activities/LiquidGlassLiveActivityUI.tsx
+   2 e2e/per-instance-server-fetch.ts
+   1 notifications/voltraAndroidOngoingNotificationBackground.ts
+   3 screens/android/AndroidComponentsScreen.tsx
+   3 screens/android/AndroidCustomFontScreen.tsx
+   1 screens/android/AndroidImagePreloadingScreen.tsx
+   3 screens/live-activities/BasicAndroidOngoingNotification.tsx
+   1 screens/live-activities/DynamicOrderFinishedLiveActivity.tsx
+   1 screens/testing-grounds/components/ComponentsScreen.tsx
+   8 screens/testing-grounds/styling/StylingScreen.tsx
+   1 server/widget-server.tsx
+   4 widgets/AndroidChartWidget.tsx
+  16 widgets/android/AndroidImageFallbackWidget.tsx
+   1 widgets/android/AndroidMaterialColorsWidget.tsx
+   2 widgets/android/AndroidPortfolioWidget.tsx
+   1 widgets/ios/IosWeatherWidget.tsx

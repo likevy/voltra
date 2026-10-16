@@ -1,0 +1,39 @@
+page C visible
+16:52:02 attempt 1: pid 3483 still alive (a Glance session is probably running); waiting 15 s
+16:52:19 killed: pidof empty after attempt 2
+16:52:19 C:t1 pidof=''
+text="Todo · onInteraction" checked="false" bounds="[97,804][437,856]"
+text="Buy &#127838;" checked="true" bounds="[97,856][308,944]"
+text="Water the plants" checked="false" bounds="[97,944][470,1032]"
+text="Call the dentist" checked="false" bounds="[97,1032][444,1120]"
+text="Show completed" checked="true" bounds="[97,1120][514,1194]"
+page D visible
+16:53:38 killed: pidof empty after attempt 1
+16:53:38 D:t1 pidof=''
+text="Todo · stateKey" checked="false" bounds="[97,194][362,246]"
+text="Buy &#127838;" checked="true" bounds="[97,246][308,334]"
+text="Water the plants" checked="false" bounds="[97,334][470,422]"
+text="Call the dentist" checked="false" bounds="[97,422][444,510]"
+text="Show completed" checked="true" bounds="[97,510][514,584]"
+page C not found
+16:54:58 killed: pidof empty after attempt 1
+16:54:58 C:t2 pidof=''
+page D visible
+16:56:17 killed: pidof empty after attempt 1
+16:56:17 D:t2 pidof=''
+text="Todo · stateKey" checked="false" bounds="[97,194][362,246]"
+text="Buy &#127838;" checked="true" bounds="[97,246][308,334]"
+text="Water the plants" checked="true" bounds="[97,334][470,422]"
+text="Call the dentist" checked="false" bounds="[97,422][444,510]"
+text="Show completed" checked="true" bounds="[97,510][514,584]"
+page C not found
+16:57:37 killed: pidof empty after attempt 1
+16:57:37 C:t3 pidof=''
+page D visible
+16:58:55 killed: pidof empty after attempt 1
+16:58:55 D:t3 pidof=''
+text="Todo · stateKey" checked="false" bounds="[97,194][362,246]"
+text="Buy &#127838;" checked="true" bounds="[97,246][308,334]"
+text="Water the plants" checked="true" bounds="[97,334][470,422]"
+text="Call the dentist" checked="true" bounds="[97,422][444,510]"
+text="Show completed" checked="true" bounds="[97,510][514,584]"

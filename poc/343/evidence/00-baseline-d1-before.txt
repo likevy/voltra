@@ -1,0 +1,15 @@
+# Step 0.7 — D1 "before" baseline on Brownfield_457_API_35 (API 35), debug build, Metro up
+Date: 2026-10-15 ~15:17 local. Placement: AndroidClientDemoWidget appWidgetId=2 (00-android_list_widgets.json).
+
+Temporary edit (reverted afterwards, no diff left): `const [poc343Ticked] = useState(false)` in
+AndroidClientDemoWidget plus `<VoltraAndroid.CheckBox id="poc343-baseline" text={`useState ${poc343Ticked ? 'ticked' : 'unticked'}`} checked={poc343Ticked} />`.
+
+uiautomator before tap:      text="useState unticked" class=android.widget.CheckBox checked="false" bounds=[97,528][485,645]
+tap:                         adb shell "log -t VoltraPoc343 TAP_SENT baseline; input tap 291 586"
+0.4 s after tap:             00-baseline-tap-immediate.png
+3 s after tap:               topResumedActivity = com.callstackincubator.voltraexample/.MainActivity  -> the tap opened the app (00-baseline-tap-opens-app.png)
+JS renders between tap and HOME:  0  (no `VoltraJSRenderer: [perf] render` line; no Glance session ran)
+uiautomator after tap, HOME:  text="useState unticked" class=android.widget.CheckBox checked="true"   -> the launcher HOST flipped the box (API 31+ CompoundButton behaviour, F25); the label still says "unticked" because JS never re-ran (00-baseline-after-tap-home.png)
+android_reload_widgets:       6 JS renders in the new session; checkbox back to checked="false" (00-baseline-after-reload.png) -> useState never persisted anything; the host flip is reverted by the next render.
+
+Observed on every session of this 2x2 placement: 3 JS renders per composition pass (two passes on reload = 6), i.e. one render per size reported by the launcher under SizeMode.Exact plus the recomposition (F7).

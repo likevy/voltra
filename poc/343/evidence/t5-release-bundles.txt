@@ -1,0 +1,3 @@
+    96846  01-01-1981 01:01   assets/voltra/voltra-widget-AndroidClientDemoWidget.bundle
+    89976  01-01-1981 01:01   assets/voltra/voltra-widget-TodoStateKeyWidget.bundle
+    90324  01-01-1981 01:01   assets/voltra/voltra-widget-TodoStateWidget.bundle

@@ -1,0 +1,31 @@
+17:40:04 scope=placement: {"ok":true}
+17:40:04 reset 4: {"ok":true} reset 7: {"ok":true}
+17:40:22 [placement] placement 1 (awid 4):
+text="Todo · onInteraction" checked="false" bounds="[97,804][437,856]"
+text="Buy &#127838;" checked="true" bounds="[97,856][308,944]"
+text="Water the plants" checked="false" bounds="[97,944][470,1032]"
+text="Call the dentist" checked="false" bounds="[97,1032][444,1120]"
+text="Show completed" checked="true" bounds="[97,1120][514,1194]"
+17:40:33 [placement] placement 2 (awid 7):
+text="Todo · onInteraction" checked="false" bounds="[97,194][437,246]"
+text="Buy &#127838;" checked="false" bounds="[97,246][308,334]"
+text="Water the plants" checked="false" bounds="[97,334][470,422]"
+text="Call the dentist" checked="false" bounds="[97,422][444,510]"
+text="Show completed" checked="true" bounds="[97,510][514,584]"
+17:40:36 [placement] read 4: {"state":{"done":{"t1":true}},"stateRevision":34} read 7: {"state":{},"stateRevision":1}
+17:40:36 scope=widgetScope: {"ok":true}
+17:40:36 reset 4: {"ok":true} reset 7: {"ok":true}
+17:40:54 [widgetScope] placement 1 (awid 4):
+text="Todo · onInteraction" checked="false" bounds="[97,804][437,856]"
+text="Buy &#127838;" checked="true" bounds="[97,856][308,944]"
+text="Water the plants" checked="false" bounds="[97,944][470,1032]"
+text="Call the dentist" checked="false" bounds="[97,1032][444,1120]"
+text="Show completed" checked="true" bounds="[97,1120][514,1194]"
+17:41:05 [widgetScope] placement 2 (awid 7):
+text="Todo · onInteraction" checked="false" bounds="[97,194][437,246]"
+text="Buy &#127838;" checked="true" bounds="[97,246][308,334]"
+text="Water the plants" checked="false" bounds="[97,334][470,422]"
+text="Call the dentist" checked="false" bounds="[97,422][444,510]"
+text="Show completed" checked="true" bounds="[97,510][514,584]"
+17:41:08 [widgetScope] read 4: {"state":{"done":{"t1":true}},"stateRevision":3} read 7: {"state":{"done":{"t1":true}},"stateRevision":3}
+17:41:08 scope back to default: {"ok":true}

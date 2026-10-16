@@ -1,0 +1,167 @@
+--------- beginning of main
+         1792079185.835  9626  9626 I Poc343Tap: EDIT C-default-plus-onInteraction-comment-edit
+         1792079185.964  6473  9483 I ReactNativeJS: '[voltra-background-task] Background notification task registered:', 'voltra-background-notification-task'
+         1792079186.073  6473  9483 D ReactNativeJS: '[Appduct]', 'unregisterTool (from registerTool disposer)', 'android_open_screen'
+         1792079186.074  6473  9483 D ReactNativeJS: '[Appduct]', 'unregisterTool (from registerTool disposer)', 'android_list_widgets'
+         1792079186.074  6473  9483 D ReactNativeJS: '[Appduct]', 'unregisterTool (from registerTool disposer)', 'android_request_pin_widget'
+         1792079186.075  6473  9483 D ReactNativeJS: '[Appduct]', 'unregisterTool (from registerTool disposer)', 'android_reload_widgets'
+         1792079186.075  6473  9483 D ReactNativeJS: '[Appduct]', 'unregisterTool (from registerTool disposer)', 'android_update_dynamic_widget'
+         1792079186.076  6473  9483 D ReactNativeJS: '[Appduct]', 'unregisterTool (from registerTool disposer)', 'android_clear_widgets'
+         1792079186.076  6473  9483 D ReactNativeJS: '[Appduct]', 'unregisterTool (from registerTool disposer)', 'android_read_dynamic_widget_state'
+         1792079186.076  6473  9483 D ReactNativeJS: '[Appduct]', 'unregisterTool (from registerTool disposer)', 'android_reset_dynamic_widget_state'
+         1792079186.077  6473  9483 D ReactNativeJS: '[Appduct]', 'unregisterTool (from registerTool disposer)', 'android_drain_dynamic_widget_events'
+         1792079186.077  6473  9483 D ReactNativeJS: '[Appduct]', 'unregisterTool (from registerTool disposer)', 'android_set_dynamic_widget_state_flags'
+         1792079186.078  6473  9483 D ReactNativeJS: '[Appduct]', 'unregisterTool (from registerTool disposer)', 'android_get_widget_configuration'
+         1792079186.078  6473  9483 D ReactNativeJS: '[Appduct]', 'unregisterTool (from registerTool disposer)', 'android_set_widget_configuration'
+         1792079186.079  6473  9483 D ReactNativeJS: '[Appduct]', 'unregisterTool (from registerTool disposer)', 'android_clear_widget_instance_configuration'
+         1792079186.079  6473  9483 D ReactNativeJS: '[Appduct]', 'unregisterTool (from registerTool disposer)', 'android_set_widget_server_update'
+         1792079186.079  6473  9483 D ReactNativeJS: '[Appduct]', 'unregisterTool (from registerTool disposer)', 'android_get_widget_server_update'
+         1792079186.080  6473  9483 D ReactNativeJS: '[Appduct]', 'unregisterTool (from registerTool disposer)', 'android_clear_widget_server_update'
+         1792079186.080  6473  9483 D ReactNativeJS: '[Appduct]', 'unregisterTool (from registerTool disposer)', 'android_notification_permission'
+         1792079186.081  6473  9483 D ReactNativeJS: '[Appduct]', 'unregisterTool (from registerTool disposer)', 'android_start_ongoing_notification'
+         1792079186.081  6473  9483 D ReactNativeJS: '[Appduct]', 'unregisterTool (from registerTool disposer)', 'android_update_ongoing_notification'
+         1792079186.082  6473  9483 D ReactNativeJS: '[Appduct]', 'unregisterTool (from registerTool disposer)', 'android_stop_ongoing_notification'
+         1792079186.082  6473  9483 D ReactNativeJS: '[Appduct]', 'unregisterTool (from registerTool disposer)', 'android_ongoing_notification_status'
+         1792079186.082  6473  9483 D ReactNativeJS: '[Appduct]', 'unregisterTool (from registerTool disposer)', 'android_reset'
+         1792079186.085  6473  9483 D ReactNativeJS: '[Appduct]', 'registerTool', 'android_open_screen'
+         1792079186.086  6473  9483 D ReactNativeJS: '[Appduct]', 'registerTool', 'android_list_widgets'
+         1792079186.087  6473  9483 D ReactNativeJS: '[Appduct]', 'registerTool', 'android_request_pin_widget'
+         1792079186.087  6473  9483 D ReactNativeJS: '[Appduct]', 'registerTool', 'android_reload_widgets'
+         1792079186.088  6473  9483 D ReactNativeJS: '[Appduct]', 'registerTool', 'android_update_dynamic_widget'
+         1792079186.089  6473  9483 D ReactNativeJS: '[Appduct]', 'registerTool', 'android_clear_widgets'
+         1792079186.090  6473  9483 D ReactNativeJS: '[Appduct]', 'registerTool', 'android_read_dynamic_widget_state'
+         1792079186.091  6473  9483 D ReactNativeJS: '[Appduct]', 'registerTool', 'android_reset_dynamic_widget_state'
+         1792079186.092  6473  9483 D ReactNativeJS: '[Appduct]', 'registerTool', 'android_drain_dynamic_widget_events'
+         1792079186.093  6473  9483 D ReactNativeJS: '[Appduct]', 'registerTool', 'android_set_dynamic_widget_state_flags'
+         1792079186.094  6473  9483 D ReactNativeJS: '[Appduct]', 'registerTool', 'android_get_widget_configuration'
+         1792079186.095  6473  9483 D ReactNativeJS: '[Appduct]', 'registerTool', 'android_set_widget_configuration'
+         1792079186.096  6473  9483 D ReactNativeJS: '[Appduct]', 'registerTool', 'android_clear_widget_instance_configuration'
+         1792079186.097  6473  9483 D ReactNativeJS: '[Appduct]', 'registerTool', 'android_set_widget_server_update'
+         1792079186.098  6473  9483 D ReactNativeJS: '[Appduct]', 'registerTool', 'android_get_widget_server_update'
+         1792079186.099  6473  9483 D ReactNativeJS: '[Appduct]', 'registerTool', 'android_clear_widget_server_update'
+         1792079186.100  6473  9483 D ReactNativeJS: '[Appduct]', 'registerTool', 'android_notification_permission'
+         1792079186.101  6473  9483 D ReactNativeJS: '[Appduct]', 'registerTool', 'android_start_ongoing_notification'
+         1792079186.102  6473  9483 D ReactNativeJS: '[Appduct]', 'registerTool', 'android_update_ongoing_notification'
+         1792079186.103  6473  9483 D ReactNativeJS: '[Appduct]', 'registerTool', 'android_stop_ongoing_notification'
+         1792079186.104  6473  9483 D ReactNativeJS: '[Appduct]', 'registerTool', 'android_ongoing_notification_status'
+         1792079186.104  6473  9483 D ReactNativeJS: '[Appduct]', 'registerTool', 'android_reset'
+         1792079186.179  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=116 stateRevision=0 size=165x205 ms=4.50
+         1792079186.183  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=116 stateRevision=0 size=165x205 ms=3.52
+         1792079186.187  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=116 stateRevision=0 size=294x130 ms=3.02
+         1792079186.207  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=92 stateRevision=35 size=255x316 ms=1.10
+         1792079186.211  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=92 stateRevision=35 size=255x315 ms=3.81
+         1792079186.212  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=92 stateRevision=35 size=447x200 ms=0.71
+         1792079186.230  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=117 stateRevision=0 size=165x205 ms=5.39
+         1792079186.234  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=117 stateRevision=0 size=165x205 ms=3.43
+         1792079186.238  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=117 stateRevision=0 size=294x130 ms=3.21
+         1792079186.239  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=47 stateRevision=2 size=255x316 ms=0.46
+         1792079186.239  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=47 stateRevision=2 size=255x315 ms=0.37
+         1792079186.240  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=47 stateRevision=2 size=447x200 ms=0.34
+         1792079186.259  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=85 stateRevision=31 size=255x316 ms=0.81
+         1792079186.259  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=85 stateRevision=31 size=255x315 ms=0.59
+         1792079186.260  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=85 stateRevision=31 size=447x200 ms=0.77
+         1792079186.308  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=118 stateRevision=0 size=165x205 ms=3.56
+         1792079186.311  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=118 stateRevision=0 size=165x205 ms=3.12
+         1792079186.315  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=118 stateRevision=0 size=294x130 ms=3.15
+         1792079186.325  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=93 stateRevision=35 size=255x316 ms=1.09
+         1792079186.326  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=93 stateRevision=35 size=255x315 ms=0.46
+         1792079186.327  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=93 stateRevision=35 size=447x200 ms=0.65
+         1792079186.341  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=48 stateRevision=2 size=255x316 ms=0.73
+         1792079186.342  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=48 stateRevision=2 size=255x315 ms=1.06
+         1792079186.345  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=48 stateRevision=2 size=447x200 ms=2.45
+         1792079186.363  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=119 stateRevision=0 size=165x205 ms=3.79
+         1792079186.367  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=119 stateRevision=0 size=165x205 ms=3.39
+         1792079186.370  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=119 stateRevision=0 size=294x130 ms=3.67
+         1792079186.386  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=86 stateRevision=31 size=255x316 ms=0.71
+         1792079186.387  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=86 stateRevision=31 size=255x315 ms=0.57
+         1792079186.388  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=86 stateRevision=31 size=447x200 ms=0.55
+         1792079186.423  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=120 stateRevision=0 size=165x205 ms=3.95
+         1792079186.427  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=120 stateRevision=0 size=165x205 ms=3.03
+         1792079186.430  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=120 stateRevision=0 size=294x130 ms=3.27
+         1792079186.437  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=94 stateRevision=35 size=255x316 ms=0.80
+         1792079186.438  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=94 stateRevision=35 size=255x315 ms=0.50
+         1792079186.438  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=94 stateRevision=35 size=447x200 ms=0.44
+         1792079186.454  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=49 stateRevision=2 size=255x316 ms=0.71
+         1792079186.455  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=49 stateRevision=2 size=255x315 ms=0.41
+         1792079186.455  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=49 stateRevision=2 size=447x200 ms=0.38
+         1792079186.481  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=121 stateRevision=0 size=165x205 ms=4.55
+         1792079186.485  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=121 stateRevision=0 size=165x205 ms=3.51
+         1792079186.488  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=121 stateRevision=0 size=294x130 ms=3.22
+         1792079186.491  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=87 stateRevision=31 size=255x316 ms=0.51
+         1792079186.491  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=87 stateRevision=31 size=255x315 ms=0.46
+         1792079186.492  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=87 stateRevision=31 size=447x200 ms=0.52
+         1792079186.547  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=122 stateRevision=0 size=165x205 ms=4.76
+         1792079186.551  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=122 stateRevision=0 size=165x205 ms=3.90
+         1792079186.555  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=122 stateRevision=0 size=294x130 ms=3.27
+         1792079186.565  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=95 stateRevision=35 size=255x316 ms=0.99
+         1792079186.565  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=95 stateRevision=35 size=255x315 ms=0.46
+         1792079186.566  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=95 stateRevision=35 size=447x200 ms=0.45
+         1792079186.596  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=123 stateRevision=0 size=165x205 ms=4.25
+         1792079186.601  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=123 stateRevision=0 size=165x205 ms=4.36
+         1792079186.604  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=123 stateRevision=0 size=294x130 ms=3.44
+         1792079186.617  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=50 stateRevision=2 size=255x316 ms=1.05
+         1792079186.618  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=50 stateRevision=2 size=255x315 ms=0.62
+         1792079186.618  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=50 stateRevision=2 size=447x200 ms=0.40
+         1792079186.638  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=88 stateRevision=31 size=255x316 ms=0.70
+         1792079186.638  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=88 stateRevision=31 size=255x315 ms=0.45
+         1792079186.639  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=88 stateRevision=31 size=447x200 ms=0.46
+         1792079186.684  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=124 stateRevision=0 size=165x205 ms=5.39
+         1792079186.687  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=124 stateRevision=0 size=165x205 ms=2.90
+         1792079186.690  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=124 stateRevision=0 size=294x130 ms=2.77
+         1792079186.700  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=96 stateRevision=35 size=255x316 ms=0.68
+         1792079186.701  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=96 stateRevision=35 size=255x315 ms=0.71
+         1792079186.701  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=96 stateRevision=35 size=447x200 ms=0.63
+         1792079186.713  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=51 stateRevision=2 size=255x316 ms=0.65
+         1792079186.713  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=51 stateRevision=2 size=255x315 ms=0.46
+         1792079186.714  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=51 stateRevision=2 size=447x200 ms=0.40
+         1792079186.732  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=125 stateRevision=0 size=165x205 ms=4.40
+         1792079186.736  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=125 stateRevision=0 size=165x205 ms=3.33
+         1792079186.740  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=125 stateRevision=0 size=294x130 ms=3.45
+         1792079186.747  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=89 stateRevision=31 size=255x316 ms=0.59
+         1792079186.747  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=89 stateRevision=31 size=255x315 ms=0.63
+         1792079186.748  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=89 stateRevision=31 size=447x200 ms=0.62
+         1792079186.790  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=126 stateRevision=0 size=165x205 ms=4.25
+         1792079186.793  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=126 stateRevision=0 size=165x205 ms=2.97
+         1792079186.796  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=126 stateRevision=0 size=294x130 ms=3.21
+         1792079186.803  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=97 stateRevision=35 size=255x316 ms=0.84
+         1792079186.804  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=97 stateRevision=35 size=255x315 ms=0.53
+         1792079186.805  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=97 stateRevision=35 size=447x200 ms=0.60
+         1792079186.819  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=52 stateRevision=2 size=255x316 ms=0.71
+         1792079186.820  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=52 stateRevision=2 size=255x315 ms=0.62
+         1792079186.821  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=52 stateRevision=2 size=447x200 ms=0.76
+         1792079186.840  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=127 stateRevision=0 size=165x205 ms=3.82
+         1792079186.843  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=127 stateRevision=0 size=165x205 ms=3.33
+         1792079186.847  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=127 stateRevision=0 size=294x130 ms=3.55
+         1792079186.849  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=90 stateRevision=31 size=255x316 ms=0.46
+         1792079186.850  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=90 stateRevision=31 size=255x315 ms=0.42
+         1792079186.851  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=90 stateRevision=31 size=447x200 ms=0.56
+         1792079186.890  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=128 stateRevision=0 size=165x205 ms=3.90
+         1792079186.894  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=128 stateRevision=0 size=165x205 ms=3.43
+         1792079186.897  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=128 stateRevision=0 size=294x130 ms=3.51
+         1792079186.909  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=98 stateRevision=35 size=255x316 ms=1.04
+         1792079186.909  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=98 stateRevision=35 size=255x315 ms=0.52
+         1792079186.910  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=98 stateRevision=35 size=447x200 ms=0.38
+         1792079186.930  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=53 stateRevision=2 size=255x316 ms=0.66
+         1792079186.932  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=53 stateRevision=2 size=255x315 ms=1.75
+         1792079186.932  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=53 stateRevision=2 size=447x200 ms=0.53
+         1792079186.943  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=129 stateRevision=0 size=165x205 ms=3.77
+         1792079186.946  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=129 stateRevision=0 size=165x205 ms=3.60
+         1792079186.950  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=129 stateRevision=0 size=294x130 ms=3.36
+         1792079186.966  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=91 stateRevision=31 size=255x316 ms=0.75
+         1792079186.966  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=91 stateRevision=31 size=255x315 ms=0.49
+         1792079186.967  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=91 stateRevision=31 size=447x200 ms=0.59
+         1792079186.999  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=130 stateRevision=0 size=165x205 ms=3.80
+         1792079187.002  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=130 stateRevision=0 size=165x205 ms=3.02
+         1792079187.006  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=130 stateRevision=0 size=294x130 ms=3.58
+         1792079187.013  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=99 stateRevision=35 size=255x316 ms=0.83
+         1792079187.013  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=99 stateRevision=35 size=255x315 ms=0.45
+         1792079187.014  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=99 stateRevision=35 size=447x200 ms=0.56
+         1792079187.030  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=54 stateRevision=2 size=255x316 ms=0.76
+         1792079187.031  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=54 stateRevision=2 size=255x315 ms=0.52
+         1792079187.031  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=54 stateRevision=2 size=447x200 ms=0.40
+         1792079187.049  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=131 stateRevision=0 size=165x205 ms=4.15
+         1792079187.054  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=131 stateRevision=0 size=165x205 ms=3.59
+         1792079187.058  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=131 stateRevision=0 size=294x130 ms=3.49
+         1792079187.061  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=92 stateRevision=31 size=255x316 ms=0.62
+         1792079187.062  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=92 stateRevision=31 size=255x315 ms=0.57
+         1792079187.063  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=92 stateRevision=31 size=447x200 ms=0.84

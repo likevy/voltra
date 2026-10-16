@@ -1,0 +1,29 @@
+16:42:03 fg: top activity before HOME:  topResumedActivity=ActivityRecord{e7ffb06 u0 com.callstackincubator.voltraexample/.MainActivity t72}
+page C visible
+16:42:07 fg: process state at tap: curProcState=15 pid=5858
+16:42:07 fg: tapped t1
+text="Todo · onInteraction" checked="false" bounds="[97,804][437,856]"
+text="Buy &#127838;" checked="true" bounds="[97,856][308,944]"
+text="Water the plants" checked="false" bounds="[97,944][470,1032]"
+text="Call the dentist" checked="false" bounds="[97,1032][444,1120]"
+text="Show completed" checked="true" bounds="[97,1120][514,1194]"
+16:42:16 fg: returned to the app
+page C visible
+16:42:28 bg: pid=5858 top= topResumedActivity=ActivityRecord{ab16b96 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t67}
+16:42:28 bg: tapped t2
+text="Todo · onInteraction" checked="false" bounds="[97,804][437,856]"
+text="Buy &#127838;" checked="true" bounds="[97,856][308,944]"
+text="Water the plants" checked="true" bounds="[97,944][470,1032]"
+text="Call the dentist" checked="false" bounds="[97,1032][444,1120]"
+text="Show completed" checked="true" bounds="[97,1120][514,1194]"
+16:42:33 killed: waiting for the Glance sessions to end
+16:43:35 killed: pidof empty after attempt 1
+16:43:35 killed: pidof=''
+16:43:36 killed: tapped t3
+text="Todo · onInteraction" checked="false" bounds="[97,804][437,856]"
+text="Buy &#127838;" checked="true" bounds="[97,856][308,944]"
+text="Water the plants" checked="true" bounds="[97,944][470,1032]"
+text="Call the dentist" checked="true" bounds="[97,1032][444,1120]"
+text="Show completed" checked="true" bounds="[97,1120][514,1194]"
+16:43:44 after: pid=7632 state={"voltra.dynamic_widget.props_revision": 3, "voltra.dynamic_widget.state": "{\"done\":{\"t1\":true,\"t2\":true,\"t3\":true}}", "voltra.dynamic_widget.state_revision": 3}
+16:43:45 callbacks=3 commits=3

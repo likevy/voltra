@@ -1,0 +1,118 @@
+# S2 negative case: am force-stop on API 35, then two taps on the masked widget, 2026-10-15T13:32:37Z
+10-15 15:32:20.266 I/ActivityManager(  566): Force stopping com.callstackincubator.voltraexample appid=10210 user=0: from pid 5014
+10-15 15:32:20.268 I/ActivityManager(  566): Killing 4493:com.callstackincubator.voltraexample/u0a210 (adj 250): stop com.callstackincubator.voltraexample due to from pid 5014
+10-15 15:32:20.271 W/ActivityTaskManager(  566): Force removing ActivityRecord{5c1a290 u0 com.callstackincubator.voltraexample/.MainActivity t70 f}}: app died, no saved state
+10-15 15:32:20.271 W/InputManager-JNI(  566): Input channel object 'a8526cc com.callstackincubator.voltraexample/com.callstackincubator.voltraexample.MainActivity (client)' was disposed without first being removed with the input manager!
+10-15 15:32:20.272 W/UsageStatsService(  566): Unexpected activity event reported! (com.callstackincubator.voltraexample/com.callstackincubator.voltraexample.MainActivity event : 23 instanceId : 187851662)
+10-15 15:32:20.276 I/AppsFilter(  566): interaction: PackageSetting{7fb0a32 com.callstack.brownfield.android.example/10217} -> PackageSetting{d055ac com.callstackincubator.voltraexample/10210} BLOCKED
+10-15 15:32:20.276 I/AppsFilter(  566): interaction: PackageSetting{5995900 com.brownfield.review457/10207} -> PackageSetting{d055ac com.callstackincubator.voltraexample/10210} BLOCKED
+10-15 15:32:20.276 I/AppsFilter(  566): interaction: PackageSetting{1691539 com.brownfield.review457.test/10208} -> PackageSetting{d055ac com.callstackincubator.voltraexample/10210} BLOCKED
+10-15 15:32:20.276 I/AppsFilter(  566): interaction: PackageSetting{14b977e com.sportano.sportanomobile.development/10209} -> PackageSetting{d055ac com.callstackincubator.voltraexample/10210} BLOCKED
+10-15 15:32:20.276 I/AppsFilter(  566): interaction: PackageSetting{ecc14df com.callstack.brownfield.android.example.test/10218} -> PackageSetting{d055ac com.callstackincubator.voltraexample/10210} BLOCKED
+10-15 15:32:20.280 I/AppWidgetServiceImpl(  566): Received broadcast: android.intent.action.PACKAGE_RESTARTED on user 0
+10-15 15:32:20.280 I/AppWidgetServiceImpl(  566): Updating package stopped masked state for uid 10210 package com.callstackincubator.voltraexample isStopped true
+10-15 15:32:20.280 I/AppWidgetServiceImpl(  566): cancelBroadcastsLocked() for Provider{ProviderId{user:0, app:10210, cmp:ComponentInfo{com.callstackincubator.voltraexample/com.callstackincubator.voltraexample.widget.VoltraWidget_voltraReceiver}}}
+10-15 15:32:20.280 I/AppWidgetServiceImpl(  566): cancelBroadcastsLocked() for Provider{ProviderId{user:0, app:10210, cmp:ComponentInfo{com.callstackincubator.voltraexample/com.callstackincubator.voltraexample.widget.VoltraWidget_interactive_todosReceiver}}}
+10-15 15:32:20.280 I/AppWidgetServiceImpl(  566): cancelBroadcastsLocked() for Provider{ProviderId{user:0, app:10210, cmp:ComponentInfo{com.callstackincubator.voltraexample/com.callstackincubator.voltraexample.widget.VoltraWidget_image_preloadingReceiver}}}
+10-15 15:32:20.280 I/AppWidgetServiceImpl(  566): cancelBroadcastsLocked() for Provider{ProviderId{user:0, app:10210, cmp:ComponentInfo{com.callstackincubator.voltraexample/com.callstackincubator.voltraexample.widget.VoltraWidget_image_fallbackReceiver}}}
+10-15 15:32:20.280 I/AppWidgetServiceImpl(  566): cancelBroadcastsLocked() for Provider{ProviderId{user:0, app:10210, cmp:ComponentInfo{com.callstackincubator.voltraexample/com.callstackincubator.voltraexample.widget.VoltraWidget_chart_widgetReceiver}}}
+10-15 15:32:20.280 I/AppWidgetServiceImpl(  566): cancelBroadcastsLocked() for Provider{ProviderId{user:0, app:10210, cmp:ComponentInfo{com.callstackincubator.voltraexample/com.callstackincubator.voltraexample.widget.VoltraWidget_portfolioReceiver}}}
+10-15 15:32:20.280 I/AppWidgetServiceImpl(  566): cancelBroadcastsLocked() for Provider{ProviderId{user:0, app:10210, cmp:ComponentInfo{com.callstackincubator.voltraexample/com.callstackincubator.voltraexample.widget.VoltraWidget_material_colorsReceiver}}}
+10-15 15:32:20.280 I/AppWidgetServiceImpl(  566): cancelBroadcastsLocked() for Provider{ProviderId{user:0, app:10210, cmp:ComponentInfo{com.callstackincubator.voltraexample/com.callstackincubator.voltraexample.widget.VoltraWidget_arc_progressReceiver}}}
+10-15 15:32:20.281 I/AppWidgetServiceImpl(  566): cancelBroadcastsLocked() for Provider{ProviderId{user:0, app:10210, cmp:ComponentInfo{com.callstackincubator.voltraexample/com.callstackincubator.voltraexample.widget.VoltraWidget_AndroidClientDemoWidgetReceiver}}}
+10-15 15:32:20.285 E/JobServiceContext(  566): Binding died for com.callstackincubator.voltraexample but no running job on this context
+10-15 15:32:20.285 I/AppWidgetServiceImpl(  566): cancelBroadcastsLocked() for Provider{ProviderId{user:0, app:10210, cmp:ComponentInfo{com.callstackincubator.voltraexample/com.callstackincubator.voltraexample.widget.VoltraWidget_PocTodoSpikeReceiver}}}
+10-15 15:32:20.285 D/AppWidgetServiceImpl(  566): Trying to notify widget update for package android with widget id: 2
+10-15 15:32:20.285 D/AppWidgetServiceImpl(  566): Trying to notify widget update for package android with widget id: 3
+10-15 15:32:20.286 D/CarrierSvcBindHelper(  944): onHandleForceStop: [com.callstackincubator.voltraexample]
+10-15 15:32:20.297 V/ActivityManager(  566): Got obituary of 4493:com.callstackincubator.voltraexample
+10-15 15:32:23.388 I/artd    ( 5023): Dex parent of /data/app/~~Zj_2nwy50o6MW7eKgQFLdg==/com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==/base.apk is not writable: Permission denied
+10-15 15:32:23.388 I/artd    ( 5023): GetBestInfo checking odex in dalvik-cache (/data/dalvik-cache/arm64/data@app@~~Zj_2nwy50o6MW7eKgQFLdg==@com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==@base.apk@classes.dex)
+10-15 15:32:23.388 I/artd    ( 5023): Loading /data/dalvik-cache/arm64/data@app@~~Zj_2nwy50o6MW7eKgQFLdg==@com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==@base.apk@classes.dex with executable: 0
+10-15 15:32:23.388 I/artd    ( 5023): OatFileAssistant test for existing oat file /data/dalvik-cache/arm64/data@app@~~Zj_2nwy50o6MW7eKgQFLdg==@com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==@base.apk@classes.dex: File /data/dalvik-cache/arm64/data@app@~~Zj_2nwy50o6MW7eKgQFLdg==@com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==@base.apk@classes.vdex does not exist.
+10-15 15:32:23.388 I/artd    ( 5023): GetBestInfo checking odex next to the dex file (/data/app/~~Zj_2nwy50o6MW7eKgQFLdg==/com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==/oat/arm64/base.odex)
+10-15 15:32:23.388 I/artd    ( 5023): Loading /data/app/~~Zj_2nwy50o6MW7eKgQFLdg==/com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==/oat/arm64/base.odex with executable: 0
+10-15 15:32:23.388 I/artd    ( 5023): OatFileAssistant test for existing oat file /data/app/~~Zj_2nwy50o6MW7eKgQFLdg==/com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==/oat/arm64/base.odex: File /data/app/~~Zj_2nwy50o6MW7eKgQFLdg==/com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==/oat/arm64/base.vdex does not exist.
+10-15 15:32:23.388 I/artd    ( 5023): GetBestInfo checking vdex in dalvik-cache (/data/dalvik-cache/arm64/data@app@~~Zj_2nwy50o6MW7eKgQFLdg==@com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==@base.apk@classes.vdex)
+10-15 15:32:23.388 I/artd    ( 5023): unable to open vdex file /data/dalvik-cache/arm64/data@app@~~Zj_2nwy50o6MW7eKgQFLdg==@com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==@base.apk@classes.vdex: File /data/dalvik-cache/arm64/data@app@~~Zj_2nwy50o6MW7eKgQFLdg==@com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==@base.apk@classes.vdex does not exist.
+10-15 15:32:23.388 I/artd    ( 5023): OatFileAssistant test for existing oat file /data/dalvik-cache/arm64/data@app@~~Zj_2nwy50o6MW7eKgQFLdg==@com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==@base.apk@classes.vdex: File /data/dalvik-cache/arm64/data@app@~~Zj_2nwy50o6MW7eKgQFLdg==@com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==@base.apk@classes.vdex does not exist.
+10-15 15:32:23.388 I/artd    ( 5023): GetBestInfo checking vdex next to the dex file (/data/app/~~Zj_2nwy50o6MW7eKgQFLdg==/com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==/oat/arm64/base.vdex)
+10-15 15:32:23.388 I/artd    ( 5023): unable to open vdex file /data/app/~~Zj_2nwy50o6MW7eKgQFLdg==/com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==/oat/arm64/base.vdex: File /data/app/~~Zj_2nwy50o6MW7eKgQFLdg==/com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==/oat/arm64/base.vdex does not exist.
+10-15 15:32:23.388 I/artd    ( 5023): OatFileAssistant test for existing oat file /data/app/~~Zj_2nwy50o6MW7eKgQFLdg==/com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==/oat/arm64/base.vdex: File /data/app/~~Zj_2nwy50o6MW7eKgQFLdg==/com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==/oat/arm64/base.vdex does not exist.
+10-15 15:32:23.388 I/artd    ( 5023): GetBestInfo checking dm (/data/app/~~Zj_2nwy50o6MW7eKgQFLdg==/com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==/base.dm)
+10-15 15:32:23.388 W/ziparchive( 5023): Unable to open '/data/app/~~Zj_2nwy50o6MW7eKgQFLdg==/com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==/base.dm': No such file or directory
+10-15 15:32:23.388 I/artd    ( 5023): OatFileAssistant test for existing oat file /data/app/~~Zj_2nwy50o6MW7eKgQFLdg==/com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==/base.dm: I/O error
+10-15 15:32:23.388 I/artd    ( 5023): GetBestInfo checking dm (/data/app/~~Zj_2nwy50o6MW7eKgQFLdg==/com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==/base.dm)
+10-15 15:32:23.388 W/ziparchive( 5023): Unable to open '/data/app/~~Zj_2nwy50o6MW7eKgQFLdg==/com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==/base.dm': No such file or directory
+10-15 15:32:23.388 I/artd    ( 5023): OatFileAssistant test for existing oat file /data/app/~~Zj_2nwy50o6MW7eKgQFLdg==/com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==/base.dm: I/O error
+10-15 15:32:25.860 I/VoltraPoc343( 5049): TAP_SENT S2-forcestop-tap1
+10-15 15:32:25.902 I/ActivityManager(  566): Start proc 5056:com.callstackincubator.voltraexample/u0a210 for broadcast {com.callstackincubator.voltraexample/com.callstackincubator.voltraexample.widget.VoltraWidget_PocTodoSpikeReceiver}
+10-15 15:32:25.919 I/r.voltraexample( 5056): Late-enabling -Xcheck:jni
+10-15 15:32:25.930 I/r.voltraexample( 5056): Using CollectorTypeCMC GC.
+10-15 15:32:25.953 W/ziparchive( 5056): Unable to open '/data/app/~~Zj_2nwy50o6MW7eKgQFLdg==/com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==/base.dm': No such file or directory
+10-15 15:32:25.953 W/ziparchive( 5056): Unable to open '/data/app/~~Zj_2nwy50o6MW7eKgQFLdg==/com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==/base.dm': No such file or directory
+10-15 15:32:26.309 D/nativeloader( 5056): Configuring clns-7 for other apk /data/app/~~Zj_2nwy50o6MW7eKgQFLdg==/com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~Zj_2nwy50o6MW7eKgQFLdg==/com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==/lib/arm64:/data/app/~~Zj_2nwy50o6MW7eKgQFLdg==/com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/com.callstackincubator.voltraexample
+10-15 15:32:26.385 W/SoLoader( 5056): Recording new base apk path: /data/app/~~Zj_2nwy50o6MW7eKgQFLdg==/com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==/base.apk
+10-15 15:32:26.388 I/SoLoader( 5056): Preparing SO source: DirectApkSoSource[root = [/data/app/~~Zj_2nwy50o6MW7eKgQFLdg==/com.callstackincubator.voltraexample-4iUXYcNdDr0YcPBSOzB1kw==/base.apk!/lib/arm64-v8a]]
+10-15 15:32:26.489 I/AppsFilter(  566): interaction: PackageSetting{7fb0a32 com.callstack.brownfield.android.example/10217} -> PackageSetting{8a4b2cc com.callstackincubator.voltraexample/10210} BLOCKED
+10-15 15:32:26.489 I/AppsFilter(  566): interaction: PackageSetting{5995900 com.brownfield.review457/10207} -> PackageSetting{8a4b2cc com.callstackincubator.voltraexample/10210} BLOCKED
+10-15 15:32:26.489 I/AppsFilter(  566): interaction: PackageSetting{1691539 com.brownfield.review457.test/10208} -> PackageSetting{8a4b2cc com.callstackincubator.voltraexample/10210} BLOCKED
+10-15 15:32:26.489 I/AppsFilter(  566): interaction: PackageSetting{14b977e com.sportano.sportanomobile.development/10209} -> PackageSetting{8a4b2cc com.callstackincubator.voltraexample/10210} BLOCKED
+10-15 15:32:26.489 I/AppsFilter(  566): interaction: PackageSetting{ecc14df com.callstack.brownfield.android.example.test/10218} -> PackageSetting{8a4b2cc com.callstackincubator.voltraexample/10210} BLOCKED
+
+## after tap1/tap2: Voltra + AppWidgetServiceImpl lines
+10-15 15:32:25.860 I/VoltraPoc343( 5049): TAP_SENT S2-forcestop-tap1
+10-15 15:32:25.902 I/ActivityManager(  566): Start proc 5056:com.callstackincubator.voltraexample/u0a210 for broadcast {com.callstackincubator.voltraexample/com.callstackincubator.voltraexample.widget.VoltraWidget_PocTodoSpikeReceiver}
+10-15 15:32:26.490 I/AppWidgetServiceImpl(  566): Received broadcast: android.intent.action.PACKAGE_UNSTOPPED on user 0
+10-15 15:32:26.490 I/AppWidgetServiceImpl(  566): Updating package stopped masked state for uid 10210 package com.callstackincubator.voltraexample isStopped false
+10-15 15:32:26.492 D/AppWidgetServiceImpl(  566): Trying to notify widget update for package com.callstackincubator.voltraexample with widget id: 2
+10-15 15:32:26.493 D/AppWidgetServiceImpl(  566): Trying to notify widget update for package com.callstackincubator.voltraexample with widget id: 3
+10-15 15:32:26.650 I/AppWidgetServiceImpl(  566): getInstalledProvidersForProfiles() 0
+10-15 15:32:26.654 I/AppWidgetServiceImpl(  566): notifyProviderInheritance() 0
+10-15 15:32:26.661 D/VoltraWidgetReceiver( 5056): Creating GlanceAppWidget for widgetId=PocTodoSpike
+10-15 15:32:26.763 I/AppWidgetServiceImpl(  566): getAppWidgetIds() 0
+10-15 15:32:26.832 D/VoltraWidgetReceiver( 5056): Creating GlanceAppWidget for widgetId=PocTodoSpike
+10-15 15:32:26.832 I/AppWidgetServiceImpl(  566): getAppWidgetInfo() 0
+10-15 15:32:26.833 I/AppWidgetServiceImpl(  566): getAppWidgetOptions() 0
+10-15 15:32:26.841 I/AppWidgetServiceImpl(  566): getAppWidgetInfo() 0
+10-15 15:32:26.842 I/AppWidgetServiceImpl(  566): getAppWidgetOptions() 0
+10-15 15:32:26.966 I/VoltraPoc343( 5056): PROVIDE_GLANCE widget=PocTodoSpike pid=5056 procStartUptimeMs=1848505 thread=main wall=1792071146966
+10-15 15:32:27.111 I/VoltraPoc343( 5056): PROVIDE_GLANCE_EVAL widget=PocTodoSpike bundleReady=true ms=145 thread=main
+10-15 15:32:27.307 I/VoltraPoc343( 5056): RENDER widget=PocTodoSpike awid=3 rev=10 size=255x316 live=true ms=141 pid=5056 thread=main wall=1792071147307
+10-15 15:32:27.334 I/VoltraPoc343( 5056): RENDER widget=PocTodoSpike awid=3 rev=10 size=255x315 live=true ms=8 pid=5056 thread=main wall=1792071147334
+10-15 15:32:27.343 I/VoltraPoc343( 5056): RENDER widget=PocTodoSpike awid=3 rev=10 size=457x200 live=true ms=5 pid=5056 thread=main wall=1792071147343
+10-15 15:32:27.348 I/VoltraPoc343( 5056): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792071147348
+10-15 15:32:27.349 I/VoltraPoc343( 5056): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792071147349
+10-15 15:32:27.349 I/VoltraPoc343( 5056): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792071147349
+10-15 15:32:27.423 I/AppWidgetServiceImpl(  566): getAppWidgetInfo() 0
+10-15 15:32:27.453 I/AppWidgetServiceImpl(  566): updateAppWidgetIds() 0
+10-15 15:32:27.454 D/AppWidgetServiceImpl(  566): Trying to notify widget update for package com.callstackincubator.voltraexample with widget id: 3
+10-15 15:32:27.456 I/AppWidgetServiceImpl(  566): getAppWidgetInfo() 0
+10-15 15:32:27.469 I/AppWidgetServiceImpl(  566): updateAppWidgetIds() 0
+10-15 15:32:27.469 D/AppWidgetServiceImpl(  566): Trying to notify widget update for package com.callstackincubator.voltraexample with widget id: 2
+10-15 15:32:27.477 I/AppWidgetServiceImpl(  566): getAppWidgetInfo() 0
+10-15 15:32:27.486 I/AppWidgetServiceImpl(  566): updateAppWidgetIds() 0
+10-15 15:32:27.487 D/AppWidgetServiceImpl(  566): Trying to notify widget update for package com.callstackincubator.voltraexample with widget id: 2
+10-15 15:32:27.488 I/AppWidgetServiceImpl(  566): getAppWidgetInfo() 0
+10-15 15:32:27.500 I/AppWidgetServiceImpl(  566): updateAppWidgetIds() 0
+10-15 15:32:27.500 D/AppWidgetServiceImpl(  566): Trying to notify widget update for package com.callstackincubator.voltraexample with widget id: 3
+10-15 15:32:31.470 I/VoltraPoc343( 5101): TAP_SENT S2-forcestop-tap2
+10-15 15:32:31.523 I/VoltraPoc343( 5056): CB_ENTER widget=PocTodoSpike component=ping awid=3 checked=null pid=5056 procStartUptimeMs=1848505 uptimeNowMs=1854083 thread=DefaultDispatcher-worker-3 wall=1792071151523
+10-15 15:32:31.531 I/VoltraPoc343( 5056): STATE_BUMP rev=11 ms=8
+10-15 15:32:31.533 I/VoltraPoc343( 5056): UPDATE_RETURNED ms=1 callbackTotalMs=9 thread=DefaultDispatcher-worker-4
+10-15 15:32:31.549 I/VoltraPoc343( 5056): RENDER widget=PocTodoSpike awid=3 rev=11 size=255x316 live=true ms=12 pid=5056 thread=main wall=1792071151549
+10-15 15:32:31.563 I/VoltraPoc343( 5056): RENDER widget=PocTodoSpike awid=3 rev=11 size=255x315 live=true ms=10 pid=5056 thread=main wall=1792071151563
+10-15 15:32:31.576 I/VoltraPoc343( 5056): RENDER widget=PocTodoSpike awid=3 rev=11 size=457x200 live=true ms=8 pid=5056 thread=main wall=1792071151576
+10-15 15:32:31.583 I/AppWidgetServiceImpl(  566): getAppWidgetInfo() 0
+10-15 15:32:31.602 I/AppWidgetServiceImpl(  566): updateAppWidgetIds() 0
+10-15 15:32:31.603 D/AppWidgetServiceImpl(  566): Trying to notify widget update for package com.callstackincubator.voltraexample with widget id: 3
+
+## package stopped state after the taps
+stopped=false
+pid: 5056
+## widget nodes now
+text="rendered 3:32:31 PM"	class="android.widget.TextView"	checked="false"	bounds="[97,848][346,886]"
+text="family 255x316 marker emoji-on"	class="android.widget.TextView"	checked="false"	bounds="[97,886][484,924]"
+text="Ping"	class="android.widget.TextView"	checked="false"	bounds="[141,951][218,1003]"
+text="Invoke"	class="android.widget.TextView"	checked="false"	bounds="[141,1057][254,1109]"
+text="Buy &#127838;"	class="android.widget.CheckBox"	checked="false"	bounds="[97,1136][308,1224]"

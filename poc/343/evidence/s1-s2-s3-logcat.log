@@ -1,0 +1,75 @@
+# S1/S2/S3 run 2026-10-15T13:26:21Z; kill at device epoch 1792070768; pid before kill 4016
+10-15 15:24:05.884 I/VoltraPoc343( 4311): TAP_SENT T1-first-tap
+10-15 15:24:05.940 I/VoltraPoc343( 4016): CB_ENTER widget=PocTodoSpike component=ping awid=3 checked=null pid=4016 procStartUptimeMs=1133313 uptimeNowMs=1348499 thread=DefaultDispatcher-worker-1 wall=1792070645940
+10-15 15:24:05.947 I/VoltraPoc343( 4016): STATE_BUMP rev=1 ms=8
+10-15 15:24:05.965 I/VoltraPoc343( 4016): UPDATE_RETURNED ms=17 callbackTotalMs=25 thread=DefaultDispatcher-worker-1
+10-15 15:24:06.170 I/VoltraPoc343( 4016): PROVIDE_GLANCE widget=PocTodoSpike pid=4016 procStartUptimeMs=1133313 thread=main wall=1792070646170
+10-15 15:24:06.204 I/VoltraJSRenderer( 4016): evaluateBundle: render() captured for widgetId=PocTodoSpike (282927 chars)
+10-15 15:24:06.204 I/VoltraPoc343( 4016): PROVIDE_GLANCE_EVAL widget=PocTodoSpike bundleReady=true ms=34 thread=main
+10-15 15:24:06.380 I/VoltraJSRenderer( 4016): [perf] render: 9.68 ms (widgetId=PocTodoSpike)
+10-15 15:24:06.381 I/VoltraPoc343( 4016): RENDER widget=PocTodoSpike awid=3 rev=1 size=255x316 live=true ms=11 pid=4016 thread=main wall=1792070646381
+10-15 15:24:06.387 I/VoltraJSRenderer( 4016): [perf] render: 3.57 ms (widgetId=PocTodoSpike)
+10-15 15:24:06.388 I/VoltraPoc343( 4016): RENDER widget=PocTodoSpike awid=3 rev=1 size=255x315 live=true ms=4 pid=4016 thread=main wall=1792070646388
+10-15 15:24:06.395 I/VoltraJSRenderer( 4016): [perf] render: 3.45 ms (widgetId=PocTodoSpike)
+10-15 15:24:06.395 I/VoltraPoc343( 4016): RENDER widget=PocTodoSpike awid=3 rev=1 size=457x200 live=true ms=4 pid=4016 thread=main wall=1792070646395
+10-15 15:24:06.399 I/VoltraPoc343( 4016): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792070646399
+10-15 15:24:06.399 I/VoltraPoc343( 4016): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792070646399
+10-15 15:24:06.399 I/VoltraPoc343( 4016): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792070646399
+10-15 15:24:08.825 I/WM-WorkerWrapper( 4016): Worker result FAILURE for Work [ id=8c73a498-8631-47c3-833b-a76ac553ab9b, tags={ voltra.widget.VoltraWidgetUpdateWorker, VoltraWidgetUpdateWorker } ]
+10-15 15:24:08.827 I/WM-WorkerWrapper( 4016): Worker result FAILURE for Work [ id=2376c3fb-763e-4f1c-b74e-5effb0d1bb9b, tags={ voltra.widget.VoltraWidgetUpdateWorker, VoltraWidgetUpdateWorker } ]
+10-15 15:24:09.929 I/VoltraPoc343( 4321): TAP_SENT T2-live-session
+10-15 15:24:09.973 I/VoltraPoc343( 4016): CB_ENTER widget=PocTodoSpike component=ping awid=3 checked=null pid=4016 procStartUptimeMs=1133313 uptimeNowMs=1352533 thread=DefaultDispatcher-worker-5 wall=1792070649973
+10-15 15:24:09.980 I/VoltraPoc343( 4016): STATE_BUMP rev=2 ms=6
+10-15 15:24:09.981 I/VoltraPoc343( 4016): UPDATE_RETURNED ms=2 callbackTotalMs=8 thread=DefaultDispatcher-worker-5
+10-15 15:24:09.989 I/VoltraJSRenderer( 4016): [perf] render: 4.28 ms (widgetId=PocTodoSpike)
+10-15 15:24:09.990 I/VoltraPoc343( 4016): RENDER widget=PocTodoSpike awid=3 rev=2 size=255x316 live=true ms=5 pid=4016 thread=main wall=1792070649990
+10-15 15:24:09.998 I/VoltraJSRenderer( 4016): [perf] render: 2.93 ms (widgetId=PocTodoSpike)
+10-15 15:24:09.999 I/VoltraPoc343( 4016): RENDER widget=PocTodoSpike awid=3 rev=2 size=255x315 live=true ms=4 pid=4016 thread=main wall=1792070649999
+10-15 15:24:10.004 I/VoltraJSRenderer( 4016): [perf] render: 2.92 ms (widgetId=PocTodoSpike)
+10-15 15:24:10.004 I/VoltraPoc343( 4016): RENDER widget=PocTodoSpike awid=3 rev=2 size=457x200 live=true ms=4 pid=4016 thread=main wall=1792070650004
+10-15 15:24:51.416 I/VoltraPoc343( 4016): CONTENT_DISPOSED widget=PocTodoSpike awid=3 thread=main wall=1792070691416
+10-15 15:24:51.416 I/VoltraPoc343( 4016): CONTENT_DISPOSED widget=PocTodoSpike awid=3 thread=main wall=1792070691416
+10-15 15:24:51.416 I/VoltraPoc343( 4016): CONTENT_DISPOSED widget=PocTodoSpike awid=3 thread=main wall=1792070691416
+10-15 15:24:51.419 I/WM-WorkerWrapper( 4016): Worker result SUCCESS for Work [ id=275ce464-33fa-444e-afbe-2e9c4962b90d, tags={ androidx.glance.session.SessionWorker } ]
+10-15 15:25:18.014 I/VoltraPoc343( 4333): TAP_SENT T3-expired-session
+10-15 15:25:18.056 I/VoltraPoc343( 4016): CB_ENTER widget=PocTodoSpike component=ping awid=3 checked=null pid=4016 procStartUptimeMs=1133313 uptimeNowMs=1420615 thread=DefaultDispatcher-worker-1 wall=1792070718056
+10-15 15:25:18.063 I/VoltraPoc343( 4016): STATE_BUMP rev=3 ms=7
+10-15 15:25:18.070 I/VoltraPoc343( 4016): UPDATE_RETURNED ms=7 callbackTotalMs=14 thread=DefaultDispatcher-worker-1
+10-15 15:25:18.277 I/VoltraPoc343( 4016): PROVIDE_GLANCE widget=PocTodoSpike pid=4016 procStartUptimeMs=1133313 thread=main wall=1792070718277
+10-15 15:25:18.314 I/VoltraJSRenderer( 4016): evaluateBundle: render() captured for widgetId=PocTodoSpike (282927 chars)
+10-15 15:25:18.314 I/VoltraPoc343( 4016): PROVIDE_GLANCE_EVAL widget=PocTodoSpike bundleReady=true ms=37 thread=main
+10-15 15:25:18.485 I/VoltraJSRenderer( 4016): [perf] render: 8.73 ms (widgetId=PocTodoSpike)
+10-15 15:25:18.486 I/VoltraPoc343( 4016): RENDER widget=PocTodoSpike awid=3 rev=3 size=255x316 live=true ms=9 pid=4016 thread=main wall=1792070718486
+10-15 15:25:18.492 I/VoltraJSRenderer( 4016): [perf] render: 3.20 ms (widgetId=PocTodoSpike)
+10-15 15:25:18.492 I/VoltraPoc343( 4016): RENDER widget=PocTodoSpike awid=3 rev=3 size=255x315 live=true ms=5 pid=4016 thread=main wall=1792070718492
+10-15 15:25:18.498 I/VoltraJSRenderer( 4016): [perf] render: 2.85 ms (widgetId=PocTodoSpike)
+10-15 15:25:18.499 I/VoltraPoc343( 4016): RENDER widget=PocTodoSpike awid=3 rev=3 size=457x200 live=true ms=3 pid=4016 thread=main wall=1792070718499
+10-15 15:25:18.501 I/VoltraPoc343( 4016): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792070718501
+10-15 15:25:18.501 I/VoltraPoc343( 4016): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792070718501
+10-15 15:25:18.501 I/VoltraPoc343( 4016): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792070718501
+10-15 15:26:03.521 I/VoltraPoc343( 4016): CONTENT_DISPOSED widget=PocTodoSpike awid=3 thread=main wall=1792070763521
+10-15 15:26:03.521 I/VoltraPoc343( 4016): CONTENT_DISPOSED widget=PocTodoSpike awid=3 thread=main wall=1792070763521
+10-15 15:26:03.521 I/VoltraPoc343( 4016): CONTENT_DISPOSED widget=PocTodoSpike awid=3 thread=main wall=1792070763521
+10-15 15:26:03.525 I/WM-WorkerWrapper( 4016): Worker result SUCCESS for Work [ id=019c0710-51d9-4b9b-8a27-3e06bfa67351, tags={ androidx.glance.session.SessionWorker } ]
+10-15 15:26:08.463 I/ActivityManager(  566): Killing 4016:com.callstackincubator.voltraexample/u0a210 (adj 700): kill background
+10-15 15:26:08.481 V/ActivityManager(  566): Got obituary of 4016:com.callstackincubator.voltraexample
+10-15 15:26:10.527 I/VoltraPoc343( 4388): TAP_SENT T4-killed-process
+
+# T4b cold tap (redo after swiping to the widget page) 13:27:37Z
+10-15 15:27:25.418 I/VoltraPoc343( 4486): TAP_SENT T4b-killed-process
+10-15 15:27:25.476 I/ActivityManager(  566): Start proc 4493:com.callstackincubator.voltraexample/u0a210 for broadcast {com.callstackincubator.voltraexample/androidx.glance.appwidget.action.ActionCallbackBroadcastReceiver}
+10-15 15:27:26.223 I/VoltraPoc343( 4493): CB_ENTER widget=PocTodoSpike component=ping awid=3 checked=null pid=4493 procStartUptimeMs=1548073 uptimeNowMs=1548782 thread=DefaultDispatcher-worker-1 wall=1792070846223
+10-15 15:27:26.260 I/VoltraPoc343( 4493): STATE_BUMP rev=4 ms=36
+10-15 15:27:26.299 I/VoltraPoc343( 4493): UPDATE_RETURNED ms=39 callbackTotalMs=79 thread=DefaultDispatcher-worker-3
+10-15 15:27:26.529 I/VoltraPoc343( 4493): PROVIDE_GLANCE widget=PocTodoSpike pid=4493 procStartUptimeMs=1548073 thread=main wall=1792070846529
+10-15 15:27:26.646 I/VoltraJSRenderer( 4493): evaluateBundle: render() captured for widgetId=PocTodoSpike (282927 chars)
+10-15 15:27:26.647 I/VoltraPoc343( 4493): PROVIDE_GLANCE_EVAL widget=PocTodoSpike bundleReady=true ms=117 thread=main
+10-15 15:27:26.836 I/VoltraJSRenderer( 4493): [perf] render: 100.68 ms (widgetId=PocTodoSpike)
+10-15 15:27:26.849 I/VoltraPoc343( 4493): RENDER widget=PocTodoSpike awid=3 rev=4 size=255x316 live=true ms=119 pid=4493 thread=main wall=1792070846849
+10-15 15:27:26.869 I/VoltraJSRenderer( 4493): [perf] render: 4.60 ms (widgetId=PocTodoSpike)
+10-15 15:27:26.870 I/VoltraPoc343( 4493): RENDER widget=PocTodoSpike awid=3 rev=4 size=255x315 live=true ms=6 pid=4493 thread=main wall=1792070846870
+10-15 15:27:26.878 I/VoltraJSRenderer( 4493): [perf] render: 3.57 ms (widgetId=PocTodoSpike)
+10-15 15:27:26.878 I/VoltraPoc343( 4493): RENDER widget=PocTodoSpike awid=3 rev=4 size=457x200 live=true ms=5 pid=4493 thread=main wall=1792070846878
+10-15 15:27:26.884 I/VoltraPoc343( 4493): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792070846884
+10-15 15:27:26.884 I/VoltraPoc343( 4493): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792070846884
+10-15 15:27:26.884 I/VoltraPoc343( 4493): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792070846884

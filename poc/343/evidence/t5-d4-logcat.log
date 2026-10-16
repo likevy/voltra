@@ -1,0 +1,136 @@
+         1792078805.235  6473  6473 I VoltraJSRenderer: [perf] render: 0.31 ms (widgetId=TodoStateWidget)
+         1792078805.235  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=1 stateRevision=0 size=255x316 ms=0.81
+         1792078805.236  6473  6473 I VoltraJSRenderer: [perf] render: 0.24 ms (widgetId=TodoStateWidget)
+         1792078805.236  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=1 stateRevision=0 size=255x315 ms=0.58
+         1792078805.237  6473  6473 I VoltraJSRenderer: [perf] render: 0.47 ms (widgetId=TodoStateWidget)
+         1792078805.237  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=1 stateRevision=0 size=447x200 ms=0.81
+         1792078805.322  6473  6473 I VoltraJSRenderer: [perf] render: 0.29 ms (widgetId=TodoStateWidget)
+         1792078805.322  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=2 stateRevision=1 size=255x316 ms=0.72
+         1792078805.323  6473  6473 I VoltraJSRenderer: [perf] render: 0.20 ms (widgetId=TodoStateWidget)
+         1792078805.323  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=2 stateRevision=1 size=255x315 ms=0.44
+         1792078805.323  6473  6473 I VoltraJSRenderer: [perf] render: 0.18 ms (widgetId=TodoStateWidget)
+         1792078805.323  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=2 stateRevision=1 size=447x200 ms=0.38
+         1792078805.438  6473  8079 I VoltraClientGlanceWidget: [perf] metro fetch: 18.76 ms (303639 chars)
+         1792078805.467  6473  6473 I VoltraJSRenderer: [perf] bundle eval: 25.77 ms (304661 chars)
+         1792078805.467  6473  6473 I VoltraJSRenderer: evaluateBundle: render() captured for widgetId=AndroidClientDemoWidget (304661 chars)
+         1792078805.472  6473  7462 I VoltraClientGlanceWidget: [perf] metro fetch: 37.43 ms (288967 chars)
+         1792078805.481  6473  7081 I VoltraClientGlanceWidget: [perf] metro fetch: 12.50 ms (288064 chars)
+         1792078805.498  6473  6473 I VoltraJSRenderer: [perf] bundle eval: 23.58 ms (289973 chars)
+         1792078805.498  6473  6473 I VoltraJSRenderer: evaluateBundle: render() captured for widgetId=TodoStateWidget (289973 chars)
+         1792078805.519  6473  6473 I VoltraJSRenderer: [perf] bundle eval: 18.46 ms (289074 chars)
+         1792078805.519  6473  6473 I VoltraJSRenderer: evaluateBundle: render() captured for widgetId=TodoStateKeyWidget (289074 chars)
+         1792078805.627  6473  6473 I VoltraJSRenderer: [perf] render: 7.96 ms (widgetId=AndroidClientDemoWidget)
+         1792078805.628  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=37 stateRevision=0 size=165x205 ms=8.77
+         1792078805.633  6473  6473 I VoltraJSRenderer: [perf] render: 2.96 ms (widgetId=AndroidClientDemoWidget)
+         1792078805.633  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=37 stateRevision=0 size=165x205 ms=3.46
+         1792078805.637  6473  6473 I VoltraJSRenderer: [perf] render: 3.10 ms (widgetId=AndroidClientDemoWidget)
+         1792078805.637  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=37 stateRevision=0 size=294x130 ms=3.61
+         1792078805.644  6473  6473 I VoltraJSRenderer: [perf] render: 4.99 ms (widgetId=TodoStateWidget)
+         1792078805.644  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=45 stateRevision=32 size=255x316 ms=5.31
+         1792078805.645  6473  6473 I VoltraJSRenderer: [perf] render: 0.20 ms (widgetId=TodoStateWidget)
+         1792078805.645  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=45 stateRevision=32 size=255x315 ms=0.46
+         1792078805.646  6473  6473 I VoltraJSRenderer: [perf] render: 0.23 ms (widgetId=TodoStateWidget)
+         1792078805.646  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=45 stateRevision=32 size=447x200 ms=0.49
+         1792078805.674  6473  6473 I VoltraJSRenderer: [perf] render: 6.19 ms (widgetId=TodoStateKeyWidget)
+         1792078805.674  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=44 stateRevision=31 size=255x316 ms=6.60
+         1792078805.676  6473  6473 I VoltraJSRenderer: [perf] render: 0.32 ms (widgetId=TodoStateKeyWidget)
+         1792078805.676  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=44 stateRevision=31 size=255x315 ms=0.74
+         1792078805.677  6473  6473 I VoltraJSRenderer: [perf] render: 0.24 ms (widgetId=TodoStateKeyWidget)
+         1792078805.677  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=44 stateRevision=31 size=447x200 ms=0.63
+         1792078805.690  6473  6473 I VoltraJSRenderer: [perf] render: 0.27 ms (widgetId=TodoStateWidget)
+         1792078805.690  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=46 stateRevision=33 size=255x316 ms=0.63
+         1792078805.690  6473  6473 I VoltraJSRenderer: [perf] render: 0.20 ms (widgetId=TodoStateWidget)
+         1792078805.691  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=46 stateRevision=33 size=255x315 ms=0.45
+         1792078805.691  6473  6473 I VoltraJSRenderer: [perf] render: 0.18 ms (widgetId=TodoStateWidget)
+         1792078805.691  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=46 stateRevision=33 size=447x200 ms=0.40
+         1792078815.308  9158  9158 I Poc343Tap: TAP D4-placement-placement1-t1
+         1792078815.361  6473  7081 D DynamicWidgetState: callback entered widgetId=TodoStateWidget componentId=task:t1 componentType=checkbox checked=true stateKey=- renderedRevision=33 thread=DefaultDispatcher-worker-4
+         1792078815.375  6473  8079 I VoltraClientGlanceWidget: [perf] metro fetch: 12.96 ms (288967 chars)
+         1792078815.397  6473  8079 I VoltraJSRenderer: [perf] bundle eval: 19.83 ms (289973 chars)
+         1792078815.397  6473  8079 I VoltraJSRenderer: evaluateBundle: render() captured for widgetId=TodoStateWidget (289973 chars)
+         1792078815.397  6473  8079 D DynamicWidgetState: bundle widgetId=TodoStateWidget ready=true ms=36
+         1792078815.400  6473  8079 I VoltraJSRenderer: [perf] invoke interact: 0.41 ms (widgetId=TodoStateWidget)
+         1792078815.400  6473  8079 D DynamicWidgetState: interact widgetId=TodoStateWidget ms=0 returned=true
+         1792078815.404  6473  8079 D DynamicWidgetState: commit widgetId=TodoStateWidget appWidgetId=4 storage=placement wrote=true handled=true via=onInteraction stateRevision=34 renderedRevision=33 ms=3 sinceTapMs=42
+         1792078815.405  6473  8079 D DynamicWidgetState: event appended widgetId=TodoStateWidget seq=56 handledInWidget=true
+         1792078815.406  6473  8079 D DynamicWidgetState: update returned widgetId=TodoStateWidget ms=0 totalMs=44
+         1792078815.413  6473  6473 I VoltraJSRenderer: [perf] render: 5.27 ms (widgetId=TodoStateWidget)
+         1792078815.413  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=47 stateRevision=34 size=255x316 ms=5.67
+         1792078815.414  6473  6473 I VoltraJSRenderer: [perf] render: 0.28 ms (widgetId=TodoStateWidget)
+         1792078815.414  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=47 stateRevision=34 size=255x315 ms=0.63
+         1792078815.415  6473  6473 I VoltraJSRenderer: [perf] render: 0.23 ms (widgetId=TodoStateWidget)
+         1792078815.415  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=47 stateRevision=34 size=447x200 ms=0.67
+         1792078836.956  6473  6473 I VoltraJSRenderer: [perf] render: 5.54 ms (widgetId=AndroidClientDemoWidget)
+         1792078836.956  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=38 stateRevision=0 size=165x205 ms=6.14
+         1792078836.960  6473  6473 I VoltraJSRenderer: [perf] render: 2.79 ms (widgetId=AndroidClientDemoWidget)
+         1792078836.960  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=38 stateRevision=0 size=165x205 ms=3.24
+         1792078836.964  6473  6473 I VoltraJSRenderer: [perf] render: 2.78 ms (widgetId=AndroidClientDemoWidget)
+         1792078836.964  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=38 stateRevision=0 size=294x130 ms=3.31
+         1792078836.972  6473  6473 I VoltraJSRenderer: [perf] render: 0.27 ms (widgetId=TodoStateWidget)
+         1792078836.972  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=48 stateRevision=0 size=255x316 ms=0.68
+         1792078836.973  6473  6473 I VoltraJSRenderer: [perf] render: 0.22 ms (widgetId=TodoStateWidget)
+         1792078836.973  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=48 stateRevision=0 size=255x315 ms=0.50
+         1792078836.974  6473  6473 I VoltraJSRenderer: [perf] render: 0.18 ms (widgetId=TodoStateWidget)
+         1792078836.974  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=48 stateRevision=0 size=447x200 ms=0.39
+         1792078837.000  6473  6473 I VoltraJSRenderer: [perf] render: 0.28 ms (widgetId=TodoStateKeyWidget)
+         1792078837.000  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=45 stateRevision=0 size=255x316 ms=0.69
+         1792078837.001  6473  6473 I VoltraJSRenderer: [perf] render: 0.22 ms (widgetId=TodoStateKeyWidget)
+         1792078837.001  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=45 stateRevision=0 size=255x315 ms=0.56
+         1792078837.002  6473  6473 I VoltraJSRenderer: [perf] render: 0.20 ms (widgetId=TodoStateKeyWidget)
+         1792078837.002  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=45 stateRevision=0 size=447x200 ms=0.46
+         1792078837.022  6473  6473 I VoltraJSRenderer: [perf] render: 0.36 ms (widgetId=TodoStateWidget)
+         1792078837.022  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=50 stateRevision=1 size=255x316 ms=0.83
+         1792078837.023  6473  6473 I VoltraJSRenderer: [perf] render: 0.25 ms (widgetId=TodoStateWidget)
+         1792078837.023  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=50 stateRevision=1 size=255x315 ms=0.54
+         1792078837.024  6473  6473 I VoltraJSRenderer: [perf] render: 0.27 ms (widgetId=TodoStateWidget)
+         1792078837.024  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=50 stateRevision=1 size=447x200 ms=0.54
+         1792078837.072  6473  6473 I VoltraJSRenderer: [perf] render: 0.33 ms (widgetId=TodoStateWidget)
+         1792078837.073  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=51 stateRevision=2 size=255x316 ms=0.77
+         1792078837.074  6473  6473 I VoltraJSRenderer: [perf] render: 0.23 ms (widgetId=TodoStateWidget)
+         1792078837.074  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=51 stateRevision=2 size=255x315 ms=0.52
+         1792078837.075  6473  6473 I VoltraJSRenderer: [perf] render: 0.21 ms (widgetId=TodoStateWidget)
+         1792078837.075  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=51 stateRevision=2 size=447x200 ms=0.47
+         1792078837.207  6473  9249 I VoltraClientGlanceWidget: [perf] metro fetch: 11.29 ms (288967 chars)
+         1792078837.229  6473  6473 I VoltraJSRenderer: [perf] bundle eval: 19.25 ms (289973 chars)
+         1792078837.229  6473  6473 I VoltraJSRenderer: evaluateBundle: render() captured for widgetId=TodoStateWidget (289973 chars)
+         1792078837.401  6473  6473 I VoltraJSRenderer: [perf] render: 4.85 ms (widgetId=TodoStateWidget)
+         1792078837.401  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=3 stateRevision=2 size=255x316 ms=5.32
+         1792078837.402  6473  6473 I VoltraJSRenderer: [perf] render: 0.20 ms (widgetId=TodoStateWidget)
+         1792078837.402  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=3 stateRevision=2 size=255x315 ms=0.45
+         1792078837.403  6473  6473 I VoltraJSRenderer: [perf] render: 0.18 ms (widgetId=TodoStateWidget)
+         1792078837.403  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=3 stateRevision=2 size=447x200 ms=0.40
+         1792078837.447  6473  6473 I VoltraJSRenderer: [perf] render: 0.73 ms (widgetId=TodoStateWidget)
+         1792078837.448  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=6 stateRevision=2 size=255x316 ms=1.36
+         1792078837.448  6473  6473 I VoltraJSRenderer: [perf] render: 0.26 ms (widgetId=TodoStateWidget)
+         1792078837.449  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=6 stateRevision=2 size=255x315 ms=0.64
+         1792078837.449  6473  6473 I VoltraJSRenderer: [perf] render: 0.21 ms (widgetId=TodoStateWidget)
+         1792078837.449  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=6 stateRevision=2 size=447x200 ms=0.47
+         1792078847.045  9284  9284 I Poc343Tap: TAP D4-widgetScope-placement1-t1
+         1792078847.065  6473  9249 D DynamicWidgetState: callback entered widgetId=TodoStateWidget componentId=task:t1 componentType=checkbox checked=true stateKey=- renderedRevision=2 thread=DefaultDispatcher-worker-6
+         1792078847.107  6473  8516 I VoltraClientGlanceWidget: [perf] metro fetch: 41.68 ms (288967 chars)
+         1792078847.127  6473  8516 I VoltraJSRenderer: [perf] bundle eval: 17.33 ms (289973 chars)
+         1792078847.127  6473  8516 I VoltraJSRenderer: evaluateBundle: render() captured for widgetId=TodoStateWidget (289973 chars)
+         1792078847.127  6473  8516 D DynamicWidgetState: bundle widgetId=TodoStateWidget ready=true ms=61
+         1792078847.129  6473  8516 I VoltraJSRenderer: [perf] invoke interact: 0.44 ms (widgetId=TodoStateWidget)
+         1792078847.129  6473  8516 D DynamicWidgetState: interact widgetId=TodoStateWidget ms=1 returned=true
+         1792078847.138  6473  8516 D DynamicWidgetState: commit widgetId=TodoStateWidget appWidgetId=4 storage=widgetScope wrote=true handled=true via=onInteraction stateRevision=3 renderedRevision=2 ms=9 sinceTapMs=74
+         1792078847.139  6473  8516 D DynamicWidgetState: event appended widgetId=TodoStateWidget seq=57 handledInWidget=true
+         1792078847.140  6473  8516 D DynamicWidgetState: update returned widgetId=TodoStateWidget ms=1 totalMs=76
+         1792078847.142  6473  6473 I VoltraJSRenderer: [perf] render: 5.45 ms (widgetId=TodoStateWidget)
+         1792078847.142  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=52 stateRevision=3 size=255x316 ms=5.86
+         1792078847.143  6473  6473 I VoltraJSRenderer: [perf] render: 0.21 ms (widgetId=TodoStateWidget)
+         1792078847.143  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=52 stateRevision=3 size=255x315 ms=0.54
+         1792078847.144  6473  6473 I VoltraJSRenderer: [perf] render: 0.27 ms (widgetId=TodoStateWidget)
+         1792078847.144  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=52 stateRevision=3 size=447x200 ms=0.71
+         1792078847.154  6473  6473 I VoltraJSRenderer: [perf] render: 0.29 ms (widgetId=TodoStateWidget)
+         1792078847.155  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=7 stateRevision=3 size=255x316 ms=2.00
+         1792078847.157  6473  6473 I VoltraJSRenderer: [perf] render: 0.21 ms (widgetId=TodoStateWidget)
+         1792078847.157  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=7 stateRevision=3 size=255x315 ms=0.66
+         1792078847.158  6473  6473 I VoltraJSRenderer: [perf] render: 0.18 ms (widgetId=TodoStateWidget)
+         1792078847.158  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=7 stateRevision=3 size=447x200 ms=0.41
+         1792078868.741  6473  6473 I VoltraJSRenderer: [perf] render: 0.29 ms (widgetId=TodoStateWidget)
+         1792078868.741  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=8 stateRevision=2 size=255x316 ms=0.70
+         1792078868.741  6473  6473 I VoltraJSRenderer: [perf] render: 0.21 ms (widgetId=TodoStateWidget)
+         1792078868.742  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=8 stateRevision=2 size=255x315 ms=0.46
+         1792078868.742  6473  6473 I VoltraJSRenderer: [perf] render: 0.18 ms (widgetId=TodoStateWidget)
+         1792078868.742  6473  6473 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=8 stateRevision=2 size=447x200 ms=0.40

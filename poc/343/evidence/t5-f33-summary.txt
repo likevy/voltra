@@ -1,0 +1,15 @@
+F33 Fast Refresh probe, debug build, app in front on /android-widgets/todo-state, Metro running (2026-10-15).
+Each probe edits one comment line (or the noted export), waits 12 s, and dumps ReactNativeJS + VoltraClientGlanceWidget.
+"registerTool" lines = the app's JS re-ran from the top (full reload: Appduct tools re-register). render lines = widgets re-rendered.
+Every probe was reverted byte-for-byte afterwards (cp from a backup; shasum checked).
+
+0. After the emulator reboot, no edit (widget or screen) reached the app: the HMR socket was gone. A visible title edit in
+   TodoStateScreen.tsx did not show. After dev menu > Reload, the same edit showed live. (t5-f33-0-before-js-reload-no-hmr.log is empty.)
+1. control-AndroidClientDemoWidget (only a default export): registerTool=0, renders=15 -> hot patch; widgets reloaded through enableWidgetHotReload.
+2. TodoStateWidget as written (default + onInteraction + exported DEFAULT_TODO_ITEMS): registerTool=44 -> full reload.
+3. TodoStateKeyWidget as written (default + exported DEFAULT_TODO_ITEMS, no onInteraction): registerTool=44 -> full reload.
+   So the exported constant alone already breaks the refresh boundary in both example widgets.
+4. Isolation (temporary): `export` removed from DEFAULT_TODO_ITEMS in both files (the setup edits themselves reloaded fully), then:
+   - D-default-only-comment-edit: registerTool=0, renders=105 -> hot patch.
+   - C-default-plus-onInteraction-comment-edit: registerTool=44 -> full reload.
+   => The lowercase `onInteraction` export alone turns every edit of the widget file into a full app reload (F33 confirmed).

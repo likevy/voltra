@@ -1,0 +1,23 @@
+# Baseline tests on v24.13.0, pnpm 11.5.0, 2026-10-15T13:03:14Z, HEAD d447f6d
+
+## pnpm --filter @use-voltra/core test
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 67.390917
+exit=
+
+## pnpm --filter @use-voltra/metro test
+ℹ tests 26
+ℹ suites 6
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 548.897542
+exit=

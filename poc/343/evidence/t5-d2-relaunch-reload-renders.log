@@ -1,0 +1,6 @@
+         1792075704.159 10366 10366 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=4 stateRevision=3 size=255x316 ms=22.74
+         1792075704.179 10366 10366 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=4 stateRevision=3 size=255x315 ms=1.40
+         1792075704.183 10366 10366 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=4 stateRevision=3 size=457x200 ms=1.97
+         1792075704.394 10366 10366 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=4 stateRevision=3 size=255x316 ms=6.36
+         1792075704.398 10366 10366 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=4 stateRevision=3 size=255x315 ms=1.02
+         1792075704.400 10366 10366 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=4 stateRevision=3 size=457x200 ms=0.87

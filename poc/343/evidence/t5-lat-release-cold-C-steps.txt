@@ -1,0 +1,40 @@
+page C visible
+17:51:01 killed: pidof empty after attempt 1
+17:51:01 C:t1 pidof=''
+text="Todo · onInteraction" checked="false" bounds="[97,804][437,856]"
+text="Buy &#127838;" checked="true" bounds="[97,856][308,944]"
+text="Water the plants" checked="false" bounds="[97,944][470,1032]"
+text="Call the dentist" checked="false" bounds="[97,1032][444,1120]"
+text="Show completed" checked="true" bounds="[97,1120][514,1194]"
+page C visible
+17:52:15 killed: pidof empty after attempt 1
+17:52:15 C:t2 pidof=''
+text="Todo · onInteraction" checked="false" bounds="[97,804][437,856]"
+text="Buy &#127838;" checked="true" bounds="[97,856][308,944]"
+text="Water the plants" checked="true" bounds="[97,944][470,1032]"
+text="Call the dentist" checked="false" bounds="[97,1032][444,1120]"
+text="Show completed" checked="true" bounds="[97,1120][514,1194]"
+page C visible
+17:53:29 killed: pidof empty after attempt 1
+17:53:29 C:t3 pidof=''
+text="Todo · onInteraction" checked="false" bounds="[97,804][437,856]"
+text="Buy &#127838;" checked="true" bounds="[97,856][308,944]"
+text="Water the plants" checked="true" bounds="[97,944][470,1032]"
+text="Call the dentist" checked="true" bounds="[97,1032][444,1120]"
+text="Show completed" checked="true" bounds="[97,1120][514,1194]"
+page C visible
+17:54:43 killed: pidof empty after attempt 1
+17:54:43 C:t1 pidof=''
+text="Todo · onInteraction" checked="false" bounds="[97,804][437,856]"
+text="Buy &#127838;" checked="false" bounds="[97,856][308,944]"
+text="Water the plants" checked="true" bounds="[97,944][470,1032]"
+text="Call the dentist" checked="true" bounds="[97,1032][444,1120]"
+text="Show completed" checked="true" bounds="[97,1120][514,1194]"
+page C visible
+17:55:57 killed: pidof empty after attempt 1
+17:55:57 C:t2 pidof=''
+text="Todo · onInteraction" checked="false" bounds="[97,804][437,856]"
+text="Buy &#127838;" checked="false" bounds="[97,856][308,944]"
+text="Water the plants" checked="false" bounds="[97,944][470,1032]"
+text="Call the dentist" checked="true" bounds="[97,1032][444,1120]"
+text="Show completed" checked="true" bounds="[97,1120][514,1194]"

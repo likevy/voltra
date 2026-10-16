@@ -1,0 +1,13 @@
+// PoC #343 (throwaway) override: run android-client unit tests on the local JDK 17
+// because the JDK 21 test toolchain cannot be provisioned (no toolchain download repositories).
+// Only valid for tests that run in the SDK 35 Robolectric sandbox (robolectric.properties sdk=35).
+// The library's build.gradle reads project.ext.voltraUnitTestJdkLauncher when the Test task is
+// configured, so replacing that value after evaluation is enough.
+allprojects {
+  afterEvaluate { project ->
+    if (project.path == ':use-voltra_android-client') {
+      def toolchains = project.extensions.getByType(JavaToolchainService)
+      project.ext.voltraUnitTestJdkLauncher = toolchains.launcherFor { languageVersion = JavaLanguageVersion.of(17) }
+    }
+  }
+}

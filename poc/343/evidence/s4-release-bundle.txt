@@ -1,0 +1,46 @@
+# S4 release APK inspection, 2026-10-15T13:33:35Z
+## unzip -l app-release.apk | grep voltra-widget
+Archive:  /Users/dawidwozniak/Documents/Projects/callstack/voltra/voltra-poc-343/example/android/app/build/outputs/apk/release/app-release.apk
+    95457  01-01-1981 01:01   assets/voltra/voltra-widget-AndroidClientDemoWidget.bundle
+    88340  01-01-1981 01:01   assets/voltra/voltra-widget-PocTodoSpike.bundle
+       81  01-01-1981 01:01   assets/voltra/widget_config_defaults.json
+      335  01-01-1981 01:01   assets/voltra/widget_server_defaults.json
+
+## bundle: assets/voltra/voltra-widget-PocTodoSpike.bundle (   88340 bytes,      121 lines)
+## minified? (first 300 chars)
+var __BUNDLE_START_TIME__=globalThis.nativePerformanceNow?nativePerformanceNow():Date.now(),__DEV__=false,process=globalThis.process||{},__METRO_GLOBAL_PREFIX__='';process.env=process.env||{};process.env.NODE_ENV=process.env.NODE_ENV||"production";
+!(function(e){"use strict";e.__r=i,e[`${__METRO_GLO
+
+## grep counts
+onInteraction          2
+interact               1
+PocTodoSpike           3
+render                 57
+__esModule             126
+function PocTodoSpike  0
+Buy 🍞               0
+emojiTitle             1
+
+## contexts of onInteraction / interact (property names survive terser)
+=void 0,e.interact=function(t){var n=s(t,"payloadJSON"),o=f.onInteraction;if("function"!=typeof o)return JSON.stringify({handled:!1})
+t.VoltraAndroid.CheckBox,{id:"t1",text:h,checked:!1})]})},e.onInteraction=function(t){var o,n=null!=(o=t.note)?o:'';return{echoNote:n
+---
+rty(e,"__esModule",{value:!0}),e.default=void 0,e.interact=function(t){var n=s(t,"payloadJSON"),o=f.onIntera
+
+## is the author component name mangled? (search for the export default function's name)
+e.default=void
+e.default=c
+exports.default=m
+exports.default=m
+exports.default=m
+onInteraction=function
+
+## emoji literal encoding in the release bundle (terser output)
+0000000    B   u   y       \   u   d   8   3   c   \   u   d   f   5   e
+0000020    '   :  \n   B   u   y       b   r   e   a   d   '   ;   r   e
+0000040    t   u   r   n   (  \n                                        
+0000046
+
+## widget-file module body (component mangled, exports kept)
+n JSON.stringify(v)}e.default=c},0,[1,3,5
+function c(t,f){var c=s(t,"propsJSON"),l=s(f,"envJSON"),p=function(t){var n=t.__voltraProps;return u(n,l)},v=(0,o.renderVariantToJs

@@ -1,0 +1,104 @@
+# S5 invoke (emoji through nativeInvoke) + checkbox tap, 2026-10-15T13:28:36Z
+10-15 15:28:19.463 I/VoltraPoc343( 4559): TAP_SENT S5-invoke
+10-15 15:28:19.478 I/VoltraPoc343( 4493): CB_ENTER widget=PocTodoSpike component=invoke awid=3 checked=null pid=4493 procStartUptimeMs=1548073 uptimeNowMs=1602037 thread=DefaultDispatcher-worker-3 wall=1792070899478
+10-15 15:28:19.544 I/VoltraJSRenderer( 4493): [perf] bundle eval: 16.95 ms (282927 chars)
+10-15 15:28:19.544 I/VoltraJSRenderer( 4493): evaluateBundle: render() captured for widgetId=PocTodoSpike (282927 chars)
+10-15 15:28:19.544 I/VoltraPoc343( 4493): EVAL ok=true ms=66 thread=DefaultDispatcher-worker-3
+10-15 15:28:19.544 I/VoltraPoc343( 4493): nativeInvoke widget=PocTodoSpike export=interact payloadBytes=34 payloadNonAsciiHex=[f0 9f 8d 9e f0 9f 8d 9e ]
+10-15 15:28:19.544 I/VoltraPoc343( 4493): nativeInvoke typeof __voltraWidgets[PocTodoSpike].interact === 'function': true
+10-15 15:28:19.545 I/VoltraPoc343( 4493): nativeInvoke jsMs=0.57 resultBytes=128 resultNonAsciiHex=[f0 9f 8d 9e f0 9f 8d 9e f0 9f 8d 9e ] (about to NewStringUTF)
+10-15 15:28:19.545 I/VoltraPoc343( 4493): INVOKE ms=1 payloadUtf16Len=30 payloadCodePoints=28 resultUtf16Len=122 resultCodePoints=119 result={"handled":true,"result":{"echoNote":"🍞","noteUtf16Length":2,"noteCodePoints":[127838],"echoTitle":"Buy 🍞","back":"🍞"}}
+10-15 15:28:19.548 I/VoltraPoc343( 4493): STATE_BUMP rev=5 ms=4
+10-15 15:28:19.556 I/VoltraPoc343( 4493): UPDATE_RETURNED ms=8 callbackTotalMs=79 thread=DefaultDispatcher-worker-1
+10-15 15:28:19.765 I/VoltraPoc343( 4493): PROVIDE_GLANCE widget=PocTodoSpike pid=4493 procStartUptimeMs=1548073 thread=main wall=1792070899765
+10-15 15:28:19.801 I/VoltraJSRenderer( 4493): [perf] bundle eval: 17.91 ms (282927 chars)
+10-15 15:28:19.801 I/VoltraJSRenderer( 4493): evaluateBundle: render() captured for widgetId=PocTodoSpike (282927 chars)
+10-15 15:28:19.801 I/VoltraPoc343( 4493): PROVIDE_GLANCE_EVAL widget=PocTodoSpike bundleReady=true ms=35 thread=main
+10-15 15:28:19.976 I/VoltraJSRenderer( 4493): [perf] render: 11.02 ms (widgetId=PocTodoSpike)
+10-15 15:28:19.977 I/VoltraPoc343( 4493): RENDER widget=PocTodoSpike awid=3 rev=5 size=255x316 live=true ms=13 pid=4493 thread=main wall=1792070899977
+10-15 15:28:19.986 I/VoltraJSRenderer( 4493): [perf] render: 4.30 ms (widgetId=PocTodoSpike)
+10-15 15:28:19.988 I/VoltraPoc343( 4493): RENDER widget=PocTodoSpike awid=3 rev=5 size=255x315 live=true ms=6 pid=4493 thread=main wall=1792070899988
+10-15 15:28:19.997 I/VoltraJSRenderer( 4493): [perf] render: 5.97 ms (widgetId=PocTodoSpike)
+10-15 15:28:19.998 I/VoltraPoc343( 4493): RENDER widget=PocTodoSpike awid=3 rev=5 size=457x200 live=true ms=8 pid=4493 thread=main wall=1792070899998
+10-15 15:28:20.002 I/VoltraPoc343( 4493): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792070900002
+10-15 15:28:20.002 I/VoltraPoc343( 4493): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792070900002
+10-15 15:28:20.002 I/VoltraPoc343( 4493): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792070900002
+10-15 15:28:27.534 I/VoltraPoc343( 4571): TAP_SENT S5-checkbox-t1
+10-15 15:28:27.562 I/VoltraPoc343( 4493): CB_ENTER widget=PocTodoSpike component=t1 awid=3 checked=true pid=4493 procStartUptimeMs=1548073 uptimeNowMs=1610121 thread=DefaultDispatcher-worker-3 wall=1792070907561
+10-15 15:28:27.595 I/VoltraPoc343( 4493): STATE_BUMP rev=6 ms=34
+10-15 15:28:27.597 I/VoltraPoc343( 4493): UPDATE_RETURNED ms=1 callbackTotalMs=35 thread=DefaultDispatcher-worker-3
+10-15 15:28:27.605 I/VoltraJSRenderer( 4493): [perf] render: 5.22 ms (widgetId=PocTodoSpike)
+10-15 15:28:27.605 I/VoltraPoc343( 4493): RENDER widget=PocTodoSpike awid=3 rev=6 size=255x316 live=true ms=7 pid=4493 thread=main wall=1792070907605
+10-15 15:28:27.617 I/VoltraJSRenderer( 4493): [perf] render: 4.04 ms (widgetId=PocTodoSpike)
+10-15 15:28:27.618 I/VoltraPoc343( 4493): RENDER widget=PocTodoSpike awid=3 rev=6 size=255x315 live=true ms=6 pid=4493 thread=main wall=1792070907618
+10-15 15:28:27.626 I/VoltraJSRenderer( 4493): [perf] render: 3.84 ms (widgetId=PocTodoSpike)
+10-15 15:28:27.626 I/VoltraPoc343( 4493): RENDER widget=PocTodoSpike awid=3 rev=6 size=457x200 live=true ms=6 pid=4493 thread=main wall=1792070907626
+
+# S5 render path: props {emojiTitle:true} -> row 'Buy 🍞' through nativeRender/NewStringUTF, then a tap on it, 2026-10-15T13:30:02Z
+10-15 15:29:53.468 I/VoltraPoc343( 4493): CONTENT_DISPOSED widget=AndroidClientDemoWidget awid=2 thread=main wall=1792070993468
+10-15 15:29:53.468 I/VoltraPoc343( 4493): CONTENT_DISPOSED widget=AndroidClientDemoWidget awid=2 thread=main wall=1792070993468
+10-15 15:29:53.468 I/VoltraPoc343( 4493): CONTENT_DISPOSED widget=AndroidClientDemoWidget awid=2 thread=main wall=1792070993468
+10-15 15:29:55.683 I/VoltraPoc343( 4701): TAP_SENT S5-checkbox-emoji
+10-15 15:29:55.718 I/VoltraPoc343( 4493): CB_ENTER widget=PocTodoSpike component=t1 awid=3 checked=true pid=4493 procStartUptimeMs=1548073 uptimeNowMs=1698277 thread=DefaultDispatcher-worker-6 wall=1792070995718
+10-15 15:29:55.759 I/VoltraPoc343( 4493): STATE_BUMP rev=7 ms=41
+10-15 15:29:55.778 I/VoltraPoc343( 4493): UPDATE_RETURNED ms=19 callbackTotalMs=60 thread=DefaultDispatcher-worker-6
+10-15 15:29:55.987 I/VoltraPoc343( 4493): PROVIDE_GLANCE widget=PocTodoSpike pid=4493 procStartUptimeMs=1548073 thread=main wall=1792070995987
+10-15 15:29:56.078 I/VoltraJSRenderer( 4493): [perf] bundle eval: 44.45 ms (282927 chars)
+10-15 15:29:56.078 I/VoltraJSRenderer( 4493): evaluateBundle: render() captured for widgetId=PocTodoSpike (282927 chars)
+10-15 15:29:56.078 I/VoltraPoc343( 4493): PROVIDE_GLANCE_EVAL widget=PocTodoSpike bundleReady=true ms=91 thread=main
+10-15 15:29:56.206 I/VoltraJSRenderer( 4493): [perf] render: 19.93 ms (widgetId=PocTodoSpike)
+10-15 15:29:56.207 I/VoltraPoc343( 4493): RENDER widget=PocTodoSpike awid=3 rev=7 size=255x316 live=true ms=22 pid=4493 thread=main wall=1792070996207
+10-15 15:29:56.223 I/VoltraJSRenderer( 4493): [perf] render: 7.16 ms (widgetId=PocTodoSpike)
+10-15 15:29:56.224 I/VoltraPoc343( 4493): RENDER widget=PocTodoSpike awid=3 rev=7 size=255x315 live=true ms=10 pid=4493 thread=main wall=1792070996224
+10-15 15:29:56.243 I/VoltraJSRenderer( 4493): [perf] render: 9.46 ms (widgetId=PocTodoSpike)
+10-15 15:29:56.245 I/VoltraPoc343( 4493): RENDER widget=PocTodoSpike awid=3 rev=7 size=457x200 live=true ms=13 pid=4493 thread=main wall=1792070996245
+10-15 15:29:56.278 I/VoltraPoc343( 4493): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792070996278
+10-15 15:29:56.278 I/VoltraPoc343( 4493): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792070996278
+10-15 15:29:56.279 I/VoltraPoc343( 4493): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792070996278
+
+# S5 render path (2nd attempt, Appduct re-linked): props {emojiTitle:true,marker:'emoji-on'} -> row 'Buy 🍞' through nativeRender/NewStringUTF, then a tap on it, 2026-10-15T13:31:01Z
+10-15 15:30:54.784 I/VoltraPoc343( 4844): TAP_SENT S5-checkbox-emoji-2
+10-15 15:30:54.866 I/VoltraPoc343( 4493): CB_ENTER widget=PocTodoSpike component=t1 awid=3 checked=true pid=4493 procStartUptimeMs=1548073 uptimeNowMs=1757426 thread=DefaultDispatcher-worker-6 wall=1792071054866
+10-15 15:30:54.885 I/VoltraPoc343( 4493): STATE_BUMP rev=8 ms=18
+10-15 15:30:54.929 I/VoltraPoc343( 4493): UPDATE_RETURNED ms=44 callbackTotalMs=62 thread=DefaultDispatcher-worker-3
+10-15 15:30:55.151 I/VoltraPoc343( 4493): PROVIDE_GLANCE widget=PocTodoSpike pid=4493 procStartUptimeMs=1548073 thread=main wall=1792071055151
+10-15 15:30:55.236 I/VoltraJSRenderer( 4493): [perf] bundle eval: 36.30 ms (282927 chars)
+10-15 15:30:55.236 I/VoltraJSRenderer( 4493): evaluateBundle: render() captured for widgetId=PocTodoSpike (282927 chars)
+10-15 15:30:55.236 I/VoltraPoc343( 4493): PROVIDE_GLANCE_EVAL widget=PocTodoSpike bundleReady=true ms=84 thread=main
+10-15 15:30:55.381 I/VoltraJSRenderer( 4493): [perf] render: 29.35 ms (widgetId=PocTodoSpike)
+10-15 15:30:55.383 I/VoltraPoc343( 4493): RENDER widget=PocTodoSpike awid=3 rev=8 size=255x316 live=true ms=31 pid=4493 thread=main wall=1792071055383
+10-15 15:30:55.400 I/VoltraJSRenderer( 4493): [perf] render: 4.87 ms (widgetId=PocTodoSpike)
+10-15 15:30:55.401 I/VoltraPoc343( 4493): RENDER widget=PocTodoSpike awid=3 rev=8 size=255x315 live=true ms=9 pid=4493 thread=main wall=1792071055401
+10-15 15:30:55.414 I/VoltraJSRenderer( 4493): [perf] render: 11.92 ms (widgetId=PocTodoSpike)
+10-15 15:30:55.415 I/VoltraPoc343( 4493): RENDER widget=PocTodoSpike awid=3 rev=8 size=457x200 live=true ms=13 pid=4493 thread=main wall=1792071055415
+10-15 15:30:55.420 I/VoltraPoc343( 4493): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792071055419
+10-15 15:30:55.420 I/VoltraPoc343( 4493): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792071055420
+10-15 15:30:55.420 I/VoltraPoc343( 4493): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792071055420
+
+# S5 render path (3rd attempt): props {emojiTitle:true,marker:'emoji-on'} -> row 'Buy 🍞' through nativeRender/NewStringUTF, then a tap on it, 2026-10-15T13:31:52Z
+10-15 15:31:35.546 I/VoltraJSRenderer( 4493): [perf] render: 3.66 ms (widgetId=PocTodoSpike)
+10-15 15:31:35.546 I/VoltraPoc343( 4493): RENDER widget=PocTodoSpike awid=3 rev=9 size=255x316 live=true ms=5 pid=4493 thread=main wall=1792071095546
+10-15 15:31:35.552 I/VoltraJSRenderer( 4493): [perf] render: 2.89 ms (widgetId=PocTodoSpike)
+10-15 15:31:35.552 I/VoltraPoc343( 4493): RENDER widget=PocTodoSpike awid=3 rev=9 size=255x315 live=true ms=4 pid=4493 thread=main wall=1792071095552
+10-15 15:31:35.557 I/VoltraJSRenderer( 4493): [perf] render: 3.00 ms (widgetId=PocTodoSpike)
+10-15 15:31:35.557 I/VoltraPoc343( 4493): RENDER widget=PocTodoSpike awid=3 rev=9 size=457x200 live=true ms=3 pid=4493 thread=main wall=1792071095557
+10-15 15:31:45.482 I/VoltraPoc343( 4493): CONTENT_DISPOSED widget=PocTodoSpike awid=3 thread=main wall=1792071105482
+10-15 15:31:45.483 I/VoltraPoc343( 4493): CONTENT_DISPOSED widget=PocTodoSpike awid=3 thread=main wall=1792071105483
+10-15 15:31:45.483 I/VoltraPoc343( 4493): CONTENT_DISPOSED widget=PocTodoSpike awid=3 thread=main wall=1792071105483
+10-15 15:31:46.222 I/VoltraPoc343( 4969): TAP_SENT S5-checkbox-emoji-3
+10-15 15:31:46.246 I/VoltraPoc343( 4493): CB_ENTER widget=PocTodoSpike component=t1 awid=3 checked=true pid=4493 procStartUptimeMs=1548073 uptimeNowMs=1808805 thread=DefaultDispatcher-worker-2 wall=1792071106246
+10-15 15:31:46.280 I/VoltraPoc343( 4493): STATE_BUMP rev=10 ms=34
+10-15 15:31:46.289 I/VoltraPoc343( 4493): UPDATE_RETURNED ms=10 callbackTotalMs=44 thread=DefaultDispatcher-worker-4
+10-15 15:31:46.497 I/VoltraPoc343( 4493): PROVIDE_GLANCE widget=PocTodoSpike pid=4493 procStartUptimeMs=1548073 thread=main wall=1792071106497
+10-15 15:31:46.532 I/VoltraJSRenderer( 4493): [perf] bundle eval: 19.47 ms (282927 chars)
+10-15 15:31:46.532 I/VoltraJSRenderer( 4493): evaluateBundle: render() captured for widgetId=PocTodoSpike (282927 chars)
+10-15 15:31:46.532 I/VoltraPoc343( 4493): PROVIDE_GLANCE_EVAL widget=PocTodoSpike bundleReady=true ms=35 thread=main
+10-15 15:31:46.705 I/VoltraJSRenderer( 4493): [perf] render: 7.95 ms (widgetId=PocTodoSpike)
+10-15 15:31:46.705 I/VoltraPoc343( 4493): RENDER widget=PocTodoSpike awid=3 rev=10 size=255x316 live=true ms=9 pid=4493 thread=main wall=1792071106705
+10-15 15:31:46.711 I/VoltraJSRenderer( 4493): [perf] render: 2.87 ms (widgetId=PocTodoSpike)
+10-15 15:31:46.711 I/VoltraPoc343( 4493): RENDER widget=PocTodoSpike awid=3 rev=10 size=255x315 live=true ms=4 pid=4493 thread=main wall=1792071106711
+10-15 15:31:46.716 I/VoltraJSRenderer( 4493): [perf] render: 2.77 ms (widgetId=PocTodoSpike)
+10-15 15:31:46.716 I/VoltraPoc343( 4493): RENDER widget=PocTodoSpike awid=3 rev=10 size=457x200 live=true ms=3 pid=4493 thread=main wall=1792071106716
+10-15 15:31:46.719 I/VoltraPoc343( 4493): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792071106719
+10-15 15:31:46.719 I/VoltraPoc343( 4493): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792071106719
+10-15 15:31:46.719 I/VoltraPoc343( 4493): CONTENT_ENTER widget=PocTodoSpike awid=3 thread=main wall=1792071106719

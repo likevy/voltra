@@ -1,0 +1,2 @@
+[32mResult[39m
+{"widgets":[{"widgetType":"AndroidClientDemoWidget","appWidgetId":2,"providerClassName":".widget.VoltraWidget_AndroidClientDemoWidgetReceiver","label":"Client Demo","width":165,"height":130}]}

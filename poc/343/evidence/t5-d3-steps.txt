@@ -1,0 +1,76 @@
+17:35:24 flags: {"ok":true}
+17:35:24 push base to TodoStateWidget: {"ok":true}
+17:35:24 push base to TodoStateKeyWidget: {"ok":true}
+17:35:24 reset C: {"ok":true} D: {"ok":true}
+17:35:54 [1-t1-ticked] C:
+text="Todo · onInteraction" checked="false" bounds="[97,804][437,856]"
+text="Buy &#127838;" checked="true" bounds="[97,856][308,944]"
+text="Water the plants" checked="false" bounds="[97,944][470,1032]"
+text="Call the dentist" checked="false" bounds="[97,1032][444,1120]"
+text="Show completed" checked="true" bounds="[97,1120][514,1194]"
+17:36:05 [1-t1-ticked] D:
+text="Todo · stateKey" checked="false" bounds="[97,194][362,246]"
+text="Buy &#127838;" checked="true" bounds="[97,246][308,334]"
+text="Water the plants" checked="false" bounds="[97,334][470,422]"
+text="Call the dentist" checked="false" bounds="[97,422][444,510]"
+text="Show completed" checked="true" bounds="[97,510][514,584]"
+17:36:08 [1-t1-ticked] state C: {"state":{"done":{"t1":true}},"stateRevision":26}
+17:36:08 [1-t1-ticked] state D: {"state":{"done.t1":true},"stateRevision":25}
+17:36:08 push front to TodoStateWidget: {"ok":true}
+17:36:08 push front to TodoStateKeyWidget: {"ok":true}
+17:36:18 [2-front-survive] C:
+text="Todo · onInteraction" checked="false" bounds="[97,804][437,856]"
+text="NEW at front" checked="false" bounds="[97,856][408,944]"
+text="Buy &#127838;" checked="true" bounds="[97,944][308,1032]"
+text="Water the plants" checked="false" bounds="[97,1032][470,1120]"
+text="Call the dentist" checked="false" bounds="[97,1120][444,1208]"
+text="Show completed" checked="true" bounds="[97,1208][514,1282]"
+17:36:29 [2-front-survive] D:
+text="Todo · stateKey" checked="false" bounds="[97,194][362,246]"
+text="NEW at front" checked="false" bounds="[97,246][408,334]"
+text="Buy &#127838;" checked="true" bounds="[97,334][308,422]"
+text="Water the plants" checked="false" bounds="[97,422][470,510]"
+text="Call the dentist" checked="false" bounds="[97,510][444,598]"
+text="Show completed" checked="true" bounds="[97,598][514,672]"
+17:36:32 [2-front-survive] state C: {"state":{"done":{"t1":true}},"stateRevision":26}
+17:36:32 [2-front-survive] state D: {"state":{"done.t1":true},"stateRevision":25}
+17:36:32 push end to TodoStateWidget: {"ok":true}
+17:36:32 push end to TodoStateKeyWidget: {"ok":true}
+17:36:42 [3-end-survive] C:
+text="Todo · onInteraction" checked="false" bounds="[97,804][437,856]"
+text="Buy &#127838;" checked="true" bounds="[97,856][308,944]"
+text="Water the plants" checked="false" bounds="[97,944][470,1032]"
+text="Call the dentist" checked="false" bounds="[97,1032][444,1120]"
+text="NEW at end" checked="false" bounds="[97,1120][389,1208]"
+text="Show completed" checked="true" bounds="[97,1208][514,1282]"
+17:36:53 [3-end-survive] D:
+text="Todo · stateKey" checked="false" bounds="[97,194][362,246]"
+text="Buy &#127838;" checked="true" bounds="[97,246][308,334]"
+text="Water the plants" checked="false" bounds="[97,334][470,422]"
+text="Call the dentist" checked="false" bounds="[97,422][444,510]"
+text="NEW at end" checked="false" bounds="[97,510][389,598]"
+text="Show completed" checked="true" bounds="[97,598][514,672]"
+17:36:56 [3-end-survive] state C: {"state":{"done":{"t1":true}},"stateRevision":26}
+17:36:56 [3-end-survive] state D: {"state":{"done.t1":true},"stateRevision":25}
+17:36:56 flags: {"ok":true}
+17:36:56 push front to TodoStateWidget: {"ok":true}
+17:36:56 push front to TodoStateKeyWidget: {"ok":true}
+17:37:06 [4-front-resetOnPush] C:
+text="Todo · onInteraction" checked="false" bounds="[97,804][437,856]"
+text="NEW at front" checked="false" bounds="[97,856][408,944]"
+text="Buy &#127838;" checked="false" bounds="[97,944][308,1032]"
+text="Water the plants" checked="false" bounds="[97,1032][470,1120]"
+text="Call the dentist" checked="false" bounds="[97,1120][444,1208]"
+text="Show completed" checked="true" bounds="[97,1208][514,1282]"
+17:37:17 [4-front-resetOnPush] D:
+text="Todo · stateKey" checked="false" bounds="[97,194][362,246]"
+text="NEW at front" checked="false" bounds="[97,246][408,334]"
+text="Buy &#127838;" checked="false" bounds="[97,334][308,422]"
+text="Water the plants" checked="false" bounds="[97,422][470,510]"
+text="Call the dentist" checked="false" bounds="[97,510][444,598]"
+text="Show completed" checked="true" bounds="[97,598][514,672]"
+17:37:20 [4-front-resetOnPush] state C: {"state":{},"stateRevision":27}
+17:37:20 [4-front-resetOnPush] state D: {"state":{},"stateRevision":26}
+17:37:20 flags: {"ok":true}
+17:37:20 push base to TodoStateWidget: {"ok":true}
+17:37:20 push base to TodoStateKeyWidget: {"ok":true}
