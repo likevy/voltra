@@ -132,6 +132,8 @@ export {
   isIosEnv,
   pickLocalizedValue,
   resolveLocale,
+  runWithVoltraState,
   useUpdateOnHMR,
+  useVoltraState,
 } from '@use-voltra/core'
 export type { FastRefreshHub, LocaleEnvironment, WidgetBuildEnvironment, WidgetEnvironment } from '@use-voltra/core'

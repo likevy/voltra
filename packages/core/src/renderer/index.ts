@@ -13,3 +13,4 @@ export {
 export { createStylesheetRegistry, type StylesheetRegistry } from './stylesheet-registry.js'
 export type { NativeModifiersProp, NoNativeModifier } from './native-modifiers.js'
 export type { VoltraVariantRenderer } from './types.js'
+export { runWithVoltraState, useVoltraState, type VoltraStateRecord } from './voltra-state.js'
