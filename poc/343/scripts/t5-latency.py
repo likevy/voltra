@@ -3,7 +3,9 @@
 
 For every `Poc343Tap: TAP <label>` marker: marker -> callback entered -> commit -> update returned
 -> first `render` line of the committed appWidgetId with stateRevision >= the committed revision.
-Also counts callbacks/commits between this marker and the next one.
+Also counts callbacks/commits between this marker and the next one. Task 8 added the interact
+breakdown of the first callback: bundleMs (`bundle … ms=`), interactMs (`interact … ms=`) and
+replayMs (inline-setter replay render; `-` for onInteraction, absent for stateKey).
 Usage: t5-latency.py <logcat-file>... [--label-filter SUBSTR] [--json]
 """
 import json, re, statistics, sys
@@ -42,15 +44,22 @@ for path in args:
                     and f'appWidgetId={awid} ' in l[2]
                     and int(re.search(r'stateRevision=(\d+)', l[2]).group(1)) >= rev]
             if rend: r['renderMs'] = round((rend[0][0] - t0) * 1000)
+        bd = [l for l in seg if l[2].startswith('bundle widgetId=')]
+        if bd: r['bundleMs'] = int(re.search(r' ms=(\d+)', bd[0][2]).group(1))
+        it = [l for l in seg if l[2].startswith('interact widgetId=')]
+        if it:
+            r['interactMs'] = int(re.search(r' ms=(\d+)', it[0][2]).group(1))
+            rm = re.search(r'replayMs=(\d+)', it[0][2])
+            if rm: r['replayMs'] = int(rm.group(1))
         if up: r['updateMs'] = round((up[0][0] - t0) * 1000)
         if cb and cm: r['cb->commit'] = round((cm[0][0] - cb[0][0]) * 1000)
         if cb and 'renderMs' in r: r['cb->render'] = r['renderMs'] - r['callbackMs']
         rows.append(r)
 if '--json' in sys.argv:
     print(json.dumps(rows, indent=1)); sys.exit()
-cols = ['label', 'callbacks', 'commits', 'revisions', 'via', 'procStartMs', 'callbackMs', 'commitMs', 'updateMs', 'renderMs', 'cb->render']
+cols = ['label', 'callbacks', 'commits', 'revisions', 'via', 'procStartMs', 'callbackMs', 'commitMs', 'updateMs', 'renderMs', 'cb->render', 'bundleMs', 'interactMs', 'replayMs']
 print('\t'.join(cols))
 for r in rows: print('\t'.join(str(r.get(c, '')) for c in cols))
-for c in ['callbackMs', 'commitMs', 'updateMs', 'renderMs', 'cb->render']:
+for c in ['callbackMs', 'commitMs', 'updateMs', 'renderMs', 'cb->render', 'bundleMs', 'interactMs', 'replayMs']:
     v = [r[c] for r in rows if c in r]
     if v: print(f'# {c}: n={len(v)} median={statistics.median(v):g} max={max(v)}')

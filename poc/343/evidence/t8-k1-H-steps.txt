@@ -1,0 +1,7 @@
+11:18:27 reset: {"ok":true,"data":{"ok":true}}
+text="Todo · inline setters" checked="false" bounds="[97,194][434,246]"
+text="Buy &#127838;" checked="false" bounds="[97,246][308,334]"
+text="Water the plants" checked="false" bounds="[97,334][470,422]"
+text="Call the dentist" checked="false" bounds="[97,422][444,510]"
+text="Show completed" checked="true" bounds="[97,510][514,584]"
+11:18:52 state: {"voltra.dynamic_widget.props_revision": 25, "voltra.dynamic_widget.state": "{\"done\":{\"t1\":false}}", "voltra.dynamic_widget.state_revision": 18}

@@ -1,0 +1,5 @@
+before 74d977a22be2d24d4045353c6f1fc19808592c64
+    topResumedActivity=ActivityRecord{714e1a1 u0 com.callstackincubator.voltraexample/.MainActivity t76}
+after 74d977a22be2d24d4045353c6f1fc19808592c64 same=yes
+registerTool=0 renders=15 setterRenders=3
+control C (default + onInteraction): before 4cc0120757386f462711a36b9f2db449a19f9a4f after 4cc0120757386f462711a36b9f2db449a19f9a4f same=yes registerTool=22 renders=36

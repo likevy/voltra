@@ -8,17 +8,18 @@ Scope decided on 2026-10-15: option **C** (`useVoltraState` + `onInteraction`) i
 
 Both options passed the same emulator scenario on API 35: tap with the app in front, in the background and killed (D1), state kept across relaunch and reboot (D2), a props push that inserts an item at the front or the end keeps the right task ticked (D3), events reach the app in order with `handledInWidget` (D6), rapid double tap and two taps inside a delay window commit in order (K1, K3). D4 (two placements: independent per placement, shared per widget scope) was run for C only.
 
-|                         | C: `useVoltraState` + `onInteraction`                                                                          | D: `stateKey`                                                                   |
-| ----------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| What a tap does         | the callback evaluates the bundle in the app process and calls `onInteraction`, which returns a state patch    | the callback writes `state[stateKey] = checked`, no JS                          |
-| What it can express     | any patch: a `done` map keyed by item id, derived values, several keys at once                                 | one flat key = the toggle value                                                 |
-| Author code             | the hook in render plus an exported handler                                                                    | the hook in render, nothing on the tap                                          |
-| Repaint, debug (median) | 109 ms warm session, 520 ms warm process, 1.5 s cold                                                           | 60 ms, 473 ms, 1.4 s                                                            |
-| Repaint, release        | 83 ms warm session, 643 ms cold                                                                                | 61 ms warm session                                                              |
-| Own cost                | one bundle evaluation per tap in the callback (18–46 ms release); `interact` itself under 1 ms                 | none                                                                            |
-| Dev experience          | the `onInteraction` export makes the widget file a non-refresh boundary: every edit full-reloads the app (F33) | hot patch works; `stateKey` is not in the generated prop types yet (local cast) |
+|                                                     | C: `useVoltraState` + `onInteraction`                                                                                                                                                                                           | D: `stateKey`                                                                                               |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| What a tap does                                     | the callback evaluates the bundle in the app process and calls `onInteraction`, which returns a state patch                                                                                                                     | the callback writes `state[stateKey] = checked`, no JS                                                      |
+| What it can express                                 | any patch: a `done` map keyed by item id, derived values, several keys at once                                                                                                                                                  | one flat key = the toggle value                                                                             |
+| Author code                                         | the hook in render plus an exported handler                                                                                                                                                                                     | the hook in render, nothing on the tap                                                                      |
+| Repaint, debug (median)                             | 109 ms warm session, 520 ms warm process, 1.5 s cold                                                                                                                                                                            | 60 ms, 473 ms, 1.4 s                                                                                        |
+| Repaint, release                                    | 83 ms warm session, 643 ms cold                                                                                                                                                                                                 | 61 ms warm session                                                                                          |
+| Own cost                                            | one bundle evaluation per tap in the callback (18–46 ms release); `interact` itself under 1 ms                                                                                                                                  | none                                                                                                        |
+| Dev experience                                      | the `onInteraction` export makes the widget file a non-refresh boundary: every edit full-reloads the app (F33)                                                                                                                  | hot patch works; `stateKey` is not in the generated prop types yet (local cast)                             |
+| H: inline setters + tap replay (§9), vs this option | H runs on the same seam at the same cost (+4–10 ms replay render). There is no exported handler, so the file hot-patches. Measured the same session: H 132 ms warm session, 584 ms warm process, 1.5 s cold (C 132, 577, 1.5 s) | D stays ahead without JS (77 ms warm session); H also writes maps keyed by id, several keys and button taps |
 
-The latency gap is almost entirely the bundle evaluation inside the callback; on a cold tap both options pay the same process start plus Glance session start (about 410 ms from `update()` to the first render). Recommendation for the ADR: build C as the core and D as the no-JS fast path on the same state record, and add a source-hash bundle-evaluation cache as a prerequisite for C.
+The latency gap is almost entirely the bundle evaluation inside the callback; on a cold tap both options pay the same process start plus Glance session start (about 410 ms from `update()` to the first render). Recommendation for the ADR: build C as the core and D as the no-JS fast path on the same state record, and add a source-hash bundle-evaluation cache as a prerequisite for C. §9 (2026-10-16) adds variant H: inline setters replayed on the C seam, proposed as the default authoring model.
 
 Not verified by this run: server-fetch precedence (D5), the K2/K4/K5 races (push during a tap, tap during a cold `provideGlance`, placement removed mid-tap), Android below API 31, state size caps, asynchronous handlers, cleanup on restore, iOS. One oddity to explain: a destructive drain of the event queue lost three events once (seq 12, 14, 16).
 
@@ -356,3 +357,215 @@ Sub-cases added to the task list: N8b, N11b, N11c, N16b, and one structural chec
 **Worth keeping from the note.** Holes as slots (N1 passes). Host primitives as segments, so a wrapper change is a visible reset rather than a silent mix-up. The build-time id idea, for any feature that needs a stable component identity (dev tools, error messages). `lastSeen = evalId` GC, instead of an immediate sweep, for any keyed store that wants to drop abandoned keys lazily, if size caps ever require GC. Untested (not implemented in the harness): as the note words it ("drop anything older"), it is equivalent to the sweep, so it would only avoid the N10, N11 and N13 losses with a grace window (keep a key for N evaluations or a TTL after it was last seen). A frozen hook counter after the body returns, as a guard for render props.
 
 **Conclusion relative to option C.** The note correctly reproduces React's identity rules within one render (N1, N2, N5, N9 and N17 behave as React would), and its holes-as-slots rule fixes the worst problem of a global counter. But React's rules assume state dies with the tree, and widget state does not: it persists across code versions, size variants, hidden rows and trial renders, which are exactly where the path changes or a node is not rendered. The harness confirms the three structural problems (silent misattribution in unkeyed lists, loss or misattribution after a code change, and sweep deletion of hidden rows and committed trial renders), plus a dev/release disagreement that only a build-time id fixes. Across size variants the note's own prefix prevents the sweep loss but makes state per size, so shared-across-sizes state is not available in any configuration. The one honest positive is N18: a single `useState({})` map held by the list, with hookless rows, passes N3, N4, N8 and N10 like C. But that is option C spelled with `useState`: one stable key per widget (`root/TodoListMap@0#0`) holding a map keyed by item id, and the key is still positional, so it breaks if TodoListMap moves. Recommendation for the ADR: keep C (`useVoltraState` with explicit keys, written by `onInteraction` or `stateKey`), with no sweep on render. Do not build positional `useState` for Dynamic Widgets. At most, `useState` could become a dev-time error that points to `useVoltraState`.
+
+## 9. Hybrid: inline setter + tap replay
+
+Run on 2026-10-16 on the same `Brownfield_457_API_35` AVD. The debug build used Metro; release was measured afterwards. Widget H is `TodoStateSetterWidget`, appWidgetId 8, on the last launcher page: [Discover] [default] [C] [D] [second C] [H]. `t5-page.sh` gained an `H` case. Scripts for this run: `t8-series.sh` (warm-session, warm-process and cold series for C, D and H), `t8-d3.sh`, `t8-ad.sh` (Appduct call that first revokes stale sessions) and `t8-agg.py` (median/max per widget). `t5-latency.py` now also reports `bundleMs`, `interactMs` and `replayMs`.
+
+**What it is.**
+
+1. The author writes `const [done, setDone] = useVoltraStateTuple(key, initial)` (a PoC name) and an inline `onCheckedChange` / `onPress` on each control that has an author `id`.
+2. A closure cannot cross to native, so a tap goes through the generated `interact` exactly as in C. When the widget exports no `onInteraction`, `interact` re-runs the render in replay mode, at the size the tapped tree was drawn at (native now puts that size in the action).
+3. During the walk, the renderer records the handler of the first host element whose `id` equals `event.componentId`. Once the render has finished, it calls `onCheckedChange(event.value)` on a toggle or `onPress()` on a button.
+4. Setters write a pending patch only inside that handler; they take a value or an updater. Anywhere else they do nothing and record a warning. The replay output is discarded, and `{ handled, state, replayMs, warnings }` goes back to native.
+5. Native merges the patch the way it merges a C patch: same record, revision bump, event and `update()`. Precedence: `stateKey` (D) > `onInteraction` (C) > inline replay (H).
+
+**Author code** (`example/widgets/android/TodoStateSetterWidget.tsx`, verbatim):
+
+```tsx
+import { useVoltraStateTuple, VoltraAndroid, type WidgetEnvironment } from '@use-voltra/android'
+
+// PoC for issue #343 (hybrid): the state is written by inline setters, the way a React author
+// would write it. `useVoltraStateTuple` returns `[value, setValue]`; the handlers below call the
+// setters. Handlers cannot cross to native, so a tap is handled by a replay: the host calls the
+// generated `interact`, which re-runs this render with the tap event, calls the `onCheckedChange`
+// or `onPress` of the element whose `id` was tapped, collects what the setters wrote as a state
+// patch and discards the replay output. The host merges the patch and re-renders, as for
+// `onInteraction`. That is why every control with a handler has an `id`, and why this file has no
+// `onInteraction` and no other named export (it stays a Fast Refresh boundary). Outside a tap the
+// setters do nothing. Not API: the names are what the ADR decides on.
+
+type TodoItem = { id: string; title: string }
+
+type TodoStateSetterWidgetProps = {
+  items?: TodoItem[]
+}
+
+const DEFAULT_TODO_ITEMS: TodoItem[] = [
+  { id: 't1', title: 'Buy 🍞' },
+  { id: 't2', title: 'Water the plants' },
+  { id: 't3', title: 'Call the dentist' },
+]
+
+// Jetpack Glance drops a Column's children past 10, so the list stays well under that.
+const MAX_VISIBLE_ITEMS = 6
+
+// The generated CheckBox/Switch/FilledButton prop types have no inline handlers yet (the ADR
+// decides the real props), so they are passed through local casts. The renderer forwards unknown
+// props, and the replay reads them from the element before serialization drops the functions.
+const onCheckedChangeProp = (onCheckedChange: (checked: boolean) => void) => ({ onCheckedChange } as object)
+const onPressProp = (onPress: () => void) => ({ onPress } as object)
+
+export default function TodoStateSetterWidget(
+  props: TodoStateSetterWidgetProps = {},
+  env: WidgetEnvironment = {} as WidgetEnvironment
+) {
+  // Called at the top level on purpose: the value is the record the host handed in for this
+  // render, and the setter only records a patch while a tap is being replayed.
+  const [done, setDone] = useVoltraStateTuple<Record<string, boolean>>('done', {})
+  const [showCompleted, setShowCompleted] = useVoltraStateTuple('showCompleted', true)
+
+  const items = props.items ?? DEFAULT_TODO_ITEMS
+  const doneCount = items.filter((item) => done[item.id] === true).length
+  const visibleItems = items.filter((item) => showCompleted || !done[item.id]).slice(0, MAX_VISIBLE_ITEMS)
+
+  const isDark = env.colorScheme === 'dark'
+  const foreground = isDark ? '#F8FAFC' : '#0F172A'
+  const muted = isDark ? '#94A3B8' : '#475569'
+
+  return (
+    <VoltraAndroid.Column
+      style={{
+        width: '100%',
+        height: '100%',
+        padding: 12,
+        borderRadius: 16,
+        backgroundColor: isDark ? '#1E293B' : '#FFFFFF',
+      }}
+      modifiers={[VoltraAndroid.modifiers.appWidgetBackground()]}
+    >
+      <VoltraAndroid.Text style={{ fontSize: 14, fontWeight: '700', color: foreground }}>
+        Todo · inline setters
+      </VoltraAndroid.Text>
+      <VoltraAndroid.Column style={{ width: '100%' }}>
+        {visibleItems.map((item) => (
+          <VoltraAndroid.CheckBox
+            key={item.id}
+            id={'task:' + item.id}
+            text={item.title}
+            checked={!!done[item.id]}
+            {...onCheckedChangeProp((checked: boolean) => setDone((d) => ({ ...d, [item.id]: checked })))}
+          />
+        ))}
+      </VoltraAndroid.Column>
+      <VoltraAndroid.Switch
+        id="showCompleted"
+        text="Show completed"
+        checked={showCompleted}
+        {...onCheckedChangeProp((v: boolean) => setShowCompleted(v))}
+      />
+      <VoltraAndroid.Text style={{ fontSize: 11, color: muted }}>
+        {`${doneCount} of ${items.length} done`}
+      </VoltraAndroid.Text>
+      <VoltraAndroid.FilledButton id="clear" text="Clear all" {...onPressProp(() => setDone({}))} />
+    </VoltraAndroid.Column>
+  )
+}
+```
+
+**Demo (H).** In the "Chain" column, each value is in ms after the tap marker: callback entered → bundle eval → interact (of which the replay render) → commit → update returned → first render with the committed `stateRevision`. Every tap logged `via=replay handled=true warnings=[]`.
+
+| Step                                                  | Result  | Chain / what was checked                                                                                                                                                                                                                                                     | Evidence                                                                  |
+| ----------------------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| D1 foreground (tap-then-return, procState 15)         | pass    | 25 → 71 → 7 (6) → 113 → 135 → 553 (the app was in front, so no live Glance session for H); rev 3, 1 callback / 1 commit                                                                                                                                                      | t8-d1-H-fg.png, t8-d1-H-fg-return-app.png, t8-d1-H-logcat.log, -steps.txt |
+| D1 background                                         | pass    | 18 → 69 → 7 (6) → 99 → 102 → 112; rev 4, 1/1                                                                                                                                                                                                                                 | t8-d1-H-bg.png                                                            |
+| D1 killed (HOME, session ended, am kill, pidof empty) | pass    | Start proc +52, then 824 → 139 → 25 (24) → 1064 → 1114 → 1568; rev 5, 1/1; the repaint reads "3 of 3 done", so it is the JS render, not only the launcher's flip                                                                                                             | t8-d1-H-killed.png; recording media/t8-d1-H.mp4                           |
+| D2 kill + relaunch                                    | pass    | `{done:{t1,t2,t3:true}}` rev 5 survived am kill. After the relaunch, `android_reload_widgets` rendered stateRevision=5 with every row ticked                                                                                                                                 | t8-d2-H-steps.txt, t8-d2-H-relaunch.png, t8-d2-H-logcat.log               |
+| D3 push at the front, t1 ticked                       | pass    | [t4,t1,t2,t3]: row 2 ("Buy 🍞", t1) stays ticked, "NEW at front" is unticked; the record is unchanged (rev 7)                                                                                                                                                                | t8-d3-H-2-front-survive.png, t8-d3-H-steps.txt                            |
+| D3 push at the end                                    | pass    | [t1,t2,t3,t4]: row 1 ticked, t4 unticked; rev 7 unchanged                                                                                                                                                                                                                    | t8-d3-H-3-end-survive.png                                                 |
+| "Show completed" switch (second key)                  | pass    | off: the ticked rows are hidden, record `showCompleted:false` rev 9; on: they come back, rev 10; `done` is untouched                                                                                                                                                         | t8-d3-H-5-…, t8-d3-H-6-….png                                              |
+| "Clear all" button (`onPress`)                        | pass    | componentType=button, value null; the replay called `onPress` → `done = {}` rev 11, every row unticked, `showCompleted` kept; 63 → 62 → 6 (5) → 144 → 147 → 150                                                                                                              | t8-d3-H-7-clear-all.png, t8-d3-H-logcat.log                               |
+| D6 three cold taps, then drain                        | pass    | t1, t2, t1 with the process killed before each tap: seq 84, 85, 86 in order, handledInWidget=true, stateChange `done` null→{t1}→{t1,t2}→{t1:false,t2}. Raw queue read with run-as before any app start; drained through Appduct after a launcher start (not the todo screen) | t8-d6-H-queue.xml, t8-d6-H-drain.json/.txt, t8-d6-H-logcat.log            |
+| K1 rapid double tap on t1                             | pass    | 2 callbacks / 2 commits, rev 17 then 18, absolute values true then false. Tap 2 carried renderedRevision 16 (stale) and was applied; the final `t1:false` matches the launcher                                                                                               | t8-k1-H.png, t8-k1-H-logcat.log                                           |
+| D2 reboot, D4, K3 for H                               | not run | n/a                                                                                                                                                                                                                                                                          | n/a                                                                       |
+
+**Latency, C vs D vs H, same session.** Each cell is median / max in ms after the tap marker. Debug bundle eval includes the Metro fetch (16–80 ms). Warm-session leaves out each widget's first tap (the one that opens the session). Warm-process: 65 s idle before every tap, same pid 18780 in all 15 rounds. Cold: C, D and H interleaved, each tap after HOME, end of the Glance session, `am kill` and an empty `pidof`. Every tap had exactly 1 callback and 1 commit. Summary: `evidence/t8-latency-summary.txt`.
+
+| Build, cell           | Widget | n   | callback | commit    | update    | first render | bundle eval | interact | replayMs |
+| --------------------- | ------ | --- | -------- | --------- | --------- | ------------ | ----------- | -------- | -------- |
+| debug, warm-session   | C      | 5   | 26/70    | 119/126   | 122/129   | 132/138      | 63/80       | 0/1      | –        |
+| debug, warm-session   | D      | 5   | 23/31    | 64/70     | 73/78     | 77/82        | –           | –        | –        |
+| debug, warm-session   | H      | 5   | 28/34    | 126/130   | 129/135   | 132/137      | 59/80       | 7/8      | 6/7      |
+| debug, warm-process   | C      | 5   | 40/51    | 147/163   | 163/176   | 577/592      | 98/103      | 1/2      | –        |
+| debug, warm-process   | D      | 5   | 44/80    | 89/122    | 118/146   | 532/565      | –           | –        | –        |
+| debug, warm-process   | H      | 5   | 41/122   | 158/197   | 170/207   | 584/623      | 93/111      | 8/9      | 7/9      |
+| debug, cold           | C      | 5   | 809/812  | 1001/1055 | 1063/1111 | 1531/1575    | 130/174     | 1/2      | –        |
+| debug, cold           | D      | 5   | 816/831  | 866/880   | 916/931   | 1379/1402    | –           | –        | –        |
+| debug, cold           | H      | 5   | 808/836  | 989/1007  | 1045/1062 | 1493/1524    | 109/111     | 12/13    | 10/12    |
+| release, warm-session | C      | 5   | 32/35    | 98/110    | 101/115   | 111/123      | 55/71       | 0/1      | –        |
+| release, warm-session | H      | 5   | 30/38    | 94/112    | 98/115    | 101/121      | 50/63       | 6/6      | 5/5      |
+| release, cold         | C      | 5   | 236/243  | 268/278   | 282/293   | 699/715      | 17/19       | 0/1      | –        |
+| release, cold         | H      | 5   | 228/262  | 265/303   | 278/314   | 696/734      | 17/34       | 4/7      | 4/6      |
+
+Evidence: t8-lat-warmsession-{C,D,H}-logcat.log, t8-lat-warmprocess-logcat.log, t8-lat-cold-logcat.log, t8-lat-release-warmsession-{C,H}-logcat.log, t8-lat-release-cold-logcat.log, plus the matching -steps.txt files.
+
+Reading the table:
+
+- H costs what C costs, plus the replay render: 5–10 ms in debug and 4–6 ms in release for this tree (3 rows, a switch and a button), against ≤1 ms for `onInteraction`. That is smaller than the run-to-run spread of the bundle evaluation, so H and C are level in every cell.
+- D stays ahead wherever JS is skipped: about 55 ms in the warm session, and about 120 ms to the commit when cold.
+- On a cold tap, every option pays the process start (about 0.8 s debug, 0.23 s release) and then 410–470 ms from `update()` to the first render.
+- Today's debug C warm-session commit (119 ms) is slower than §3's (95 ms), so only numbers from the same session are compared.
+- Release recipe: worked. The incremental `assembleRelease -PreactNativeArchitectures=arm64-v8a` took 36 s. The APK carries four widget bundles, among them `voltra-widget-TodoStateSetterWidget.bundle` (98,588 bytes, with the replay warning strings; t8-release-bundles.txt). The release was installed with `adb install -r` over debug and measured. Debug was then reinstalled, and a tap on H was checked again (t8-debug-reinstall-smoke-logcat.log).
+- Release warm-process: not measured.
+
+**F33 (Fast Refresh).**
+
+- Setup: Metro running, the app in front on the todo screen. One comment line in `TodoStateSetterWidget.tsx` was edited (the file has only a default export).
+- Result: hot patch. `registerTool`=0 (the app's JS did not re-run), and 15 widget renders arrived through the widget hot reload, 3 of them for H.
+- Control in the same minute: the same kind of edit in `TodoStateWidget.tsx` (C: default export plus `onInteraction`) caused a full reload (`registerTool`=22, 36 renders). So the HMR socket was up, and the difference comes from the exports.
+- Both files were restored byte for byte (shasum before = after: H `74d977a2…`, C `4cc01207…`).
+- Evidence: t8-f33-H.txt, t8-f33-H-comment-edit.log, t8-f33-C-control-comment-edit.log.
+
+**What it costs, relative to C and D.**
+
+- Every tap runs a replay render of the whole tree, on top of the bundle evaluation per tap that C already pays. The bundle-eval cache stays a prerequisite, and the replay cost grows with the size of the tree.
+- The replay must rebuild the tree the user tapped. It uses the record, the props, the env (theme, locale, configuration) and the tapped size. Anything else that changes the tree, such as time, randomness or a server-fetched tree, can leave the tapped `id` unmatched. Then the tap is not handled (warning `no element with id "X" reached in the replay render`), though it still repaints. No such warning occurred in this run.
+- Handlers must be synchronous. A setter called after an `await`, in a timer or in the render body does nothing and records a warning. Today these warnings only reach logcat (`warnings=[…]`), not the app or the developer.
+- Each control with a handler needs a unique author `id`; the first element in render order wins. An `id` missing next to a handler is not detected yet.
+- `onCheckedChange` and `onPress` are not in the generated prop types, so the example uses local casts. This is the same gap as `stateKey`.
+- Compared with D, H runs JS on every tap (about 55 ms more in the warm session). D has no closure semantics to get wrong, but it can only write one flat boolean per toggle.
+
+**What it buys.**
+
+- Author code shaped like React: the state and its handler sit next to the control. A row's closure captures `item.id`, with no `componentId` string parsing and no exported handler.
+- A file that stays a Fast Refresh boundary (F33 hot patch). C's exported `onInteraction` makes every edit of the file reload the whole app.
+- The common cases C covers: a map keyed by item id, several keys from one widget (`done` and `showCompleted`), a button (`Clear all`), and updaters computed from the persisted value. D covers none of the button or map cases.
+- The same native seam, record, revision, event queue and `update()` as C. The Kotlin side only gained `via=replay` logging and the tapped size in the action parameters.
+
+**Public API proposal (for the ADR; the PoC names are not the API).**
+
+```ts
+// One hook: the read-only form becomes the first element of the tuple.
+function useVoltraState<T>(key: string, initial: T): [T, VoltraStateSetter<T>]
+type VoltraStateSetter<T> = (next: T | ((prev: T) => T)) => void
+
+// Toggles (CheckBox, Switch) and buttons (FilledButton, Button, …). A handler requires an author id:
+type WithCheckedChange = { id: string; onCheckedChange: (checked: boolean) => void } | { onCheckedChange?: never }
+type WithPress = { id: string; onPress: () => void } | { onPress?: never }
+
+// Unchanged and optional: `stateKey` on toggles (no JS on the tap) and an `onInteraction` escape hatch.
+// Precedence: stateKey > onInteraction > inline replay.
+```
+
+- The setter takes a value or an updater; the updater sees the value already pending for the key in this replay, or else the persisted value.
+- Outside a tap, the setter does nothing and records a dev warning, so render stays pure.
+- A widget without `onInteraction` stays a Fast Refresh boundary.
+- If `onInteraction` is kept, it should live outside the widget module's exports (F33).
+
+**Recommendation for the ADR:** make H the default authoring model. `useVoltraState(key, initial)` returns `[value, setValue]`, toggles take `onCheckedChange` and buttons `onPress` (an `id` is required), and taps are handled by a replay on the C seam. Keep `stateKey` as the fast path without JS for flat booleans, keep `onInteraction` only as an escape hatch outside the widget module's exports, and keep the bundle-eval cache as a prerequisite.
+
+**Other observations from this run.**
+
+- The task notes placed H on the default page, top left. It is on the last launcher page; `t5-page.sh H` swipes there.
+- After the D3 switch-off tap, the repaint took 561 ms, against 139–155 ms for the other D3 taps in the same session (commit 135 ms, as usual). Not explained.
+- Seq 76 (the D1 foreground tap) was not in the drain before D6. D1 returned to the todo screen right after that tap, and the screen drains on mount. This matches §5's destructive-drain issue.
+- The `props_revision` of placement 8 went from 1 to 25 during the run: the todo screen pushes props when it mounts, and D3 pushed four times.
+
+**Tests (this run).**
+
+- `pnpm --filter @use-voltra/core test`: tests 67, pass 67, fail 0.
+- `pnpm --filter @use-voltra/metro test`: tests 35, suites 7, pass 35.
+- `pnpm --filter @use-voltra/android-client test`: 8 suites / 34 tests and 11 suites / 57 tests passed.
+- Robolectric with the JDK 17 init script and `--rerun`: 24 tests, 0 failures (StateInteraction 8, StateStore 7, EventQueue 4, StateFlags 3, PushStateReset 2). A first run without `--rerun` reported the task UP-TO-DATE and is not counted.
+- `pnpm run typecheck`: 12/12 tasks. `pnpm run lint`: 12/12 tasks.
+- All on Node 24.13.0, recorded in `evidence/t8-tests.txt`.

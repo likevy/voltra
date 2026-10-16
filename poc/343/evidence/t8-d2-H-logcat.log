@@ -1,0 +1,11 @@
+         1792141857.679 17799 17864 I VoltraClientGlanceWidget: [perf] metro fetch: 38.37 ms (315872 chars)
+         1792141857.705 17799 17799 I VoltraJSRenderer: standalone Hermes runtime created
+         1792141857.705 17799 17799 I VoltraJSRenderer: [perf] runtime init: 7.97 ms
+         1792141857.799 17799 17799 I VoltraJSRenderer: [perf] bundle eval: 93.99 ms (316888 chars)
+         1792141857.799 17799 17799 I VoltraJSRenderer: evaluateBundle: render() captured for widgetId=TodoStateSetterWidget (316888 chars)
+         1792141857.886 17799 17799 I VoltraJSRenderer: [perf] render: 34.76 ms (widgetId=TodoStateSetterWidget)
+         1792141857.893 17799 17799 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateSetterWidget appWidgetId=8 propsRevision=7 stateRevision=5 size=255x316 ms=52.70
+         1792141857.969 17799 17799 I VoltraJSRenderer: [perf] render: 1.16 ms (widgetId=TodoStateSetterWidget)
+         1792141857.973 17799 17799 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateSetterWidget appWidgetId=8 propsRevision=7 stateRevision=5 size=255x315 ms=5.08
+         1792141857.987 17799 17799 I VoltraJSRenderer: [perf] render: 1.81 ms (widgetId=TodoStateSetterWidget)
+         1792141857.991 17799 17799 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateSetterWidget appWidgetId=8 propsRevision=7 stateRevision=5 size=447x200 ms=6.29

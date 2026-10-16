@@ -1,0 +1,22 @@
+--------- beginning of main
+         1792144158.741 21837 21837 I Poc343Tap: EDIT H-default-only-comment-edit
+         1792144159.543 21732 21758 I VoltraClientGlanceWidget: [perf] metro fetch: 36.63 ms (329187 chars)
+         1792144159.884 21732 21732 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=141 stateRevision=0 size=165x205 ms=206.44
+         1792144159.979 21732 21732 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=141 stateRevision=0 size=165x205 ms=60.31
+         1792144160.020 21732 21732 D VoltraClientGlanceWidget: render dynamicWidgetId=AndroidClientDemoWidget appWidgetId=2 propsRevision=141 stateRevision=0 size=294x130 ms=26.08
+         1792144160.338 21732 21758 I VoltraClientGlanceWidget: [perf] metro fetch: 43.85 ms (314443 chars)
+         1792144160.544 21732 21732 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=130 stateRevision=63 size=255x316 ms=31.42
+         1792144160.557 21732 21732 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=130 stateRevision=63 size=255x315 ms=5.30
+         1792144160.566 21732 21732 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=4 propsRevision=130 stateRevision=63 size=447x200 ms=4.34
+         1792144160.637 21732 21758 I VoltraClientGlanceWidget: [perf] metro fetch: 45.04 ms (314443 chars)
+         1792144160.834 21732 21732 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=57 stateRevision=2 size=255x316 ms=35.41
+         1792144160.854 21732 21732 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=57 stateRevision=2 size=255x315 ms=6.23
+         1792144160.869 21732 21732 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateWidget appWidgetId=7 propsRevision=57 stateRevision=2 size=447x200 ms=4.91
+         1792144161.168 21732 21751 I VoltraClientGlanceWidget: [perf] metro fetch: 38.98 ms (313538 chars)
+         1792144161.318 21732 21751 I VoltraClientGlanceWidget: [perf] metro fetch: 75.27 ms (315884 chars)
+         1792144161.443 21732 21732 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=118 stateRevision=54 size=255x316 ms=20.28
+         1792144161.457 21732 21732 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=118 stateRevision=54 size=255x315 ms=6.57
+         1792144161.476 21732 21732 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=118 stateRevision=54 size=447x200 ms=4.77
+         1792144161.561 21732 21732 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateSetterWidget appWidgetId=8 propsRevision=42 stateRevision=34 size=255x316 ms=35.21
+         1792144161.573 21732 21732 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateSetterWidget appWidgetId=8 propsRevision=42 stateRevision=34 size=255x315 ms=5.69
+         1792144161.586 21732 21732 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateSetterWidget appWidgetId=8 propsRevision=42 stateRevision=34 size=447x200 ms=5.70

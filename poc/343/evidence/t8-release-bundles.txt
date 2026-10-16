@@ -1,0 +1,7 @@
+   104955  01-01-1981 01:01   assets/voltra/voltra-widget-AndroidClientDemoWidget.bundle
+    98036  01-01-1981 01:01   assets/voltra/voltra-widget-TodoStateKeyWidget.bundle
+    98588  01-01-1981 01:01   assets/voltra/voltra-widget-TodoStateSetterWidget.bundle
+    98384  01-01-1981 01:01   assets/voltra/voltra-widget-TodoStateWidget.bundle
+   1 no element with id
+   1 replay skipped: event has no componentId
+   1 useVoltraStateTuple: setter called

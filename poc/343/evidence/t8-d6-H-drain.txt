@@ -1,0 +1,3 @@
+84 TodoStateSetterWidget task:t1 True handledInWidget= True rev 13 {"key": "done", "from": null, "to": {"t1": true}}
+85 TodoStateSetterWidget task:t2 True handledInWidget= True rev 14 {"key": "done", "from": {"t1": true}, "to": {"t1": true, "t2": true}}
+86 TodoStateSetterWidget task:t1 False handledInWidget= True rev 15 {"key": "done", "from": {"t1": true, "t2": true}, "to": {"t1": false, "t2": true}}

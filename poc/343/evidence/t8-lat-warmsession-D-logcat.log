@@ -1,0 +1,69 @@
+         1792142385.094 19154 19154 I Poc343Tap: TAP warmsession-D-1-t1
+         1792142385.148 18780 18797 D DynamicWidgetState: callback entered widgetId=TodoStateKeyWidget componentId=task:t1 componentType=checkbox checked=true stateKey=done.t1 renderedRevision=38 size=255.63637x316.72726 thread=DefaultDispatcher-worker-2
+         1792142385.211 18780 18991 D DynamicWidgetState: commit widgetId=TodoStateKeyWidget appWidgetId=5 storage=placement wrote=true handled=true via=stateKey stateRevision=39 renderedRevision=38 ms=18 sinceTapMs=62
+         1792142385.219 18780 18991 D DynamicWidgetState: event appended widgetId=TodoStateKeyWidget seq=95 handledInWidget=true
+         1792142385.232 18780 18991 D DynamicWidgetState: update returned widgetId=TodoStateKeyWidget ms=13 totalMs=83
+         1792142385.262 18780 18904 I VoltraClientGlanceWidget: [perf] metro fetch: 16.96 ms (313538 chars)
+         1792142385.288 18780 18780 I VoltraJSRenderer: [perf] bundle eval: 21.03 ms (314552 chars)
+         1792142385.288 18780 18780 I VoltraJSRenderer: evaluateBundle: render() captured for widgetId=TodoStateKeyWidget (314552 chars)
+         1792142385.452 18780 18780 I VoltraJSRenderer: [perf] render: 8.83 ms (widgetId=TodoStateKeyWidget)
+         1792142385.452 18780 18780 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=102 stateRevision=39 size=255x316 ms=10.66
+         1792142385.459 18780 18780 I VoltraJSRenderer: [perf] render: 3.24 ms (widgetId=TodoStateKeyWidget)
+         1792142385.460 18780 18780 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=102 stateRevision=39 size=255x315 ms=3.89
+         1792142385.462 18780 18780 I VoltraJSRenderer: [perf] render: 0.31 ms (widgetId=TodoStateKeyWidget)
+         1792142385.463 18780 18780 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=102 stateRevision=39 size=447x200 ms=1.01
+         1792142389.206 19163 19163 I Poc343Tap: TAP warmsession-D-2-t2
+         1792142389.237 18780 18991 D DynamicWidgetState: callback entered widgetId=TodoStateKeyWidget componentId=task:t2 componentType=checkbox checked=true stateKey=done.t2 renderedRevision=39 size=255.63637x316.72726 thread=DefaultDispatcher-worker-5
+         1792142389.276 18780 18799 D DynamicWidgetState: commit widgetId=TodoStateKeyWidget appWidgetId=5 storage=placement wrote=true handled=true via=stateKey stateRevision=40 renderedRevision=39 ms=7 sinceTapMs=41
+         1792142389.280 18780 18799 D DynamicWidgetState: event appended widgetId=TodoStateKeyWidget seq=96 handledInWidget=true
+         1792142389.284 18780 18799 D DynamicWidgetState: update returned widgetId=TodoStateKeyWidget ms=3 totalMs=48
+         1792142389.288 18780 18780 I VoltraJSRenderer: [perf] render: 0.43 ms (widgetId=TodoStateKeyWidget)
+         1792142389.288 18780 18780 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=103 stateRevision=40 size=255x316 ms=1.11
+         1792142389.291 18780 18780 I VoltraJSRenderer: [perf] render: 0.31 ms (widgetId=TodoStateKeyWidget)
+         1792142389.292 18780 18780 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=103 stateRevision=40 size=255x315 ms=1.54
+         1792142389.294 18780 18780 I VoltraJSRenderer: [perf] render: 0.39 ms (widgetId=TodoStateKeyWidget)
+         1792142389.295 18780 18780 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=103 stateRevision=40 size=447x200 ms=1.15
+         1792142393.297 19171 19171 I Poc343Tap: TAP warmsession-D-3-t3
+         1792142393.320 18780 18797 D DynamicWidgetState: callback entered widgetId=TodoStateKeyWidget componentId=task:t3 componentType=checkbox checked=true stateKey=done.t3 renderedRevision=40 size=255.63637x316.72726 thread=DefaultDispatcher-worker-2
+         1792142393.361 18780 18797 D DynamicWidgetState: commit widgetId=TodoStateKeyWidget appWidgetId=5 storage=placement wrote=true handled=true via=stateKey stateRevision=41 renderedRevision=40 ms=5 sinceTapMs=41
+         1792142393.367 18780 18797 D DynamicWidgetState: event appended widgetId=TodoStateKeyWidget seq=97 handledInWidget=true
+         1792142393.371 18780 18797 D DynamicWidgetState: update returned widgetId=TodoStateKeyWidget ms=3 totalMs=51
+         1792142393.375 18780 18780 I VoltraJSRenderer: [perf] render: 0.47 ms (widgetId=TodoStateKeyWidget)
+         1792142393.375 18780 18780 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=104 stateRevision=41 size=255x316 ms=1.27
+         1792142393.377 18780 18780 I VoltraJSRenderer: [perf] render: 0.29 ms (widgetId=TodoStateKeyWidget)
+         1792142393.377 18780 18780 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=104 stateRevision=41 size=255x315 ms=0.71
+         1792142393.379 18780 18780 I VoltraJSRenderer: [perf] render: 0.29 ms (widgetId=TodoStateKeyWidget)
+         1792142393.379 18780 18780 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=104 stateRevision=41 size=447x200 ms=1.39
+         1792142397.373 19179 19179 I Poc343Tap: TAP warmsession-D-4-t1
+         1792142397.402 18780 18797 D DynamicWidgetState: callback entered widgetId=TodoStateKeyWidget componentId=task:t1 componentType=checkbox checked=false stateKey=done.t1 renderedRevision=41 size=255.63637x316.72726 thread=DefaultDispatcher-worker-2
+         1792142397.442 18780 18904 D DynamicWidgetState: commit widgetId=TodoStateKeyWidget appWidgetId=5 storage=placement wrote=true handled=true via=stateKey stateRevision=42 renderedRevision=41 ms=40 sinceTapMs=41
+         1792142397.445 18780 18904 D DynamicWidgetState: event appended widgetId=TodoStateKeyWidget seq=98 handledInWidget=true
+         1792142397.446 18780 18904 D DynamicWidgetState: update returned widgetId=TodoStateKeyWidget ms=1 totalMs=45
+         1792142397.450 18780 18780 I VoltraJSRenderer: [perf] render: 0.55 ms (widgetId=TodoStateKeyWidget)
+         1792142397.450 18780 18780 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=105 stateRevision=42 size=255x316 ms=1.15
+         1792142397.453 18780 18780 I VoltraJSRenderer: [perf] render: 0.31 ms (widgetId=TodoStateKeyWidget)
+         1792142397.453 18780 18780 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=105 stateRevision=42 size=255x315 ms=0.68
+         1792142397.454 18780 18780 I VoltraJSRenderer: [perf] render: 0.24 ms (widgetId=TodoStateKeyWidget)
+         1792142397.455 18780 18780 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=105 stateRevision=42 size=447x200 ms=0.64
+         1792142401.464 19187 19187 I Poc343Tap: TAP warmsession-D-5-t2
+         1792142401.486 18780 18904 D DynamicWidgetState: callback entered widgetId=TodoStateKeyWidget componentId=task:t2 componentType=checkbox checked=false stateKey=done.t2 renderedRevision=42 size=255.63637x316.72726 thread=DefaultDispatcher-worker-4
+         1792142401.524 18780 18796 D DynamicWidgetState: commit widgetId=TodoStateKeyWidget appWidgetId=5 storage=placement wrote=true handled=true via=stateKey stateRevision=43 renderedRevision=42 ms=5 sinceTapMs=38
+         1792142401.527 18780 18796 D DynamicWidgetState: event appended widgetId=TodoStateKeyWidget seq=99 handledInWidget=true
+         1792142401.529 18780 18796 D DynamicWidgetState: update returned widgetId=TodoStateKeyWidget ms=1 totalMs=43
+         1792142401.533 18780 18780 I VoltraJSRenderer: [perf] render: 0.57 ms (widgetId=TodoStateKeyWidget)
+         1792142401.533 18780 18780 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=106 stateRevision=43 size=255x316 ms=1.72
+         1792142401.537 18780 18780 I VoltraJSRenderer: [perf] render: 0.47 ms (widgetId=TodoStateKeyWidget)
+         1792142401.538 18780 18780 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=106 stateRevision=43 size=255x315 ms=1.74
+         1792142401.542 18780 18780 I VoltraJSRenderer: [perf] render: 0.39 ms (widgetId=TodoStateKeyWidget)
+         1792142401.543 18780 18780 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=106 stateRevision=43 size=447x200 ms=0.86
+         1792142405.546 19195 19195 I Poc343Tap: TAP warmsession-D-6-t3
+         1792142405.568 18780 18799 D DynamicWidgetState: callback entered widgetId=TodoStateKeyWidget componentId=task:t3 componentType=checkbox checked=false stateKey=done.t3 renderedRevision=43 size=255.63637x316.72726 thread=DefaultDispatcher-worker-3
+         1792142405.609 18780 18797 D DynamicWidgetState: commit widgetId=TodoStateKeyWidget appWidgetId=5 storage=placement wrote=true handled=true via=stateKey stateRevision=44 renderedRevision=43 ms=7 sinceTapMs=42
+         1792142405.612 18780 18797 D DynamicWidgetState: event appended widgetId=TodoStateKeyWidget seq=100 handledInWidget=true
+         1792142405.617 18780 18797 D DynamicWidgetState: update returned widgetId=TodoStateKeyWidget ms=5 totalMs=49
+         1792142405.620 18780 18780 I VoltraJSRenderer: [perf] render: 0.44 ms (widgetId=TodoStateKeyWidget)
+         1792142405.621 18780 18780 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=107 stateRevision=44 size=255x316 ms=1.94
+         1792142405.624 18780 18780 I VoltraJSRenderer: [perf] render: 0.42 ms (widgetId=TodoStateKeyWidget)
+         1792142405.625 18780 18780 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=107 stateRevision=44 size=255x315 ms=1.14
+         1792142405.626 18780 18780 I VoltraJSRenderer: [perf] render: 0.33 ms (widgetId=TodoStateKeyWidget)
+         1792142405.626 18780 18780 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateKeyWidget appWidgetId=5 propsRevision=107 stateRevision=44 size=447x200 ms=0.77

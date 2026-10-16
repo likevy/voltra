@@ -1,0 +1,24 @@
+page H visible
+11:14:42 killed: pidof empty after attempt 1
+11:14:42 H:t1 pidof=''
+text="Todo · inline setters" checked="false" bounds="[97,194][434,246]"
+text="Buy &#127838;" checked="true" bounds="[97,246][308,334]"
+text="Water the plants" checked="false" bounds="[97,334][470,422]"
+text="Call the dentist" checked="false" bounds="[97,422][444,510]"
+text="Show completed" checked="true" bounds="[97,510][514,584]"
+page H visible
+11:16:03 killed: pidof empty after attempt 1
+11:16:03 H:t2 pidof=''
+text="Todo · inline setters" checked="false" bounds="[97,194][434,246]"
+text="Buy &#127838;" checked="true" bounds="[97,246][308,334]"
+text="Water the plants" checked="true" bounds="[97,334][470,422]"
+text="Call the dentist" checked="false" bounds="[97,422][444,510]"
+text="Show completed" checked="true" bounds="[97,510][514,584]"
+page H visible
+11:17:24 killed: pidof empty after attempt 1
+11:17:24 H:t1 pidof=''
+text="Todo · inline setters" checked="false" bounds="[97,194][434,246]"
+text="Buy &#127838;" checked="false" bounds="[97,246][308,334]"
+text="Water the plants" checked="true" bounds="[97,334][470,422]"
+text="Call the dentist" checked="false" bounds="[97,422][444,510]"
+text="Show completed" checked="true" bounds="[97,510][514,584]"

@@ -1,0 +1,19 @@
+PoC #343 task 8 latency summary (median/max ms from the tap marker; t8-agg.py over t5-latency.py), 2026-10-16, Brownfield_457_API_35
+## debug warm-session (--skip-first)
+C n=5  callbackMs 26/70  commitMs 119/126  updateMs 122/129  renderMs 132/138  bundleMs 63/80  interactMs 0/1
+D n=5  callbackMs 23/31  commitMs 64/70  updateMs 73/78  renderMs 77/82
+H n=5  callbackMs 28/34  commitMs 126/130  updateMs 129/135  renderMs 132/137  bundleMs 59/80  interactMs 7/8  replayMs 6/7
+## debug warm-process
+C n=5  callbackMs 40/51  commitMs 147/163  updateMs 163/176  renderMs 577/592  bundleMs 98/103  interactMs 1/2
+D n=5  callbackMs 44/80  commitMs 89/122  updateMs 118/146  renderMs 532/565
+H n=5  callbackMs 41/122  commitMs 158/197  updateMs 170/207  renderMs 584/623  bundleMs 93/111  interactMs 8/9  replayMs 7/9
+## debug cold
+C n=5  callbackMs 809/812  commitMs 1001/1055  updateMs 1063/1111  renderMs 1531/1575  bundleMs 130/174  interactMs 1/2
+D n=5  callbackMs 816/831  commitMs 866/880  updateMs 916/931  renderMs 1379/1402
+H n=5  callbackMs 808/836  commitMs 989/1007  updateMs 1045/1062  renderMs 1493/1524  bundleMs 109/111  interactMs 12/13  replayMs 10/12
+## release warm-session (--skip-first)
+C n=5  callbackMs 32/35  commitMs 98/110  updateMs 101/115  renderMs 111/123  bundleMs 55/71  interactMs 0/1
+H n=5  callbackMs 30/38  commitMs 94/112  updateMs 98/115  renderMs 101/121  bundleMs 50/63  interactMs 6/6  replayMs 5/5
+## release cold
+C n=5  callbackMs 236/243  commitMs 268/278  updateMs 282/293  renderMs 699/715  bundleMs 17/19  interactMs 0/1
+H n=5  callbackMs 228/262  commitMs 265/303  updateMs 278/314  renderMs 696/734  bundleMs 17/34  interactMs 4/7  replayMs 4/6

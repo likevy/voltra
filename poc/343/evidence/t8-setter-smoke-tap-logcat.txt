@@ -1,0 +1,18 @@
+--------- beginning of main
+         1792141018.741 13968 14091 D DynamicWidgetState: callback entered widgetId=TodoStateSetterWidget componentId=task:t1 componentType=checkbox checked=true stateKey=- renderedRevision=0 size=255.63637x316.72726 thread=DefaultDispatcher-worker-3
+         1792141018.792 13968 14091 I VoltraClientGlanceWidget: [perf] metro fetch: 19.36 ms (315872 chars)
+         1792141018.819 13968 14091 I VoltraJSRenderer: [perf] bundle eval: 24.05 ms (316888 chars)
+         1792141018.819 13968 14091 I VoltraJSRenderer: evaluateBundle: render() captured for widgetId=TodoStateSetterWidget (316888 chars)
+         1792141018.820 13968 14091 D DynamicWidgetState: bundle widgetId=TodoStateSetterWidget ready=true ms=47
+         1792141018.820 13968 14091 D DynamicWidgetState: interact env widgetId=TodoStateSetterWidget size=255.63637x316.72726 source=tapped
+         1792141018.828 13968 14091 I VoltraJSRenderer: [perf] invoke interact: 7.52 ms (widgetId=TodoStateSetterWidget)
+         1792141018.828 13968 14091 D DynamicWidgetState: interact widgetId=TodoStateSetterWidget ms=8 returned=true via=replay handled=true replayMs=7 warnings=[]
+         1792141018.833 13968 14088 D DynamicWidgetState: commit widgetId=TodoStateSetterWidget appWidgetId=8 storage=placement wrote=true handled=true via=replay stateRevision=1 renderedRevision=0 ms=5 sinceTapMs=93
+         1792141018.835 13968 14088 D DynamicWidgetState: event appended widgetId=TodoStateSetterWidget seq=75 handledInWidget=true
+         1792141018.836 13968 14088 D DynamicWidgetState: update returned widgetId=TodoStateSetterWidget ms=1 totalMs=95
+         1792141018.839 13968 13968 I VoltraJSRenderer: [perf] render: 0.67 ms (widgetId=TodoStateSetterWidget)
+         1792141018.839 13968 13968 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateSetterWidget appWidgetId=8 propsRevision=1 stateRevision=1 size=255x316 ms=1.60
+         1792141018.843 13968 13968 I VoltraJSRenderer: [perf] render: 0.59 ms (widgetId=TodoStateSetterWidget)
+         1792141018.844 13968 13968 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateSetterWidget appWidgetId=8 propsRevision=1 stateRevision=1 size=255x315 ms=2.37
+         1792141018.849 13968 13968 I VoltraJSRenderer: [perf] render: 0.29 ms (widgetId=TodoStateSetterWidget)
+         1792141018.849 13968 13968 D VoltraClientGlanceWidget: render dynamicWidgetId=TodoStateSetterWidget appWidgetId=8 propsRevision=1 stateRevision=1 size=447x200 ms=1.02

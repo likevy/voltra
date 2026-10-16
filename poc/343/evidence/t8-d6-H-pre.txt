@@ -1,0 +1,2 @@
+reset: {"ok":true,"data":{"ok":true}}
+drain: {"ok":true,"data":{"events":[{"type":"interaction","source":"widget","widgetId":"TodoStateSetterWidget","identifier":"task:t2","componentType":"checkbox","checked":true,"appWidgetId":8,"instance":null,"seq":77,"eventId":"2c3f32a4-2ccc-4550-817d-a7094be40dbf","timestamp":1792141579599,"handled

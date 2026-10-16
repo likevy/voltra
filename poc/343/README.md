@@ -92,6 +92,16 @@ export makes the widget file a non-refresh boundary in dev, so every edit full-r
 hot-patches). Below API 31 the toggle value the host delivers is the negation of the last rendered value, so a double
 tap before a repaint writes the same value twice (not tested here; no pre-31 image).
 
+**Variant H: inline setters replayed on tap (`TodoStateSetterWidget`, REPORT §9).** The author writes
+`const [done, setDone] = useVoltraStateTuple('done', {})` (a PoC name; the ADR proposal is `useVoltraState` returning
+the tuple) and inline handlers on controls that have an `id`: `onCheckedChange={(checked) => setDone((d) => ({ ...d,
+[item.id]: checked }))}` on a CheckBox or Switch, `onPress={() => setDone({})}` on a button. Closures cannot reach
+native, so a tap goes through `interact` as in C. When the widget exports no `onInteraction`, the render is replayed
+at the tapped size, the handler of the element whose `id` was tapped runs, and the setters' writes come back as the
+state patch (`via=replay`, `replayMs` in the `DynamicWidgetState` log). Setters do nothing outside that handler. The
+file keeps only a default export and gets a hot patch. Precedence: `stateKey` > `onInteraction` > replay. The
+handler props are not in the generated types yet, hence the local casts.
+
 ## Environment
 
 ```bash
@@ -141,11 +151,11 @@ the background. Re-link it.
 ## Tests
 
 ```bash
-pnpm --filter @use-voltra/core test            # tests 32
-pnpm --filter @use-voltra/metro test           # tests 33
+pnpm --filter @use-voltra/core test            # tests 67 (2026-10-16)
+pnpm --filter @use-voltra/metro test           # tests 35
 pnpm --filter @use-voltra/android-client test  # 34 + 57 (two Jest configs)
 cd "$WT/example/android" && ./gradlew --init-script "$WT/poc/343/scripts/jdk17-unit-tests.init.gradle" \
-  :use-voltra_android-client:testDebugUnitTest --tests "voltra.dynamicwidget.state.*"   # 23 Robolectric tests
+  :use-voltra_android-client:testDebugUnitTest --tests "voltra.dynamicwidget.state.*"   # 24 Robolectric tests (add --rerun if Gradle says UP-TO-DATE)
 cd "$WT" && pnpm run typecheck && pnpm run lint
 ```
 
@@ -166,6 +176,8 @@ only for tests without `@Config(sdk >= 36)`.
 | `t5-latency.py <logcat>…`                                                               | per tap: marker → callback → commit → update returned → first `render` with the committed `stateRevision`, plus callback and commit counts                    |
 | `t5-d1.sh`, `t5-cold-series.sh`, `t5-warm-series.sh`, `t5-d3.sh`, `t5-d4.sh`, `t5-k.sh` | the demo and latency runs (results in the verification report)                                                                                                |
 | `poc343-*.sh`                                                                           | the day-1 spike scripts (see `FINDINGS.md`). `poc343-goto-widget.sh` and `poc343-s1-s2.sh` target the removed `PocTodoSpike`                                  |
+| `t8-series.sh session\|process\|cold …`                                                 | task 8: the warm-session, warm-process and cold series for C, D and H (`t5-page.sh` gained `H`, the last launcher page)                                       |
+| `t8-d3.sh`, `t8-ad.sh`, `t8-agg.py`                                                     | task 8: D3 plus switch and "Clear all" for H; an Appduct call that revokes stale sessions first; median/max per widget over `t5-latency.py`                   |
 | `jdk17-unit-tests.init.gradle`                                                          | the JDK 17 override for the Robolectric suite                                                                                                                 |
 
 The logcat filter for one tap:

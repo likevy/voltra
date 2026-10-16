@@ -1,0 +1,60 @@
+11:11:44 flags: {"ok":true,"data":{"ok":true}}
+11:11:44 push base: {"ok":true,"data":{"ok":true}}
+11:11:45 reset: {"ok":true,"data":{"ok":true}}
+11:12:02 tap D3-H-t1 at 202,290
+11:12:05 [1-t1-ticked]
+text="Todo · inline setters" checked="false" bounds="[97,194][434,246]"
+text="Buy &#127838;" checked="true" bounds="[97,246][308,334]"
+text="Water the plants" checked="false" bounds="[97,334][470,422]"
+text="Call the dentist" checked="false" bounds="[97,422][444,510]"
+text="Show completed" checked="true" bounds="[97,510][514,584]"
+11:12:08 [1-t1-ticked] state: {"ok":true,"data":{"state":{"done":{"t1":true}},"stateRevision":7}}
+11:12:08 push front: {"ok":true,"data":{"ok":true}}
+11:12:14 [2-front-survive]
+text="Todo · inline setters" checked="false" bounds="[97,194][434,246]"
+text="NEW at front" checked="false" bounds="[97,246][408,334]"
+text="Buy &#127838;" checked="true" bounds="[97,334][308,422]"
+text="Water the plants" checked="false" bounds="[97,422][470,510]"
+text="Call the dentist" checked="false" bounds="[97,510][444,598]"
+text="Show completed" checked="true" bounds="[97,598][514,672]"
+11:12:17 [2-front-survive] state: {"ok":true,"data":{"state":{"done":{"t1":true}},"stateRevision":7}}
+11:12:18 push end: {"ok":true,"data":{"ok":true}}
+11:12:23 [3-end-survive]
+text="Todo · inline setters" checked="false" bounds="[97,194][434,246]"
+text="Buy &#127838;" checked="true" bounds="[97,246][308,334]"
+text="Water the plants" checked="false" bounds="[97,334][470,422]"
+text="Call the dentist" checked="false" bounds="[97,422][444,510]"
+text="NEW at end" checked="false" bounds="[97,510][389,598]"
+text="Show completed" checked="true" bounds="[97,598][514,672]"
+11:12:27 [3-end-survive] state: {"ok":true,"data":{"state":{"done":{"t1":true}},"stateRevision":7}}
+11:12:27 push base: {"ok":true,"data":{"ok":true}}
+11:12:34 tap D3-H-t2 at 283,378
+11:12:37 [4-t1-t2-ticked]
+text="Todo · inline setters" checked="false" bounds="[97,194][434,246]"
+text="Buy &#127838;" checked="true" bounds="[97,246][308,334]"
+text="Water the plants" checked="true" bounds="[97,334][470,422]"
+text="Call the dentist" checked="false" bounds="[97,422][444,510]"
+text="Show completed" checked="true" bounds="[97,510][514,584]"
+11:12:41 [4-t1-t2-ticked] state: {"ok":true,"data":{"state":{"done":{"t1":true,"t2":true}},"stateRevision":8}}
+11:12:43 tap D3-H-switch-off at 305,547
+11:12:46 [5-show-completed-off]
+text="Todo · inline setters" checked="false" bounds="[97,194][434,246]"
+text="Call the dentist" checked="false" bounds="[97,246][444,334]"
+text="Show completed" checked="false" bounds="[97,334][514,408]"
+11:12:49 [5-show-completed-off] state: {"ok":true,"data":{"state":{"done":{"t1":true,"t2":true},"showCompleted":false},"stateRevision":9}}
+11:12:52 tap D3-H-switch-on at 305,371
+11:12:55 [6-show-completed-on]
+text="Todo · inline setters" checked="false" bounds="[97,194][434,246]"
+text="Buy &#127838;" checked="true" bounds="[97,246][308,334]"
+text="Water the plants" checked="true" bounds="[97,334][470,422]"
+text="Call the dentist" checked="false" bounds="[97,422][444,510]"
+text="Show completed" checked="true" bounds="[97,510][514,584]"
+11:12:58 [6-show-completed-on] state: {"ok":true,"data":{"state":{"done":{"t1":true,"t2":true},"showCompleted":true},"stateRevision":10}}
+11:13:00 tap D3-H-clear at 209,678
+11:13:03 [7-clear-all]
+text="Todo · inline setters" checked="false" bounds="[97,194][434,246]"
+text="Buy &#127838;" checked="false" bounds="[97,246][308,334]"
+text="Water the plants" checked="false" bounds="[97,334][470,422]"
+text="Call the dentist" checked="false" bounds="[97,422][444,510]"
+text="Show completed" checked="true" bounds="[97,510][514,584]"
+11:13:07 [7-clear-all] state: {"ok":true,"data":{"state":{"done":{},"showCompleted":true},"stateRevision":11}}

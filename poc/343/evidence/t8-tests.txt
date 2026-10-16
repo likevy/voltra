@@ -1,0 +1,25 @@
+== pnpm --filter @use-voltra/core test (node v24.13.0)
+exit=0
+ℹ tests 67
+ℹ suites 0
+ℹ pass 67
+ℹ fail 0
+== pnpm --filter @use-voltra/metro test (node v24.13.0)
+exit=0
+ℹ tests 35
+ℹ suites 7
+ℹ pass 35
+ℹ fail 0
+== pnpm --filter @use-voltra/android-client test (node v24.13.0)
+exit=0
+Test Suites: 8 passed, 8 total
+Tests:       34 passed, 34 total
+Test Suites: 11 passed, 11 total
+Tests:       57 passed, 57 total
+== cd example/android && ./gradlew --init-script poc/343/scripts/jdk17-unit-tests.init.gradle :use-voltra_android-client:testDebugUnitTest --tests "voltra.dynamicwidget.state.*" --rerun
+exit=0, BUILD SUCCESSFUL in 7s; 24 tests, 0 skipped, 0 failures, 0 errors (StateInteraction 8, StateStore 7, EventQueue 4, StateFlags 3, PushStateReset 2); XML timestamps 2026-10-16T10:07Z
+(a first run without --rerun reported testDebugUnitTest UP-TO-DATE, so it executed nothing; it is not counted)
+== pnpm run typecheck
+exit=0, Tasks: 12 successful, 12 total
+== pnpm run lint
+exit=0, Tasks: 12 successful, 12 total, no warnings or errors reported

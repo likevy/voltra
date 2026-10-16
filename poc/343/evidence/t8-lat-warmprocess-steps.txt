@@ -1,0 +1,30 @@
+page C visible
+11:21:09 round 1 C pid=18780
+page D visible
+11:21:22 round 1 D pid=18780
+page H visible
+11:21:40 round 1 H pid=18780
+page C visible
+11:22:56 round 2 C pid=18780
+page D visible
+11:23:10 round 2 D pid=18780
+page H visible
+11:23:27 round 2 H pid=18780
+page C visible
+11:24:43 round 3 C pid=18780
+page D visible
+11:24:56 round 3 D pid=18780
+page H visible
+11:25:14 round 3 H pid=18780
+page C visible
+11:26:30 round 4 C pid=18780
+page D visible
+11:26:44 round 4 D pid=18780
+page H visible
+11:27:01 round 4 H pid=18780
+page C visible
+11:28:17 round 5 C pid=18780
+page D visible
+11:28:31 round 5 D pid=18780
+page H visible
+11:28:48 round 5 H pid=18780
