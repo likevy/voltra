@@ -22,6 +22,74 @@ callstackincubator/voltra#343, plan of 2026-10-15). Nothing here is API.
 | JS bridge             | `packages/android-client/src/dynamic-widget/api.ts`: `readAndroidDynamicWidgetState`, `resetAndroidDynamicWidgetState`, `drainAndroidDynamicWidgetEvents`, `setAndroidDynamicWidgetStateFlags` (TurboModule methods in `VoltraModule.kt`)                                                                                                                                                                                              |
 | Example app           | `example/widgets/android/TodoStateWidget.tsx` (option C) and `TodoStateKeyWidget.tsx` (option D), their `app.json` entries, `example/screens/android/TodoStateScreen.tsx` (route `/android-widgets/todo-state`, deep link `voltra://android-widgets/todo-state`), four Appduct tools in `example/appduct/AndroidVoltraTools.tsx`                                                                                                       |
 
+## Authoring: `stateKey` (option D) vs `useVoltraState` + `onInteraction` (option C)
+
+Reading is the same in both: `useVoltraState(key, initial)` returns the value the host persisted for this
+placement (or the initial value), and it is read-only during render. The two options differ only in **who writes**
+the record when a control is tapped.
+
+**Option C: the widget's own handler decides.** Native evaluates the widget bundle in the app process, calls the
+generated entry's `interact`, which calls the widget file's `onInteraction(event, { props, state, env })`; the
+returned `{ state: patch }` is merged into the record (top-level keys replaced), committed with a revision bump, and
+the widget re-renders. Any shape is possible: a map keyed by item id, several keys at once, derived values, or
+ignoring the tap by returning `undefined`.
+
+```tsx
+export default function TodoStateWidget(props, env) {
+  const done = useVoltraState<Record<string, boolean>>('done', {})
+  return (
+    <VoltraAndroid.Column>
+      {props.items.map((item) => (
+        <VoltraAndroid.CheckBox id={'task:' + item.id} text={item.title} checked={!!done[item.id]} />
+      ))}
+    </VoltraAndroid.Column>
+  )
+}
+
+export function onInteraction(event, { state }) {
+  if (event.componentId.startsWith('task:')) {
+    return { state: { done: { ...state.done, [event.componentId.slice(5)]: event.value === true } } }
+  }
+  return undefined
+}
+```
+
+`event` carries `componentId` (the control's `id`), `componentType`, `value` (the toggle value the host delivered,
+absolute on API 31+, `null` for buttons), `renderedRevision`, `stateKey` and `timestamp`. The handler must be
+synchronous. Cost: one bundle evaluation per tap inside the callback (18–46 ms in release), plus the repaint.
+
+**Option D: the control names its key.** A `stateKey` prop on `CheckBox` or `Switch` makes native write
+`state[stateKey] = checked` itself, with no JS on the tap. One flat key, one boolean, nothing to compute; the widget
+needs no `onInteraction` at all.
+
+```tsx
+export default function TodoStateKeyWidget(props, env) {
+  return (
+    <VoltraAndroid.Column>
+      {props.items.map((item) => (
+        <VoltraAndroid.CheckBox
+          id={item.id}
+          text={item.title}
+          checked={useVoltraState('done.' + item.id, false)}
+          {...({ stateKey: 'done.' + item.id } as object)}
+        />
+      ))}
+    </VoltraAndroid.Column>
+  )
+}
+```
+
+**How native picks the path.** For a tapped control with an author `id` in a Dynamic Widget: if the action carries a
+non-empty `stateKey` and the host delivered a toggle value, the D write runs and JS is skipped; otherwise the C path
+runs (`interact` → `onInteraction`). A widget can mix both: plain toggles with `stateKey`, anything richer through
+`onInteraction`. Both paths share the same record, revision, event queue (`handledInWidget`, `stateChange`) and the
+final `update()`. A props push from the app never touches the record in either option (flag `precedence=survive`).
+
+**Caveats.** `stateKey` is not in the generated CheckBox/Switch prop types yet, hence the cast. The `onInteraction`
+export makes the widget file a non-refresh boundary in dev, so every edit full-reloads the app (option D's file
+hot-patches). Below API 31 the toggle value the host delivers is the negation of the last rendered value, so a double
+tap before a repaint writes the same value twice (not tested here; no pre-31 image).
+
 ## Environment
 
 ```bash
