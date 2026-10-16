@@ -293,6 +293,36 @@
                 "intervalMinutes": 15,
                 "refresh": true
               }
+            },
+            {
+              "id": "TodoStateWidget",
+              "entry": "./widgets/android/TodoStateWidget.tsx",
+              "displayName": {
+                "en": "Todo (in-widget state)"
+              },
+              "description": {
+                "en": "PoC #343: ticks are handled in the widget by onInteraction and useVoltraState"
+              },
+              "targetCellWidth": 3,
+              "targetCellHeight": 3,
+              "resizeMode": "horizontal|vertical",
+              "widgetCategory": "home_screen",
+              "initialStatePath": "./widgets/android/TodoStateWidget.tsx"
+            },
+            {
+              "id": "TodoStateKeyWidget",
+              "entry": "./widgets/android/TodoStateKeyWidget.tsx",
+              "displayName": {
+                "en": "Todo (stateKey)"
+              },
+              "description": {
+                "en": "PoC #343: ticks are written natively through the stateKey prop, no JS on tap"
+              },
+              "targetCellWidth": 3,
+              "targetCellHeight": 3,
+              "resizeMode": "horizontal|vertical",
+              "widgetCategory": "home_screen",
+              "initialStatePath": "./widgets/android/TodoStateKeyWidget.tsx"
             }
           ],
           "fonts": [

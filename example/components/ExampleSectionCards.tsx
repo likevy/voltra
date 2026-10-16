@@ -36,6 +36,7 @@ export type ExampleSection = {
     | '/android-widgets/server-driven'
     | '/android-widgets/material-colors'
     | '/android-widgets/custom-fonts'
+    | '/android-widgets/todo-state'
 }
 
 export type ExampleSectionCardsProps = {

@@ -11,6 +11,7 @@ import {
   clearAndroidWidget,
   clearWidgetInstanceConfiguration,
   clearWidgetServerUpdate,
+  drainAndroidDynamicWidgetEvents,
   endAllAndroidOngoingNotifications,
   getActiveWidgets,
   getAndroidOngoingNotificationCapabilities,
@@ -19,9 +20,12 @@ import {
   getWidgetInstanceConfiguration,
   getWidgetServerUpdate,
   hasAndroidNotificationPermission,
+  readAndroidDynamicWidgetState,
   reloadAndroidWidgets,
   requestAndroidNotificationPermission,
   requestPinAndroidWidget,
+  resetAndroidDynamicWidgetState,
+  setAndroidDynamicWidgetStateFlags,
   setWidgetConfiguration,
   setWidgetInstanceConfiguration,
   setWidgetServerUpdate,
@@ -60,6 +64,7 @@ const ANDROID_ROUTES = [
   '/android-widgets/image-preloading',
   '/android-widgets/material-colors',
   '/android-widgets/server-driven',
+  '/android-widgets/todo-state',
   '/testing-grounds',
   '/testing-grounds/android-ongoing-notification',
 ] as const
@@ -103,6 +108,25 @@ const ongoingNotificationPayloadSchema = z.discriminatedUnion('kind', [
     chronometer: z.boolean().optional(),
   }),
 ])
+
+/** One tap a Dynamic Widget handled in the widget, as `drainAndroidDynamicWidgetEvents` returns it. PoC #343. */
+const dynamicWidgetInteractionEventSchema = z.object({
+  type: z.literal('interaction'),
+  source: z.literal('widget'),
+  widgetId: z.string(),
+  identifier: z.string().describe('The tapped control’s `id`.'),
+  componentType: z.enum(['checkbox', 'switch', 'button']),
+  checked: z.boolean().nullable(),
+  appWidgetId: z.number().int().nullable(),
+  instance: z.string().nullable(),
+  seq: z.number().int().describe('Strictly increasing across process deaths; a gap means events were dropped.'),
+  eventId: z.string(),
+  timestamp: z.number(),
+  handledInWidget: z.boolean(),
+  stateRevision: z.number().int(),
+  renderedRevision: z.number().int(),
+  stateChange: z.record(z.string(), z.unknown()).nullable(),
+})
 
 const notificationResultSchema = z.object({
   ok: z.boolean(),
@@ -215,6 +239,85 @@ export function AndroidVoltraTools() {
     outputSchema: okSchema,
     handler: async ({ widgetId }) => {
       await (widgetId === undefined ? clearAllAndroidWidgets() : clearAndroidWidget(widgetId))
+      return OK
+    },
+  })
+
+  // --- In-widget state (PoC for issue #343; throwaway) ---------------------------------------
+
+  useAppductTool({
+    name: 'android_read_dynamic_widget_state',
+    group: GROUP,
+    description:
+      'PoC #343: read the state record one placed Dynamic Widget renders with (what `useVoltraState` returns) and its revision.',
+    annotations: { readOnlyHint: true },
+    inputSchema: z.object({
+      appWidgetId: z.number().int().describe('Placement id from `android_list_widgets`.'),
+    }),
+    outputSchema: z.object({
+      state: z.record(z.string(), z.unknown()),
+      stateRevision: z.number().int().describe('Advances on every commit and reset.'),
+    }),
+    handler: async ({ appWidgetId }) => {
+      const { state, stateRevision } = await readAndroidDynamicWidgetState(appWidgetId)
+      return { state: { ...state }, stateRevision }
+    },
+  })
+
+  useAppductTool({
+    name: 'android_reset_dynamic_widget_state',
+    group: GROUP,
+    description: 'PoC #343: clear one placed Dynamic Widget’s state record and re-render it.',
+    annotations: { destructiveHint: true, idempotentHint: true },
+    inputSchema: z.object({
+      appWidgetId: z.number().int().describe('Placement id from `android_list_widgets`.'),
+    }),
+    outputSchema: okSchema,
+    handler: async ({ appWidgetId }) => {
+      await resetAndroidDynamicWidgetState(appWidgetId)
+      return OK
+    },
+  })
+
+  useAppductTool({
+    name: 'android_drain_dynamic_widget_events',
+    group: GROUP,
+    description:
+      'PoC #343: take every interaction event the Dynamic Widgets queued since the last drain, oldest first. Draining removes them, so the example screen and this tool compete for the same queue.',
+    annotations: { destructiveHint: true },
+    outputSchema: z.object({ events: z.array(dynamicWidgetInteractionEventSchema) }),
+    handler: async () => ({ events: await drainAndroidDynamicWidgetEvents() }),
+  })
+
+  useAppductTool({
+    name: 'android_set_dynamic_widget_state_flags',
+    group: GROUP,
+    description:
+      'PoC #343: change the in-widget state switches. Keys left out keep their value; null restores the default. Every Dynamic Widget re-renders afterwards.',
+    inputSchema: z.object({
+      flags: z.object({
+        scope: z
+          .enum(['placement', 'widgetScope'])
+          .nullable()
+          .optional()
+          .describe('Where the record lives: per placement (default) or per configuration scope.'),
+        interactDelayMs: z
+          .number()
+          .int()
+          .min(0)
+          .nullable()
+          .optional()
+          .describe('Artificial pause before a tap commits, to widen race windows. Defaults to 0.'),
+        precedence: z
+          .enum(['survive', 'resetOnPush'])
+          .nullable()
+          .optional()
+          .describe('Whether a props push keeps the record (default) or clears it.'),
+      }),
+    }),
+    outputSchema: okSchema,
+    handler: async ({ flags }) => {
+      await setAndroidDynamicWidgetStateFlags(flags)
       return OK
     },
   })

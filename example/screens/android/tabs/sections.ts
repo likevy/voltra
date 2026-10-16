@@ -22,6 +22,13 @@ export const ANDROID_WIDGET_SECTIONS: ExampleSection[] = [
     route: '/android-widgets/instance-config',
   },
   {
+    id: 'todo-state',
+    title: 'In-widget state (PoC #343)',
+    description:
+      'Two Todo Dynamic Widgets whose taps change their own state without the app, through onInteraction or the stateKey prop. Push items, pin, inspect state and drain events.',
+    route: '/android-widgets/todo-state',
+  },
+  {
     id: 'preview-widgets',
     title: 'Widget Previews',
     description: 'Preview your Android widget layouts directly within the app using VoltraWidgetPreview.',
