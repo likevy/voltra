@@ -13,7 +13,18 @@ export {
 export { createStylesheetRegistry, type StylesheetRegistry } from './stylesheet-registry.js'
 export type { NativeModifiersProp, NoNativeModifier } from './native-modifiers.js'
 export type { VoltraVariantRenderer } from './types.js'
-export { runWithVoltraState, useVoltraState, type VoltraStateRecord } from './voltra-state.js'
+export {
+  type RunWithVoltraStateOptions,
+  runWithVoltraState,
+  runWithVoltraStateReplay,
+  takeVoltraStateWarnings,
+  useVoltraState,
+  useVoltraStateTuple,
+  type VoltraStateRecord,
+  type VoltraStateReplayEvent,
+  type VoltraStateReplayResult,
+  type VoltraStateSetter,
+} from './voltra-state.js'
 /** PoC for issue #343; not API. The positional useState design note, for the identity harness only. */
 export {
   __poc343Positional,

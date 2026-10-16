@@ -8,17 +8,24 @@ const {
   createVoltraRenderer,
   renderVariantToJson,
   runWithVoltraState,
+  runWithVoltraStateReplay,
+  takeVoltraStateWarnings,
   useVoltraState,
+  useVoltraStateTuple,
 } = require('../build/cjs/index.js')
 
 const View = createVoltraComponent('View')
 const Text = createVoltraComponent('Text')
 const Button = createVoltraComponent('Button')
+const CheckBox = createVoltraComponent('AndroidCheckBox')
+const FilledButton = createVoltraComponent('AndroidFilledButton')
 
 const componentIds = {
   View: 1,
   Text: 2,
   Button: 3,
+  AndroidCheckBox: 4,
+  AndroidFilledButton: 5,
 }
 
 const componentRegistry = {
@@ -252,4 +259,278 @@ test('rejects a non-string or empty key', () => {
   assert.throws(() => useVoltraState(null, 1), message)
   assert.throws(() => useVoltraState(42, 1), message)
   assert.throws(() => runWithVoltraState({ '': 1 }, () => useVoltraState('', 0)), message)
+})
+
+// Hybrid write path (PoC for issue #343; not API): inline setters run only in a tap replay.
+
+function HybridTodo({ items }) {
+  return h(
+    View,
+    null,
+    items.map((item) => h(HybridTodoItem, { key: item.id, item }))
+  )
+}
+
+function HybridTodoItem({ item }) {
+  const [done, setDone] = useVoltraStateTuple(`done.${item.id}`, false)
+  return h(CheckBox, { id: `task:${item.id}`, checked: done, onCheckedChange: (checked) => setDone(checked) })
+}
+
+const hybridItems = [
+  { id: 'a', title: 'Alpha' },
+  { id: 'b', title: 'Beta' },
+]
+
+function replayHybrid(state, componentId, value, tree = h(HybridTodo, { items: hybridItems })) {
+  return runWithVoltraStateReplay(state, { componentId, value }, () => renderVariantToJson(tree, componentRegistry))
+}
+
+test('hybrid: a setter outside a replay is a no-op that records a warning', () => {
+  takeVoltraStateWarnings()
+  const state = { count: 1 }
+  let setter
+
+  const value = runWithVoltraState(state, () => {
+    const [count, setCount] = useVoltraStateTuple('count', 0)
+    setter = setCount
+    setCount(5)
+    setCount((prev) => prev + 1)
+    return count
+  })
+
+  assert.equal(value, 1)
+  assert.deepStrictEqual(state, { count: 1 })
+  setter(9)
+  assert.deepStrictEqual(takeVoltraStateWarnings(), [
+    'useVoltraStateTuple: setter called outside a tap handler for key "count"',
+    'useVoltraStateTuple: setter called outside a tap handler for key "count"',
+    'useVoltraStateTuple: setter called outside a tap handler for key "count"',
+  ])
+  assert.deepStrictEqual(takeVoltraStateWarnings(), [])
+
+  // Function-valued props are dropped at serialisation, as before.
+  const rendered = JSON.parse(
+    JSON.stringify(renderVariantToJson(h(HybridTodo, { items: hybridItems }), componentRegistry))
+  )
+  assert.deepStrictEqual(rendered, {
+    t: componentIds.View,
+    c: [
+      { t: componentIds.AndroidCheckBox, i: 'task:a', p: { chk: false } },
+      { t: componentIds.AndroidCheckBox, i: 'task:b', p: { chk: false } },
+    ],
+  })
+})
+
+test('hybrid: a replay on a CheckBox calls onCheckedChange with the value and writes pending', () => {
+  const calls = []
+  function Absolute() {
+    const [done, setDone] = useVoltraStateTuple('done.a', false)
+    return h(CheckBox, {
+      id: 'task:a',
+      checked: done,
+      onCheckedChange: (checked) => {
+        calls.push(checked)
+        setDone(checked)
+      },
+    })
+  }
+
+  const absolute = replayHybrid({ 'done.a': false }, 'task:a', true, h(Absolute))
+  assert.deepStrictEqual(calls, [true])
+  assert.equal(absolute.handled, true)
+  assert.deepStrictEqual(absolute.pending, { 'done.a': true })
+  assert.deepStrictEqual(absolute.warnings, [])
+
+  const listed = replayHybrid({ 'done.a': true }, 'task:b', true)
+  assert.equal(listed.handled, true)
+  assert.deepStrictEqual(listed.pending, { 'done.b': true })
+
+  function Functional() {
+    const [count, setCount] = useVoltraStateTuple('count', 10)
+    return h(CheckBox, { id: 'counter', checked: count > 0, onCheckedChange: () => setCount((prev) => prev + 1) })
+  }
+
+  assert.deepStrictEqual(replayHybrid({ count: 3 }, 'counter', false, h(Functional)).pending, { count: 4 })
+  assert.deepStrictEqual(replayHybrid({}, 'counter', false, h(Functional)).pending, { count: 11 })
+})
+
+test('hybrid: a replay on a FilledButton calls onPress', () => {
+  let presses = 0
+  function Counter() {
+    const [count, setCount] = useVoltraStateTuple('count', 0)
+    return h(FilledButton, {
+      id: 'inc',
+      text: `+ ${count}`,
+      onPress: () => {
+        presses += 1
+        setCount((prev) => prev + 1)
+      },
+    })
+  }
+
+  const result = replayHybrid({ count: 4 }, 'inc', null, h(Counter))
+  assert.equal(presses, 1)
+  assert.equal(result.handled, true)
+  assert.deepStrictEqual(result.pending, { count: 5 })
+})
+
+test('hybrid: no matching id leaves the replay unhandled with nothing pending', () => {
+  const result = replayHybrid({}, 'task:zzz', true)
+  assert.equal(result.handled, false)
+  assert.deepStrictEqual(result.pending, {})
+  assert.deepStrictEqual(result.warnings, ['no element with id "task:zzz" reached in the replay render'])
+
+  function NoHandler() {
+    return h(CheckBox, { id: 'task:a', checked: useVoltraStateTuple('done.a', false)[0] })
+  }
+  const withoutHandler = replayHybrid({}, 'task:a', true, h(NoHandler))
+  assert.equal(withoutHandler.handled, false)
+  assert.deepStrictEqual(withoutHandler.pending, {})
+  assert.deepStrictEqual(withoutHandler.warnings, ['element "task:a" has no inline onCheckedChange / onPress'])
+
+  // An empty componentId never matches, not even an element whose id is ''.
+  function EmptyId() {
+    const [, setK] = useVoltraStateTuple('k', 0)
+    return h(CheckBox, { id: '', onCheckedChange: () => setK(1) })
+  }
+  const empty = replayHybrid({}, '', true, h(EmptyId))
+  assert.equal(empty.handled, false)
+  assert.deepStrictEqual(empty.pending, {})
+  assert.deepStrictEqual(empty.warnings, ['replay without a componentId; no handler called'])
+})
+
+test('hybrid: a throwing handler leaves the replay unhandled, records a warning, and writes nothing', () => {
+  function Throwing() {
+    const [, setDone] = useVoltraStateTuple('done.a', false)
+    return h(CheckBox, {
+      id: 'task:a',
+      onCheckedChange: (checked) => {
+        setDone(checked)
+        throw new Error('boom')
+      },
+    })
+  }
+
+  const result = replayHybrid({}, 'task:a', true, h(Throwing))
+  assert.equal(result.handled, false)
+  assert.deepStrictEqual(result.pending, {})
+  assert.deepStrictEqual(result.warnings, ['inline handler for "task:a" threw: boom'])
+})
+
+test('hybrid: the replay output is a normal render and the slot is cleared afterwards', () => {
+  const state = { 'done.a': true }
+  const snapshot = JSON.parse(JSON.stringify(state))
+  const result = replayHybrid(state, 'task:b', true)
+
+  assert.deepStrictEqual(JSON.parse(JSON.stringify(result.out)), {
+    t: componentIds.View,
+    c: [
+      { t: componentIds.AndroidCheckBox, i: 'task:a', p: { chk: true } },
+      { t: componentIds.AndroidCheckBox, i: 'task:b', p: { chk: false } },
+    ],
+  })
+  assert.deepStrictEqual(state, snapshot)
+  assert.equal(useVoltraState('done.a', false), false)
+
+  takeVoltraStateWarnings()
+  const [, setDone] = useVoltraStateTuple('done.a', false)
+  setDone(true)
+  assert.equal(takeVoltraStateWarnings().length, 1)
+
+  assert.throws(
+    () =>
+      runWithVoltraStateReplay({ x: 1 }, { componentId: 'a', value: true }, () => {
+        throw new Error('render failed')
+      }),
+    /render failed/
+  )
+  assert.equal(useVoltraState('x', 0), 0)
+})
+
+test('hybrid: two setters in one handler both land in pending, and a repeated key chains', () => {
+  function Pair() {
+    const [, setDone] = useVoltraStateTuple('done.a', false)
+    const [, setCount] = useVoltraStateTuple('count', 0)
+    return h(CheckBox, {
+      id: 'task:a',
+      onCheckedChange: (checked) => {
+        setDone(checked)
+        setCount((prev) => prev + 1)
+        setCount((prev) => prev + 1)
+      },
+    })
+  }
+
+  const result = replayHybrid({ count: 2 }, 'task:a', true, h(Pair))
+  assert.equal(result.handled, true)
+  assert.deepStrictEqual(result.pending, { 'done.a': true, count: 4 })
+})
+
+test('hybrid: useVoltraState and runWithVoltraState are unchanged next to the tuple hook', () => {
+  const state = { 'done.a': true, count: 0 }
+  const read = runWithVoltraState(state, () => ({
+    plain: useVoltraState('done.a', false),
+    tuple: useVoltraStateTuple('done.a', false)[0],
+    count: useVoltraState('count', 5),
+    missing: useVoltraStateTuple('missing', 'initial')[0],
+  }))
+
+  assert.deepStrictEqual(read, { plain: true, tuple: true, count: 0, missing: 'initial' })
+  assert.equal(
+    runWithVoltraState({ v: 1 }, () => useVoltraState('v', 0), { replay: { componentId: 'x', value: null } }),
+    1
+  )
+
+  const inReplay = runWithVoltraStateReplay({ 'done.a': true }, { componentId: 'nope', value: true }, () =>
+    renderTodo({ 'done.b': true }, hybridItems, true)
+  )
+  assert.deepStrictEqual(collectTexts(inReplay.out), ['[ ] Alpha', '[x] Beta'])
+  assert.equal(inReplay.handled, false)
+
+  const message = { message: 'useVoltraStateTuple: key must be a non-empty string' }
+  assert.throws(() => useVoltraStateTuple('', 1), message)
+  assert.throws(() => useVoltraStateTuple(undefined, 1), message)
+  assert.throws(() => useVoltraStateTuple(42, 1), message)
+})
+
+test('hybrid: a setter called by the render body during a replay does not write and records a warning', () => {
+  function Widget() {
+    const [renders, setRenders] = useVoltraStateTuple('renders', 0)
+    setRenders(renders + 1)
+    return h(View, null, h(HybridTodoItem, { item: { id: 'a' } }), h(Late))
+  }
+  function Late() {
+    const [, setLate] = useVoltraStateTuple('late', 0)
+    setLate(42)
+    return h(Text, null, 'late')
+  }
+
+  const result = replayHybrid({ renders: 3 }, 'task:a', true, h(Widget))
+  assert.equal(result.handled, true)
+  assert.deepStrictEqual(result.pending, { 'done.a': true })
+  assert.deepStrictEqual(result.warnings, [
+    'useVoltraStateTuple: setter called outside a tap handler for key "renders"',
+    'useVoltraStateTuple: setter called outside a tap handler for key "late"',
+  ])
+})
+
+test('hybrid: the handler runs after the walk, so it sees closures from elements rendered after it', () => {
+  function ClearFirst({ items }) {
+    const setters = []
+    return h(
+      View,
+      null,
+      h(FilledButton, { id: 'clear', text: 'Clear', onPress: () => setters.forEach((setDone) => setDone(false)) }),
+      items.map((item) => {
+        const [done, setDone] = useVoltraStateTuple(`done.${item.id}`, false)
+        setters.push(setDone)
+        return h(CheckBox, { key: item.id, id: `task:${item.id}`, checked: done })
+      })
+    )
+  }
+
+  const result = replayHybrid({ 'done.a': true, 'done.b': true }, 'clear', null, h(ClearFirst, { items: hybridItems }))
+  assert.equal(result.handled, true)
+  assert.deepStrictEqual(result.pending, { 'done.a': false, 'done.b': false })
+  assert.deepStrictEqual(result.warnings, [])
 })

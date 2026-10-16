@@ -132,8 +132,15 @@ export {
   isIosEnv,
   pickLocalizedValue,
   resolveLocale,
+  // PoC for issue #343; not API: runWithVoltraState, runWithVoltraStateReplay,
+  // takeVoltraStateWarnings, useVoltraState, useVoltraStateTuple.
   runWithVoltraState,
+  runWithVoltraStateReplay,
+  takeVoltraStateWarnings,
   useUpdateOnHMR,
   useVoltraState,
+  useVoltraStateTuple,
 } from '@use-voltra/core'
 export type { FastRefreshHub, LocaleEnvironment, WidgetBuildEnvironment, WidgetEnvironment } from '@use-voltra/core'
+/** PoC for issue #343; not API. */
+export type { VoltraStateReplayResult, VoltraStateSetter } from '@use-voltra/core'

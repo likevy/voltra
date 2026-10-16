@@ -47,6 +47,7 @@ import {
   poc343UseState,
   type PositionalCursor,
 } from './voltra-state-positional.js'
+import { getVoltraStateReplay } from './voltra-state.js'
 
 export type ComponentRegistry = {
   getComponentId: (name: string) => number
@@ -266,6 +267,10 @@ function renderNodeInternal(element: ReactNode, context: VoltraRenderingContext)
       }
 
       const { children, ...parameters } = child.props as { children?: ReactNode; [key: string]: unknown }
+      const replay = getVoltraStateReplay()
+      if (replay !== null) {
+        poc343ReplayHandler(replay, reactElement.props as Record<string, unknown>)
+      }
       const isTextComponent = child.type === 'Text' || child.type === 'AndroidText'
       // PoC #343: a host primitive is a segment; its children and element-valued props are levels below it.
       const hostPath = context.poc343
@@ -336,6 +341,37 @@ function renderNodeInternal(element: ReactNode, context: VoltraRenderingContext)
       (element as { type?: unknown }).type
     )}". Report this as a bug in the Voltra project.`
   )
+}
+
+/**
+ * PoC for issue #343; not API. During a tap replay, records the inline handler of the host element
+ * whose author `id` equals the tapped `componentId`: `onCheckedChange(value)` for toggles, else
+ * `onPress()` for buttons. The handler is not called here: `runWithVoltraStateReplay` calls it
+ * after the walk, so it sees every closure the render produced. Only the first matching element
+ * is considered, and an empty `componentId` never matches.
+ */
+function poc343ReplayHandler(
+  replay: NonNullable<ReturnType<typeof getVoltraStateReplay>>,
+  authorProps: Record<string, unknown>
+): void {
+  const componentId = replay.event.componentId
+  if (replay.matched || componentId === '' || authorProps.id !== componentId) {
+    return
+  }
+
+  replay.matched = true
+  const { onCheckedChange, onPress } = authorProps
+  const value = replay.event.value
+
+  if (typeof onCheckedChange === 'function') {
+    replay.matchedHandler = () => {
+      onCheckedChange(value)
+    }
+  } else if (typeof onPress === 'function') {
+    replay.matchedHandler = () => {
+      onPress()
+    }
+  }
 }
 
 export const renderFunctionalComponent = <TProps>(
