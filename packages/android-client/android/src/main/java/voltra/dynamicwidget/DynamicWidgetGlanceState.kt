@@ -4,8 +4,13 @@ import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.datastore.preferences.core.longPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.glance.currentState
 import kotlinx.coroutines.runBlocking
+import voltra.dynamicwidget.state.DynamicWidgetScopeStateStore
+import voltra.dynamicwidget.state.DynamicWidgetStateFlags
+import voltra.dynamicwidget.state.DynamicWidgetStateSnapshot
+import voltra.dynamicwidget.state.DynamicWidgetStateStorage
 import voltra.widget.server.WidgetScope
 
 internal val dynamicWidgetPropsRevisionKey =
@@ -29,21 +34,58 @@ internal val dynamicWidgetConfigurationRevisionKey =
     longPreferencesKey("voltra.dynamic_widget.configuration_revision")
 
 /**
+ * The placement's widget state record (`useVoltraState`), a JSON object, written only by the tap
+ * callback and never by a render or a props push. Handed into every render as `env.__voltraState`.
+ *
+ * PoC for issue #343; not API.
+ */
+internal val dynamicWidgetStateKey = stringPreferencesKey("voltra.dynamic_widget.state")
+
+/**
+ * Advanced together with [dynamicWidgetStateKey] in the same Glance-state transaction. A tap
+ * carries the revision it was rendered with, so the callback can tell a stale tree from a fresh one.
+ *
+ * PoC for issue #343; not API.
+ */
+internal val dynamicWidgetStateRevisionKey = longPreferencesKey("voltra.dynamic_widget.state_revision")
+
+/**
  * Connects Glance's observable per-instance state to the authoritative SharedPreferences props.
  * The revision causes recomposition; the props store supplies the latest value when updates coalesce.
+ *
+ * The widget state record comes from the placement's Glance state by default, or from the
+ * per-scope store when the PoC flag selects it (issue #343). Both state keys are read on every
+ * composition, so a commit to either recomposes a live session.
  */
 @Composable
 internal fun currentDynamicWidgetRenderInput(
     context: Context,
     dynamicWidgetId: String,
     scope: WidgetScope = WidgetScope.of(dynamicWidgetId),
-): DynamicWidgetRenderInput =
-    DynamicWidgetRenderInput(
-        propsRevision = currentState(dynamicWidgetPropsRevisionKey) ?: 0L,
+): DynamicWidgetRenderInput {
+    val propsRevision = currentState(dynamicWidgetPropsRevisionKey) ?: 0L
+    val placementStateJson = currentState(dynamicWidgetStateKey)
+    val placementStateRevision = currentState(dynamicWidgetStateRevisionKey) ?: 0L
+    val state =
+        when (DynamicWidgetStateFlags.read(context).storage) {
+            DynamicWidgetStateStorage.PLACEMENT -> {
+                DynamicWidgetStateSnapshot(placementStateJson ?: "{}", placementStateRevision)
+            }
+
+            DynamicWidgetStateStorage.WIDGET_SCOPE -> {
+                DynamicWidgetScopeStateStore(context).read(scope)
+            }
+        }
+
+    return DynamicWidgetRenderInput(
+        propsRevision = propsRevision,
         // Reads the instance slot for `scope`'s key, falling back to the widget slot when the
         // placement has not fetched yet or has no configuration (ADR 0007).
         propsJson = DynamicWidgetPropsStore(context).getDynamicWidgetProps(scope),
+        stateJson = state.stateJson,
+        stateRevision = state.stateRevision,
     )
+}
 
 /**
  * The configuration this composition renders with, re-read whenever

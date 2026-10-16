@@ -182,24 +182,45 @@ class VoltraClientGlanceWidget(
          * `env.serverUpdate` is deliberately absent. The trial is asking whether the props render,
          * and a widget that only fails when it is told the fetch went badly is a different problem
          * from props that cannot be drawn.
+         *
+         * The trial also runs without widget state: `env.__voltraState` is `{}`, so
+         * `useVoltraState` returns each key's `initial`. A fetch is shared by every placement of
+         * its scope while state may be per placement, so there is no single record to pass; the
+         * ADR decides whether the trial should render with one (PoC for issue #343).
          */
         internal fun buildTrialEnvJson(
             context: Context,
             widgetId: String,
             size: DpSize,
             configuration: Map<String, String>,
-        ): String = buildEnvJson(context, widgetId, size, configuration, environmentSource = null)
+        ): String =
+            buildEnvJson(
+                context,
+                widgetId,
+                size,
+                configuration,
+                environmentSource = null,
+                stateJson = EMPTY_STATE_JSON,
+            )
+
+        private const val EMPTY_STATE_JSON = "{}"
 
         /**
          * Build the WidgetEnvironment JSON (see packages/core/src/widget-environment.ts) for the
          * current render.
+         *
+         * [stateJson], when not null, is the widget state record handed to JS under the reserved
+         * key `env.__voltraState`; the generated entry strips it before the author sees `env` and
+         * `useVoltraState` reads it. Null leaves the key out (the tap callback's `interact` payload
+         * carries state separately). PoC for issue #343; not API.
          */
-        private fun buildEnvJson(
+        internal fun buildEnvJson(
             context: Context,
             widgetId: String,
             size: DpSize,
             configuration: Map<String, String>,
             environmentSource: DynamicWidgetEnvironmentSource?,
+            stateJson: String? = null,
         ): String {
             val family = "${size.width.value.toInt()}x${size.height.value.toInt()}"
             val nightMode =
@@ -251,6 +272,18 @@ class VoltraClientGlanceWidget(
             val scope = WidgetScope.of(widgetId, configuration)
             environmentSource?.environmentFields(context, scope)?.forEach { (key, value) ->
                 env.put(key, value)
+            }
+
+            if (stateJson != null) {
+                env.put(
+                    "__voltraState",
+                    try {
+                        JSONObject(stateJson)
+                    } catch (_: org.json.JSONException) {
+                        Log.w(TAG, "Ignoring a widget state record that is not a JSON object for widgetId=$widgetId")
+                        JSONObject()
+                    },
+                )
             }
 
             return env.toString()
@@ -322,16 +355,34 @@ class VoltraClientGlanceWidget(
 
         // Live render when the bundle is ready; otherwise fall back to the plugin-prerendered
         // placeholder node (first paint / offline / Metro down).
-        val node =
-            (
-                if (bundleReady) {
-                    renderNode(context, size, configuration, dynamicWidgetRenderInput)
-                } else {
-                    null
-                }
-            ) ?: placeholderNode(context)
+        val liveNode =
+            if (bundleReady) {
+                val renderStart = System.nanoTime()
+                val rendered = renderNode(context, size, configuration, dynamicWidgetRenderInput)
+                // One line per JS render: the repaint marker for the in-widget state PoC (issue #343).
+                Log.d(
+                    TAG,
+                    "render dynamicWidgetId=$widgetId appWidgetId=$appWidgetId " +
+                        "propsRevision=${dynamicWidgetRenderInput.propsRevision} " +
+                        "stateRevision=${dynamicWidgetRenderInput.stateRevision} " +
+                        "size=${size.width.value.toInt()}x${size.height.value.toInt()} " +
+                        "ms=${"%.2f".format((System.nanoTime() - renderStart) / 1_000_000.0)}",
+                )
+                rendered
+            } else {
+                null
+            }
+        val node = liveNode ?: placeholderNode(context)
         if (node != null) {
-            GlanceFactory(widgetId, null, null, size).Render(node)
+            // Only this Dynamic Widget path opts into the in-widget state click rule (issue #343).
+            // A placeholder tree opts in too: a tap on it reaches the callback, which evaluates
+            // the bundle itself before calling `interact`.
+            GlanceFactory(
+                widgetId = widgetId,
+                widgetSize = size,
+                interactiveState = true,
+                stateRevision = dynamicWidgetRenderInput.stateRevision,
+            ).Render(node)
         } else {
             Fallback()
         }
@@ -391,7 +442,15 @@ class VoltraClientGlanceWidget(
         configuration: Map<String, String>,
         dynamicWidgetRenderInput: DynamicWidgetRenderInput,
     ): VoltraNode? {
-        val envJson = buildEnvJson(context, widgetId, size, configuration, environmentSource)
+        val envJson =
+            buildEnvJson(
+                context,
+                widgetId,
+                size,
+                configuration,
+                environmentSource,
+                stateJson = dynamicWidgetRenderInput.stateJson,
+            )
         val dynamicWidgetRenderCoordinator = DynamicWidgetRenderCoordinator()
         return dynamicWidgetRenderCoordinator.renderDynamicWidget(
             dynamicWidgetId = widgetId,

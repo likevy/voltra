@@ -17,6 +17,15 @@ internal fun interface DynamicWidgetRuntimeBoundary {
 internal data class DynamicWidgetRenderInput(
     val propsRevision: Long,
     val propsJson: String,
+    /**
+     * The widget state record (`useVoltraState`) this render reads, as a JSON object. The render
+     * passes it to JS as `env.__voltraState`; it is never written by a render.
+     *
+     * PoC for issue #343; not API.
+     */
+    val stateJson: String = "{}",
+    /** The revision of [stateJson], threaded into each tap so the callback sees what was drawn. */
+    val stateRevision: Long = 0L,
 )
 
 internal object DynamicWidgetHermesRuntimeBoundary : DynamicWidgetRuntimeBoundary {

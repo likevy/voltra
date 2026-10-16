@@ -9,6 +9,7 @@ import androidx.glance.appwidget.RadioButton
 import androidx.glance.appwidget.RadioButtonDefaults
 import androidx.glance.appwidget.Switch
 import androidx.glance.appwidget.SwitchDefaults
+import voltra.dynamicwidget.state.dynamicWidgetStateActionOrDefault
 import voltra.glance.LocalVoltraRenderContext
 import voltra.glance.renderers.getOnClickAction
 import voltra.glance.resolveAndApplyStyle
@@ -69,7 +70,7 @@ fun RenderSwitch(
 
     Switch(
         checked = checked,
-        onCheckedChange = getOnClickAction(LocalContext.current, element.p, renderContext.widgetId, componentId),
+        onCheckedChange = dynamicWidgetStateActionOrDefault(LocalContext.current, element, renderContext, componentId),
         modifier = computedModifier,
         text = text,
         style = textStyle,
@@ -171,7 +172,7 @@ fun RenderCheckBox(
 
     CheckBox(
         checked = checked,
-        onCheckedChange = getOnClickAction(LocalContext.current, element.p, renderContext.widgetId, componentId),
+        onCheckedChange = dynamicWidgetStateActionOrDefault(LocalContext.current, element, renderContext, componentId),
         modifier = computedModifier,
         text = text,
         style = textStyle,

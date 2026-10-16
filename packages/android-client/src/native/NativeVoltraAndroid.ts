@@ -188,6 +188,14 @@ export interface Spec extends TurboModule {
   setWidgetServerCredentials(credentials: WidgetServerCredentials): Promise<void>
   clearWidgetServerCredentials(): Promise<void>
   getActiveWidgets(): Promise<ReadonlyArray<object>>
+  /** PoC for issue #343; not API. Result is JSON `{ state, stateRevision }` for one placement. */
+  readDynamicWidgetState(appWidgetId: number): Promise<string>
+  /** PoC for issue #343; not API. */
+  resetDynamicWidgetState(appWidgetId: number): Promise<void>
+  /** PoC for issue #343; not API. Result is a JSON array of the queued interaction events; clears the queue. */
+  drainDynamicWidgetEvents(): Promise<string>
+  /** PoC for issue #343; not API. Flags cross as a JSON object. */
+  setDynamicWidgetStateFlags(flagsJson: string): Promise<void>
 }
 
 export function getNativeVoltraAndroid(): Spec {

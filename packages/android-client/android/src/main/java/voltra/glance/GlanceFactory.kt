@@ -14,10 +14,21 @@ class GlanceFactory(
     private val sharedElements: List<VoltraNode>? = null,
     private val sharedStyles: List<Map<String, Any?>>? = null,
     private val widgetSize: DpSize? = null,
+    // PoC for issue #343; not API. Only VoltraClientGlanceWidget opts in (see VoltraRenderContext).
+    private val interactiveState: Boolean = false,
+    private val stateRevision: Long = 0L,
 ) {
     @Composable
     fun Render(node: VoltraNode?) {
-        val context = VoltraRenderContext(widgetId, sharedElements, sharedStyles, widgetSize)
+        val context =
+            VoltraRenderContext(
+                widgetId = widgetId,
+                sharedElements = sharedElements,
+                sharedStyles = sharedStyles,
+                widgetSize = widgetSize,
+                interactiveState = interactiveState,
+                stateRevision = stateRevision,
+            )
         // Decided from the whole tree before rendering, so no element depends on render order, and
         // kept while the tree stays equal. The owner is matched by value, so the state computed
         // for an equal tree from an earlier render still matches this one's elements.

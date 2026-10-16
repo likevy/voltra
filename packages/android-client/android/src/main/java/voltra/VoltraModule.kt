@@ -30,8 +30,16 @@ import voltra.dynamicwidget.DynamicWidgetPropsStore
 import voltra.dynamicwidget.DynamicWidgetUpdateRejection
 import voltra.dynamicwidget.DynamicWidgetUpdateTrigger
 import voltra.dynamicwidget.DynamicWidgetUpdater
+import voltra.dynamicwidget.VoltraClientGlanceWidget
 import voltra.dynamicwidget.VoltraConfigurationStore
 import voltra.dynamicwidget.serverupdate.DynamicWidgetServerUpdateScheduler
+import voltra.dynamicwidget.state.AndroidDynamicWidgetPushStateReset
+import voltra.dynamicwidget.state.DynamicWidgetEventQueue
+import voltra.dynamicwidget.state.DynamicWidgetScopeStateStore
+import voltra.dynamicwidget.state.DynamicWidgetStateFlags
+import voltra.dynamicwidget.state.DynamicWidgetStateSnapshot
+import voltra.dynamicwidget.state.DynamicWidgetStateStorage
+import voltra.dynamicwidget.state.DynamicWidgetStateStore
 import voltra.dynamicwidget.triggerDynamicWidgetConfigurationGlanceUpdate
 import voltra.dynamicwidget.triggerDynamicWidgetGlanceUpdate
 import voltra.dynamicwidget.triggerDynamicWidgetInstanceConfigurationGlanceUpdate
@@ -97,6 +105,8 @@ class VoltraModule(
                         dynamicWidgetId = dynamicWidgetId,
                     )
                 },
+            // PoC for issue #343: a no-op unless the `resetOnPush` state flag is set.
+            dynamicWidgetPushStateReset = AndroidDynamicWidgetPushStateReset(reactApplicationContext),
         )
     }
 
@@ -1104,4 +1114,143 @@ class VoltraModule(
         }
         promise.resolve(activeWidgets)
     }
+
+    // In-widget state (issue #343). PoC for issue #343; not API.
+
+    /**
+     * The widget state record one placement renders with, as `{ state, stateRevision }` JSON: the
+     * placement's own record, or its scope's record when the `widgetScope` flag is set.
+     */
+    override fun readDynamicWidgetState(
+        appWidgetId: Double,
+        promise: Promise,
+    ) {
+        val instanceId = appWidgetId.toInt()
+        val widgetId =
+            resolveDynamicWidgetInstanceOrReject(instanceId, promise) ?: return
+
+        runBlocking {
+            try {
+                val snapshot = readDynamicWidgetStateSnapshot(widgetId, instanceId)
+                promise.resolve(
+                    JSONObject()
+                        .put("state", JSONObject(snapshot.stateJson))
+                        .put("stateRevision", snapshot.stateRevision)
+                        .toString(),
+                )
+            } catch (e: Exception) {
+                Log.e(TAG, "readDynamicWidgetState failed", e)
+                promise.reject("VOLTRA_DYNAMIC_WIDGET_STATE_ERROR", e.message, e)
+            }
+        }
+    }
+
+    /**
+     * Clear one placement's widget state record (and its scope's record when the `widgetScope`
+     * flag is set), then re-render. The re-render is dispatched, as in [rerenderWidgetInstance].
+     */
+    override fun resetDynamicWidgetState(
+        appWidgetId: Double,
+        promise: Promise,
+    ) {
+        val instanceId = appWidgetId.toInt()
+        val widgetId =
+            resolveDynamicWidgetInstanceOrReject(instanceId, promise) ?: return
+
+        val storage = DynamicWidgetStateFlags.read(reactApplicationContext).storage
+        val reset =
+            runBlocking {
+                try {
+                    val glanceId = GlanceAppWidgetManager(reactApplicationContext).getGlanceIdBy(instanceId)
+                    DynamicWidgetStateStore.resetPlacementState(reactApplicationContext, glanceId)
+                    if (storage == DynamicWidgetStateStorage.WIDGET_SCOPE) {
+                        // No re-render from the store itself; every placement is re-rendered below.
+                        DynamicWidgetScopeStateStore(reactApplicationContext, afterWrite = { _, _ -> })
+                            .reset(dynamicWidgetPlacementScope(widgetId, instanceId))
+                    }
+                    true
+                } catch (e: Exception) {
+                    Log.e(TAG, "resetDynamicWidgetState failed", e)
+                    promise.reject("VOLTRA_DYNAMIC_WIDGET_STATE_ERROR", e.message, e)
+                    false
+                }
+            }
+        if (!reset) return
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                if (storage == DynamicWidgetStateStorage.WIDGET_SCOPE) {
+                    triggerDynamicWidgetGlanceUpdate(reactApplicationContext, widgetId)
+                } else {
+                    val glanceId = GlanceAppWidgetManager(reactApplicationContext).getGlanceIdBy(instanceId)
+                    VoltraWidgetReceiver.getWidget(reactApplicationContext, widgetId)?.update(reactApplicationContext, glanceId)
+                }
+            } catch (e: Throwable) {
+                Log.w(TAG, "Could not re-render widget '$widgetId' after a state reset: ${e.message}")
+            }
+        }
+        promise.resolve(null)
+    }
+
+    /** Every interaction event the widgets queued since the last drain, as a JSON array; clears the queue. */
+    override fun drainDynamicWidgetEvents(promise: Promise) {
+        try {
+            promise.resolve(DynamicWidgetEventQueue(reactApplicationContext).drain())
+        } catch (e: Exception) {
+            Log.e(TAG, "drainDynamicWidgetEvents failed", e)
+            promise.reject("VOLTRA_DYNAMIC_WIDGET_STATE_ERROR", e.message, e)
+        }
+    }
+
+    /** Write the PoC state flags, then re-render every Dynamic Widget so the read path follows. */
+    override fun setDynamicWidgetStateFlags(
+        flagsJson: String,
+        promise: Promise,
+    ) {
+        try {
+            DynamicWidgetStateFlags.write(reactApplicationContext, flagsJson)
+        } catch (e: Exception) {
+            Log.e(TAG, "setDynamicWidgetStateFlags failed", e)
+            promise.reject("VOLTRA_DYNAMIC_WIDGET_STATE_FLAGS_ERROR", e.message, e)
+            return
+        }
+        Log.d(TAG, "Dynamic Widget state flags: ${DynamicWidgetStateFlags.read(reactApplicationContext).toJson()}")
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                widgetOrchestrator.reloadClientWidgets()
+            } catch (e: Throwable) {
+                Log.w(TAG, "Could not re-render Dynamic Widgets after a state flag change: ${e.message}")
+            }
+        }
+        promise.resolve(null)
+    }
+
+    private suspend fun readDynamicWidgetStateSnapshot(
+        widgetId: String,
+        appWidgetId: Int,
+    ): DynamicWidgetStateSnapshot =
+        when (DynamicWidgetStateFlags.read(reactApplicationContext).storage) {
+            DynamicWidgetStateStorage.PLACEMENT -> {
+                DynamicWidgetStateStore.readPlacementSnapshot(
+                    reactApplicationContext,
+                    GlanceAppWidgetManager(reactApplicationContext).getGlanceIdBy(appWidgetId),
+                )
+            }
+
+            DynamicWidgetStateStorage.WIDGET_SCOPE -> {
+                DynamicWidgetScopeStateStore(reactApplicationContext)
+                    .read(dynamicWidgetPlacementScope(widgetId, appWidgetId))
+            }
+        }
+
+    private suspend fun dynamicWidgetPlacementScope(
+        widgetId: String,
+        appWidgetId: Int,
+    ): WidgetScope =
+        VoltraClientGlanceWidget.placementScope(
+            widgetId,
+            VoltraConfigurationStore(reactApplicationContext).get(widgetId, appWidgetId),
+            appWidgetId,
+        )
 }

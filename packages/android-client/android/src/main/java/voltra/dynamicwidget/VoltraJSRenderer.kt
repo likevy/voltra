@@ -37,6 +37,12 @@ object VoltraJSRenderer {
         envJSON: String,
     ): String?
 
+    private external fun nativeInvoke(
+        widgetId: String,
+        exportName: String,
+        payloadJSON: String,
+    ): String?
+
     /**
      * Minimal global shims. The widget Metro bundle runs in a *bare* Hermes runtime (no RN
      * preamble — the widget Metro config strips polyfills), but React's dev build and a few
@@ -118,6 +124,32 @@ object VoltraJSRenderer {
                 nativeRender(widgetId, propsJSON, envJSON)
             } catch (t: Throwable) {
                 Log.e(TAG, "nativeRender threw for widgetId=$widgetId", t)
+                null
+            }
+        }
+
+    /**
+     * Call another export of an evaluated widget bundle with one JSON string:
+     * `__voltraWidgets[widgetId][exportName](payloadJSON)`, under the same lock as [render] and
+     * [evaluateBundle]. The Dynamic Widget state callback uses it to reach the generated entry's
+     * `interact(payloadJSON)` export, which runs the author's `onInteraction`.
+     *
+     * Returns null when the widget was not evaluated, the export is missing or not a function (so
+     * a bundle built before the export existed is feature-detected, not an error), the call throws,
+     * or it did not return a string.
+     *
+     * PoC for issue #343; not API.
+     */
+    fun invoke(
+        widgetId: String,
+        exportName: String,
+        payloadJSON: String,
+    ): String? =
+        synchronized(lock) {
+            try {
+                nativeInvoke(widgetId, exportName, payloadJSON)
+            } catch (t: Throwable) {
+                Log.e(TAG, "nativeInvoke threw for widgetId=$widgetId export=$exportName", t)
                 null
             }
         }

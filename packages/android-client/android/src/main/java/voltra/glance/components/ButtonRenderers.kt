@@ -13,6 +13,7 @@ import androidx.glance.appwidget.components.OutlineButton
 import androidx.glance.appwidget.components.SquareIconButton
 import androidx.glance.layout.Box
 import androidx.glance.unit.ColorProvider
+import voltra.dynamicwidget.state.dynamicWidgetStateActionOrDefault
 import voltra.glance.LocalVoltraRenderContext
 import voltra.glance.applyClickableIfNeeded
 import voltra.glance.renderers.RenderNode
@@ -79,7 +80,7 @@ fun RenderFilledButton(
 
     FilledButton(
         text = text,
-        onClick = getOnClickAction(LocalContext.current, element.p, context.widgetId, componentId),
+        onClick = dynamicWidgetStateActionOrDefault(LocalContext.current, element, context, componentId),
         modifier = computedModifier,
         enabled = enabled,
         icon = icon.takeIf { element.p?.containsKey("icon") == true }, // Only pass icon if present

@@ -184,3 +184,70 @@ Java_voltra_dynamicwidget_VoltraJSRenderer_nativeRender(
     return nullptr;
   }
 }
+
+// Invoke any other export the generated entry captured, as
+// `__voltraWidgets[<widgetId>][<exportName>](payloadJSON)`, under the same mutex
+// as render. This is how the Dynamic Widget state callback reaches the entry's
+// `interact(payloadJSON)` export, which calls the author's `onInteraction`.
+// Returns null when the export is missing or not a function (feature
+// detection: a bundle built before the export existed simply has none), when
+// it throws, or when it does not return a string.
+//
+// PoC for issue #343; not API.
+extern "C" JNIEXPORT jstring JNICALL
+Java_voltra_dynamicwidget_VoltraJSRenderer_nativeInvoke(
+    JNIEnv *env, jobject /* this */, jstring jWidgetId, jstring jExportName,
+    jstring jPayloadJSON) {
+  std::lock_guard<std::mutex> lock(g_mutex);
+  if (!g_runtime) {
+    LOGE("invoke called before evaluateBundle");
+    return nullptr;
+  }
+  try {
+    auto &rt = *g_runtime;
+    const std::string widgetId = jstringToStd(env, jWidgetId);
+    const std::string exportName = jstringToStd(env, jExportName);
+    const std::string payloadJSON = jstringToStd(env, jPayloadJSON);
+
+    auto registry = rt.global().getProperty(rt, "__voltraWidgets");
+    if (!registry.isObject()) {
+      LOGE("invoke: __voltraWidgets missing (bundle not evaluated?)");
+      return nullptr;
+    }
+    auto widget = registry.asObject(rt).getProperty(rt, widgetId.c_str());
+    if (!widget.isObject()) {
+      LOGE("invoke: no captured widget for widgetId=%s", widgetId.c_str());
+      return nullptr;
+    }
+    auto exportProp = widget.asObject(rt).getProperty(rt, exportName.c_str());
+    if (!exportProp.isObject() ||
+        !exportProp.asObject(rt).isFunction(rt)) {
+      LOGI("invoke: %s is not a function for widgetId=%s", exportName.c_str(),
+           widgetId.c_str());
+      return nullptr;
+    }
+
+    auto tInvoke = Clock::now();
+    jsi::Value result = exportProp.asObject(rt).asFunction(rt).call(
+        rt, jsi::String::createFromUtf8(rt, payloadJSON));
+    LOGPERF("[perf] invoke %s: %.2f ms (widgetId=%s)", exportName.c_str(),
+            millisSince(tInvoke), widgetId.c_str());
+
+    if (!result.isString()) {
+      LOGE("invoke: %s did not return a string for widgetId=%s",
+           exportName.c_str(), widgetId.c_str());
+      return nullptr;
+    }
+    std::string resultStr = result.asString(rt).utf8(rt);
+    return env->NewStringUTF(resultStr.c_str());
+  } catch (const jsi::JSError &e) {
+    LOGE("invoke JSError: %s", e.getMessage().c_str());
+    return nullptr;
+  } catch (const std::exception &e) {
+    LOGE("invoke threw: %s", e.what());
+    return nullptr;
+  } catch (...) {
+    LOGE("invoke threw: unknown");
+    return nullptr;
+  }
+}

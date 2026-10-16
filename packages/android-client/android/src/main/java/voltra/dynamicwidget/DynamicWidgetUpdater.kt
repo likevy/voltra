@@ -14,6 +14,17 @@ internal fun interface DynamicWidgetUpdateTrigger {
     suspend fun triggerDynamicWidgetUpdate(dynamicWidgetId: String)
 }
 
+/**
+ * Runs after a push's props are persisted and before the widget re-renders. The default does
+ * nothing, so a push never touches the widget state record; the `resetOnPush` precedence flag
+ * swaps in a reset of every placement's record (`AndroidDynamicWidgetPushStateReset`).
+ *
+ * PoC for issue #343; not API.
+ */
+internal fun interface DynamicWidgetPushStateReset {
+    suspend fun afterDynamicWidgetPropsPersisted(dynamicWidgetId: String)
+}
+
 /** Resolves a widget id's [VoltraWidgetKind]. Injectable so [DynamicWidgetUpdater] is testable. */
 internal fun interface DynamicWidgetKindResolver {
     fun resolveDynamicWidgetKind(dynamicWidgetId: String): VoltraWidgetKindResolution
@@ -41,6 +52,7 @@ internal class DynamicWidgetUpdater(
     private val dynamicWidgetKindResolver: DynamicWidgetKindResolver,
     private val dynamicWidgetPropsPersistence: DynamicWidgetPropsPersistence,
     private val dynamicWidgetUpdateTrigger: DynamicWidgetUpdateTrigger,
+    private val dynamicWidgetPushStateReset: DynamicWidgetPushStateReset = DynamicWidgetPushStateReset { },
 ) {
     suspend fun updateDynamicWidget(
         dynamicWidgetId: String,
@@ -65,6 +77,7 @@ internal class DynamicWidgetUpdater(
             dynamicWidgetId = dynamicWidgetId,
             dynamicWidgetPropsJson = dynamicWidgetPropsJson,
         )
+        dynamicWidgetPushStateReset.afterDynamicWidgetPropsPersisted(dynamicWidgetId)
         dynamicWidgetUpdateTrigger.triggerDynamicWidgetUpdate(dynamicWidgetId)
     }
 }

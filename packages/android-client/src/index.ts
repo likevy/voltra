@@ -66,10 +66,19 @@ export type {
   UseAndroidOngoingNotificationResult,
 } from '@use-voltra/android'
 export {
+  drainAndroidDynamicWidgetEvents,
+  readAndroidDynamicWidgetState,
+  resetAndroidDynamicWidgetState,
+  setAndroidDynamicWidgetStateFlags,
   setDynamicWidgetLocale,
   updateAndroidDynamicWidget,
+  type AndroidDynamicWidgetInteractionEvent,
   type AndroidDynamicWidgetProps,
   type AndroidDynamicWidgetPropsValue,
+  type AndroidDynamicWidgetStateChange,
+  type AndroidDynamicWidgetStateFlags,
+  type AndroidDynamicWidgetStateRecord,
+  type AndroidDynamicWidgetStateSnapshot,
 } from './dynamic-widget/api.js'
 export {
   clearWidgetServerUpdate,
