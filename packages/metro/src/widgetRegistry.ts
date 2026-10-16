@@ -21,15 +21,16 @@ const ANDROID_INTL_PRELUDE_BASENAME = 'voltra-intl-polyfills.android.js'
 /**
  * Per-platform render shims. The Android one imports the Intl prelude first when it is enabled, so
  * the polyfills run before any widget module; the iOS one never does. Both also re-export
- * `runWithVoltraState` (PoC for issue #343; not API) so the generated entry can expose widget state.
+ * `runWithVoltraState` and `runWithVoltraStateReplay` (PoC for issue #343; not API) so the generated
+ * entry can expose widget state and replay taps for inline setters.
  */
 function renderShimFiles(androidIntlPolyfills: boolean): Record<string, string> {
   return {
     [`${RENDER_SHIM_BASENAME}.ios.js`]:
-      "export { renderVoltraVariantToJson as renderVariantToJson, runWithVoltraState } from '@use-voltra/ios'\n",
+      "export { renderVoltraVariantToJson as renderVariantToJson, runWithVoltraState, runWithVoltraStateReplay } from '@use-voltra/ios'\n",
     [`${RENDER_SHIM_BASENAME}.android.js`]:
       (androidIntlPolyfills ? `import './${ANDROID_INTL_PRELUDE_BASENAME}'\n` : '') +
-      "export { renderAndroidVariantToJson as renderVariantToJson, runWithVoltraState } from '@use-voltra/android'\n",
+      "export { renderAndroidVariantToJson as renderVariantToJson, runWithVoltraState, runWithVoltraStateReplay } from '@use-voltra/android'\n",
   }
 }
 
@@ -353,7 +354,9 @@ function createGeneratedEntry(
 
   const content = [
     "import { createElement } from 'react'",
-    `import { renderVariantToJson, runWithVoltraState } from ${JSON.stringify(renderShimImportPath)}`,
+    `import { renderVariantToJson, runWithVoltraState, runWithVoltraStateReplay } from ${JSON.stringify(
+      renderShimImportPath
+    )}`,
     // The author module is imported as a namespace: the default export is the widget, and an
     // optional `onInteraction` export handles taps through `interact` below.
     `import * as WidgetModule from ${JSON.stringify(entryImportPath)}`,
@@ -401,8 +404,11 @@ function createGeneratedEntry(
     '// stateKey: string | null, timestamp: number }`. The optional author export',
     '// `onInteraction(event, { props, state, env })` runs synchronously and may return',
     '// `{ state: patch }`; native merges the patch into the persisted record and re-renders.',
-    '// Returns `{ handled: false }` when the widget has no `onInteraction`, otherwise',
-    '// `{ handled: true, state: patch | null }`.',
+    '// With `onInteraction` it returns `{ handled: true, state: patch | null }`. Without it, the tap is',
+    '// replayed for inline setters (`useVoltraStateTuple`): the render runs again with the event, the',
+    '// `onCheckedChange` / `onPress` of the element whose `id` is `event.componentId` is called, the',
+    '// setters record into a pending patch, and the replay output is discarded. That returns',
+    '// `{ handled, state: patch | null, replayMs, warnings }`.',
     'export function interact(payloadJSON) {',
     '  const payload = parseJSONInput(payloadJSON, "payloadJSON")',
     '  const event = payload.event || {}',
@@ -411,7 +417,7 @@ function createGeneratedEntry(
     '  const env = payload.env || {}',
     '  const onInteraction = WidgetModule.onInteraction',
     '  if (typeof onInteraction !== "function") {',
-    '    return JSON.stringify({ handled: false })',
+    '    return replayInteraction(event, props, state, env)',
     '  }',
     '  const result = runWithVoltraState(state, () => onInteraction(event, { props, state, env }))',
     '  if (result && typeof result.then === "function") {',
@@ -420,6 +426,34 @@ function createGeneratedEntry(
     '  return JSON.stringify({',
     '    handled: true,',
     '    state: result && typeof result === "object" && result.state && typeof result.state === "object" ? result.state : null,',
+    '  })',
+    '}',
+    '',
+    'function replayInteraction(event, props, state, env) {',
+    '  if (typeof event.componentId !== "string" || event.componentId === "") {',
+    '    return JSON.stringify({',
+    '      handled: false,',
+    '      state: null,',
+    '      replayMs: 0,',
+    '      warnings: ["replay skipped: event has no componentId"],',
+    '    })',
+    '  }',
+    '  const t0 = Date.now()',
+    '  const replayEnv = Object.assign({}, env)',
+    '  delete replayEnv.__voltraState',
+    '  const WidgetWithEnv = ({ __voltraProps }) => Widget(__voltraProps, replayEnv)',
+    '  const replay = {',
+    '    componentId: event.componentId,',
+    '    value: typeof event.value === "boolean" ? event.value : null,',
+    '  }',
+    '  const r = runWithVoltraStateReplay(state, replay, () =>',
+    '    renderVariantToJson(createElement(WidgetWithEnv, { __voltraProps: props }))',
+    '  )',
+    '  return JSON.stringify({',
+    '    handled: r.handled,',
+    '    state: r.handled && Object.keys(r.pending).length ? r.pending : null,',
+    '    replayMs: Date.now() - t0,',
+    '    warnings: r.warnings,',
     '  })',
     '}',
     '',

@@ -34,6 +34,7 @@ function loadGeneratedEntry(
     createElement: unknown
     renderVariantToJson: unknown
     runWithVoltraState: unknown
+    runWithVoltraStateReplay?: unknown
     WidgetModule: Record<string, unknown>
   }
 ): GeneratedEntryExports {
@@ -50,6 +51,7 @@ function loadGeneratedEntry(
     'createElement',
     'renderVariantToJson',
     'runWithVoltraState',
+    'runWithVoltraStateReplay',
     'WidgetModule',
     executableEntry
   ) as (...args: unknown[]) => GeneratedEntryExports
@@ -58,6 +60,7 @@ function loadGeneratedEntry(
     imports.createElement,
     imports.renderVariantToJson,
     imports.runWithVoltraState,
+    imports.runWithVoltraStateReplay,
     imports.WidgetModule
   )
 }
@@ -286,6 +289,7 @@ describe('@use-voltra/metro manifest registry', () => {
             createElement: react.createElement,
             renderVariantToJson: android.renderAndroidVariantToJson,
             runWithVoltraState: android.runWithVoltraState,
+            runWithVoltraStateReplay: android.runWithVoltraStateReplay,
             WidgetModule: widgetModule,
           }),
         }
@@ -315,7 +319,10 @@ describe('@use-voltra/metro manifest registry', () => {
 
       assert.match(generatedSource, /export function interact\(/)
       assert.match(generatedSource, /runWithVoltraState\(/)
-      assert.match(generatedSource, /import \{ renderVariantToJson, runWithVoltraState \} from /)
+      assert.match(
+        generatedSource,
+        /import \{ renderVariantToJson, runWithVoltraState, runWithVoltraStateReplay \} from /
+      )
     })
 
     test('render reads env.__voltraState through useVoltraState and hides it from the widget env', () => {
@@ -340,10 +347,105 @@ describe('@use-voltra/metro manifest registry', () => {
       assert.deepEqual(rendered, { t: 9, c: { t: 3, i: 'a', p: { chk: false } } })
     })
 
-    test('interact reports handled false when the widget has no onInteraction', () => {
+    test('interact reports handled false when the widget has no onInteraction and no inline handler', () => {
       const { interact } = makeStateWidgetProject(createTodoWidgetModule([]))
 
-      assert.deepEqual(JSON.parse(interact(JSON.stringify({ event: { componentId: 'a' } }))), { handled: false })
+      // PoC #343 hybrid: without onInteraction the tap is replayed; with no inline handler it stays unhandled.
+      const result = JSON.parse(interact(JSON.stringify({ event: { componentId: 'a' } })))
+      assert.equal(result.handled, false)
+      assert.equal(result.state, null)
+      assert.equal(typeof result.replayMs, 'number')
+      assert.deepEqual(result.warnings, ['element "a" has no inline onCheckedChange / onPress'])
+
+      const noId = JSON.parse(interact(JSON.stringify({ event: {} })))
+      assert.deepEqual(noId, {
+        handled: false,
+        state: null,
+        replayMs: 0,
+        warnings: ['replay skipped: event has no componentId'],
+      })
+    })
+
+    function createHybridWidgetModule(seenEnvs: Array<Record<string, unknown>>): Record<string, unknown> {
+      return {
+        default: (props: { items?: string[] }, env: Record<string, unknown>) => {
+          seenEnvs.push(env)
+          const setters: Array<(next: boolean) => void> = []
+          return react.createElement(
+            android.VoltraAndroid.Column,
+            null,
+            (props.items ?? ['a']).map((id: string) => {
+              const [done, setDone] = android.useVoltraStateTuple('done.' + id, false)
+              setters.push(setDone)
+              return react.createElement(android.VoltraAndroid.CheckBox, {
+                key: id,
+                id,
+                checked: done,
+                onCheckedChange: (checked: boolean) => setDone(checked),
+              })
+            }),
+            react.createElement(android.VoltraAndroid.FilledButton, {
+              id: 'clear',
+              text: 'Clear',
+              onPress: () => setters.forEach((setDone) => setDone(false)),
+            })
+          )
+        },
+      }
+    }
+
+    test('interact replays inline onCheckedChange / onPress when the widget has no onInteraction', () => {
+      const seenEnvs: Array<Record<string, unknown>> = []
+      const { interact, render } = makeStateWidgetProject(createHybridWidgetModule(seenEnvs))
+
+      const toggled = JSON.parse(
+        interact(
+          JSON.stringify({
+            event: { componentId: 'b', componentType: 'CheckBox', value: true, renderedRevision: 1, stateKey: null },
+            props: { items: ['a', 'b'] },
+            state: { 'done.a': true },
+            env: { widgetFamily: '200x100', __voltraState: { ignored: true } },
+          })
+        )
+      )
+
+      assert.equal(toggled.handled, true)
+      assert.deepEqual(toggled.state, { 'done.b': true })
+      assert.equal(typeof toggled.replayMs, 'number')
+      assert.ok(toggled.replayMs >= 0)
+      assert.deepEqual(toggled.warnings, [])
+      assert.deepEqual(seenEnvs, [{ widgetFamily: '200x100' }])
+
+      const cleared = JSON.parse(
+        interact(
+          JSON.stringify({
+            event: { componentId: 'clear', componentType: 'FilledButton', value: null },
+            props: { items: ['a', 'b'] },
+            state: { 'done.a': true, 'done.b': true },
+            env: {},
+          })
+        )
+      )
+      assert.equal(cleared.handled, true)
+      assert.deepEqual(cleared.state, { 'done.a': false, 'done.b': false })
+
+      // Render stays pure: function props never reach the JSON.
+      const rendered = JSON.parse(render(JSON.stringify({ items: ['a'] }), JSON.stringify({ __voltraState: {} })))
+      assert.ok(!JSON.stringify(rendered).includes('onCheckedChange'))
+      assert.ok(!JSON.stringify(rendered).includes('onPress'))
+    })
+
+    test('interact keeps the onInteraction result when the widget also has inline handlers', () => {
+      const { interact } = makeStateWidgetProject({
+        ...createHybridWidgetModule([]),
+        onInteraction: () => ({ state: { fromOnInteraction: true } }),
+      })
+
+      const result = JSON.parse(
+        interact(JSON.stringify({ event: { componentId: 'a', value: true }, props: { items: ['a'] } }))
+      )
+
+      assert.deepEqual(result, { handled: true, state: { fromOnInteraction: true } })
     })
 
     test('interact calls onInteraction with event, props, state and env and returns its state patch', () => {
