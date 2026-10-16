@@ -1,5 +1,7 @@
 package voltra.dynamicwidget.state
 
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import androidx.glance.GlanceId
 import androidx.glance.action.ActionParameters
 import androidx.glance.action.actionParametersOf
@@ -37,6 +39,7 @@ class DynamicWidgetStateInteractionTest {
     private val bundleEvaluations = mutableListOf<String>()
     private val invocations = mutableListOf<Triple<String, String, String>>()
     private val updates = mutableListOf<Pair<String, GlanceId>>()
+    private val envSizes = mutableListOf<DpSize?>()
     private var interactResult: () -> String? = { """{"handled":false}""" }
     private lateinit var events: DynamicWidgetEventQueue
 
@@ -54,7 +57,10 @@ class DynamicWidgetStateInteractionTest {
             resolveAppWidgetId = { _, glanceId -> (glanceId as AppWidgetId).appWidgetId },
             readConfiguration = { _, _, _ -> emptyMap() },
             readProps = { _, _ -> """{"items":[{"id":"t1","title":"Buy milk"}]}""" },
-            buildEnv = { _, _, _ -> """{"widgetFamily":"255x200","colorScheme":"light"}""" },
+            buildEnv = { _, _, _, size ->
+                envSizes += size
+                """{"widgetFamily":"255x200","colorScheme":"light"}"""
+            },
             readFlags = { DynamicWidgetStateFlagValues() },
             now = { 1_700_000_000_000L },
         )
@@ -215,6 +221,24 @@ class DynamicWidgetStateInteractionTest {
         }
 
     @Test
+    fun theTappedSizeReachesBuildEnvAndAReplayPatchIsMerged() =
+        runTest {
+            val glanceId = AppWidgetId(72_008)
+            interactResult = { """{"handled":true,"state":{"done":{"t1":true}},"replayMs":3,"warnings":[]}""" }
+
+            interaction.onAction(
+                context,
+                glanceId,
+                tap(componentId = "task:t1", checked = true, renderedRevision = 0L, size = DpSize(255.dp, 200.dp)),
+            )
+            interaction.onAction(context, glanceId, tap(componentId = "task:t1", checked = true, renderedRevision = 1L))
+
+            assertEquals(listOf<DpSize?>(DpSize(255.dp, 200.dp), null), envSizes)
+            assertJsonEquals("""{"done":{"t1":true}}""", DynamicWidgetStateStore.readPlacementState(context, glanceId))
+            assertEquals(2, updates.size)
+        }
+
+    @Test
     fun aTapWithoutAWidgetIdIsIgnored() =
         runTest {
             interaction.onAction(context, AppWidgetId(72_007), actionParametersOf())
@@ -228,6 +252,7 @@ class DynamicWidgetStateInteractionTest {
         checked: Boolean?,
         stateKey: String = "",
         renderedRevision: Long = 0L,
+        size: DpSize? = null,
     ): ActionParameters {
         val pairs =
             mutableListOf<ActionParameters.Pair<out Any>>(
@@ -238,6 +263,10 @@ class DynamicWidgetStateInteractionTest {
                 DynamicWidgetStateActionCallback.KEY_RENDERED_REVISION to renderedRevision,
             )
         if (checked != null) pairs += ToggleableStateKey to checked
+        if (size != null) {
+            pairs += DynamicWidgetStateActionCallback.KEY_WIDTH_DP to size.width.value
+            pairs += DynamicWidgetStateActionCallback.KEY_HEIGHT_DP to size.height.value
+        }
         return actionParametersOf(*pairs.toTypedArray())
     }
 

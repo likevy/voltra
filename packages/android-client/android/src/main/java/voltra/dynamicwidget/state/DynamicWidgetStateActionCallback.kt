@@ -36,5 +36,13 @@ class DynamicWidgetStateActionCallback : ActionCallback {
 
         /** The state revision of the tree the tap was drawn in. */
         val KEY_RENDERED_REVISION = ActionParameters.Key<Long>("voltra_state_rendered_revision")
+
+        /**
+         * The width and height (dp) of the tree the tap was drawn in, from the render context.
+         * Absent when the render had no size; the interaction then falls back to the smallest
+         * placed size.
+         */
+        val KEY_WIDTH_DP = ActionParameters.Key<Float>("voltra_state_width_dp")
+        val KEY_HEIGHT_DP = ActionParameters.Key<Float>("voltra_state_height_dp")
     }
 }

@@ -35,9 +35,11 @@ import java.util.concurrent.ConcurrentHashMap
  *    - a control with a `stateKey` and a toggle value (option D) writes `state[stateKey] = checked`
  *      without running any JS;
  *    - otherwise the widget bundle is evaluated if needed and the generated entry's `interact`
- *      export runs the author's `onInteraction(event, { props, state, env })`; a returned
- *      `{ state: patch }` is shallow-merged into the record (top-level keys replaced), and a
- *      missing handler, a throw or no patch writes nothing.
+ *      export runs the author's `onInteraction(event, { props, state, env })`, or, when the widget
+ *      has none, replays the render at the tapped size so the tapped element's inline
+ *      `onCheckedChange` / `onPress` calls its `useVoltraStateTuple` setters (`via=replay`); a
+ *      returned `{ state: patch }` is shallow-merged into the record (top-level keys replaced),
+ *      and an unhandled tap, a throw or no patch writes nothing.
  * 3. Commit the record and its revision bump in one transaction, then append an event for the app.
  * 4. Always call `update()` on the placement, also when nothing was written or something failed:
  *    on API 31+ the launcher already flipped the tapped box, and only a render puts it back to the
@@ -65,7 +67,7 @@ internal class DynamicWidgetStateInteraction(
     private val readProps: (Context, WidgetScope) -> String = { context, scope ->
         DynamicWidgetPropsStore(context).getDynamicWidgetProps(scope)
     },
-    private val buildEnv: (Context, String, Map<String, String>) -> String = ::interactionEnvJson,
+    private val buildEnv: (Context, String, Map<String, String>, DpSize?) -> String = ::interactionEnvJson,
     private val readFlags: (Context) -> DynamicWidgetStateFlagValues = DynamicWidgetStateFlags::read,
     private val scopeStore: (Context) -> DynamicWidgetScopeStateStore = { context -> DynamicWidgetScopeStateStore(context) },
     private val eventSink: (Context) -> DynamicWidgetEventSink = { context -> DynamicWidgetEventQueue(context) },
@@ -91,12 +93,17 @@ internal class DynamicWidgetStateInteraction(
                 renderedRevision = parameters[DynamicWidgetStateActionCallback.KEY_RENDERED_REVISION] ?: 0L,
                 // Absolute on API 31+ (the value the host already flipped to); null for buttons.
                 checked = parameters[ToggleableStateKey],
+                size =
+                    tappedSize(
+                        parameters[DynamicWidgetStateActionCallback.KEY_WIDTH_DP],
+                        parameters[DynamicWidgetStateActionCallback.KEY_HEIGHT_DP],
+                    ),
             )
         Log.d(
             TAG,
             "callback entered widgetId=$widgetId componentId=${tap.componentId} componentType=${tap.componentType} " +
                 "checked=${tap.checked} stateKey=${tap.stateKey.ifEmpty { "-" }} renderedRevision=${tap.renderedRevision} " +
-                "thread=${Thread.currentThread().name}",
+                "size=${tap.size?.let(::formatSize) ?: "-"} thread=${Thread.currentThread().name}",
         )
 
         try {
@@ -249,7 +256,7 @@ internal class DynamicWidgetStateInteraction(
                         .put("timestamp", now()),
                 ).put("props", parseObject(readProps(context, scope)))
                 .put("state", currentState)
-                .put("env", parseObject(buildEnv(context, widgetId, configuration)))
+                .put("env", parseObject(buildEnv(context, widgetId, configuration, tap.size)))
 
         val interactStart = elapsed()
         val raw =
@@ -259,10 +266,11 @@ internal class DynamicWidgetStateInteraction(
                 Log.e(TAG, "interact for '$widgetId' threw: ${failure.message}", failure)
                 null
             }
-        Log.d(TAG, "interact widgetId=$widgetId ms=${elapsed() - interactStart} returned=${raw != null}")
+        val interactMs = elapsed() - interactStart
         // Null: no `interact` export (a bundle from before it existed), a JS throw (including an
         // async onInteraction), or a non-string result. All of them leave the record untouched.
         if (raw == null) {
+            Log.d(TAG, "interact widgetId=$widgetId ms=$interactMs returned=false")
             return Decision.unhandled("interactFailed")
         }
 
@@ -270,13 +278,24 @@ internal class DynamicWidgetStateInteraction(
             try {
                 JSONObject(raw)
             } catch (_: JSONException) {
+                Log.d(TAG, "interact widgetId=$widgetId ms=$interactMs returned=true")
                 Log.e(TAG, "interact for '$widgetId' returned something other than a JSON object")
                 return Decision.unhandled("interactFailed")
             }
         val handled = result.optBoolean("handled", false)
         val patch = result.optJSONObject("state")
+        // The inline-setter replay (no `onInteraction` export) reports how long the replay render
+        // took and why it did not call a handler; `onInteraction` reports neither.
+        val via = if (result.has("replayMs")) "replay" else "onInteraction"
+        val replayMs = if (result.has("replayMs")) result.optLong("replayMs").toString() else "-"
+        val warnings = result.optJSONArray("warnings")?.toString() ?: "[]"
+        Log.d(
+            TAG,
+            "interact widgetId=$widgetId ms=$interactMs returned=true via=$via handled=$handled " +
+                "replayMs=$replayMs warnings=$warnings",
+        )
         if (!handled || patch == null) {
-            return Decision(nextState = null, handled = handled, via = "onInteraction", stateChange = null)
+            return Decision(nextState = null, handled = handled, via = via, stateChange = null)
         }
 
         val next = copyOf(currentState)
@@ -286,7 +305,7 @@ internal class DynamicWidgetStateInteraction(
         return Decision(
             nextState = next,
             handled = true,
-            via = "onInteraction",
+            via = via,
             stateChange = stateChangeOf(currentState, patch, keys),
         )
     }
@@ -297,6 +316,8 @@ internal class DynamicWidgetStateInteraction(
         val stateKey: String,
         val renderedRevision: Long,
         val checked: Boolean?,
+        /** The size the tapped tree was drawn at, or null when the action carried none. */
+        val size: DpSize?,
     )
 
     private data class Decision(
@@ -349,25 +370,49 @@ private fun parseObject(json: String): JSONObject =
 
 private fun copyOf(state: JSONObject): JSONObject = JSONObject(state.toString())
 
+/** The tapped size from the action parameters, or null unless both edges are present and positive. */
+private fun tappedSize(
+    widthDp: Float?,
+    heightDp: Float?,
+): DpSize? =
+    if (widthDp != null && heightDp != null && widthDp > 0f && heightDp > 0f) {
+        DpSize(widthDp.dp, heightDp.dp)
+    } else {
+        null
+    }
+
+private fun formatSize(size: DpSize): String = "${size.width.value}x${size.height.value}"
+
 /**
- * The env `onInteraction` sees: the real theme, locale and configuration at the smallest placed
- * size, as the server-fetch trial render picks it, without `__voltraState` (state travels as its
- * own payload field) and without server-update fields.
+ * The env `onInteraction` and the inline-setter replay see: the real theme, locale and
+ * configuration, without `__voltraState` (state travels as its own payload field) and without
+ * server-update fields. The size is the one the tapped tree was drawn at when the action carried
+ * it, so the replay renders the layout that was tapped; otherwise the smallest placed size, as the
+ * server-fetch trial render picks it.
  */
 private fun interactionEnvJson(
     context: Context,
     widgetId: String,
     configuration: Map<String, String>,
-): String =
-    VoltraClientGlanceWidget.buildEnvJson(
+    tappedSize: DpSize?,
+): String {
+    val smallest = if (tappedSize == null) DynamicWidgetInstanceSizes.smallestPlacedSize(context, widgetId) else null
+    val size = tappedSize ?: smallest ?: DpSize(FALLBACK_ENV_WIDTH_DP.dp, FALLBACK_ENV_HEIGHT_DP.dp)
+    val source =
+        when {
+            tappedSize != null -> "tapped"
+            smallest != null -> "smallestPlaced"
+            else -> "fallback"
+        }
+    Log.d(DynamicWidgetStateInteraction.TAG, "interact env widgetId=$widgetId size=${formatSize(size)} source=$source")
+    return VoltraClientGlanceWidget.buildEnvJson(
         context = context,
         widgetId = widgetId,
-        size =
-            DynamicWidgetInstanceSizes.smallestPlacedSize(context, widgetId)
-                ?: DpSize(FALLBACK_ENV_WIDTH_DP.dp, FALLBACK_ENV_HEIGHT_DP.dp),
+        size = size,
         configuration = configuration,
         environmentSource = null,
     )
+}
 
 private const val FALLBACK_ENV_WIDTH_DP = 180
 private const val FALLBACK_ENV_HEIGHT_DP = 110
