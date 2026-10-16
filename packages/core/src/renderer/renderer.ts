@@ -33,6 +33,20 @@ import { createElementRegistry, type ElementRegistry, preScanForDuplicates } fro
 import { flattenStyle } from './flatten-styles.js'
 import { getRenderCache, type RenderCache } from './render-cache.js'
 import { createStylesheetRegistry, type StylesheetRegistry } from './stylesheet-registry.js'
+import {
+  poc343ArrayItemCursor,
+  poc343ArrayLevelPath,
+  poc343EnterComponent,
+  poc343ExitComponent,
+  poc343FreezeComponent,
+  poc343LevelCursor,
+  poc343RecordControl,
+  poc343RootCursor,
+  poc343SegmentPath,
+  poc343TypeName,
+  poc343UseState,
+  type PositionalCursor,
+} from './voltra-state-positional.js'
 
 export type ComponentRegistry = {
   getComponentId: (name: string) => number
@@ -61,6 +75,8 @@ type VoltraRenderingContext = {
   duplicates?: Set<ReactNode>
   inStringOnlyContext?: boolean
   componentRegistry: ComponentRegistry
+  /** PoC for issue #343; not API. Set only while a positional state slot is active. */
+  poc343?: PositionalCursor
 }
 
 function renderNode(element: ReactNode, context: VoltraRenderingContext): VoltraNodeJson {
@@ -108,6 +124,15 @@ function renderNode(element: ReactNode, context: VoltraRenderingContext): Voltra
         results.push(result)
       }
       return results.join('')
+    }
+    const cursor = context.poc343
+    if (cursor) {
+      // PoC #343: every item (holes included) keeps its index as its slot.
+      const levelPath = poc343ArrayLevelPath(cursor)
+      const keys = new Set<string>()
+      return element
+        .map((child, index) => renderNode(child, { ...context, poc343: poc343ArrayItemCursor(levelPath, index, keys) }))
+        .flat() as VoltraNodeJson
     }
     return element.map((child) => renderNode(child, context)).flat() as VoltraNodeJson
   }
@@ -166,7 +191,7 @@ function renderNodeInternal(element: ReactNode, context: VoltraRenderingContext)
   if (isForwardRef(element)) {
     const forwardRefElement = element as ReactElement<unknown, ForwardRefExoticComponent<ComponentType<unknown>>>
     const { render } = forwardRefElement.type as unknown as { render: (props: unknown) => ReactNode }
-    return renderFunctionalComponent(render, forwardRefElement.props, context)
+    return renderFunctionalComponent(render, forwardRefElement.props, context, forwardRefElement.key)
   }
 
   if (isLazy(element)) {
@@ -242,15 +267,25 @@ function renderNodeInternal(element: ReactNode, context: VoltraRenderingContext)
 
       const { children, ...parameters } = child.props as { children?: ReactNode; [key: string]: unknown }
       const isTextComponent = child.type === 'Text' || child.type === 'AndroidText'
+      // PoC #343: a host primitive is a segment; its children and element-valued props are levels below it.
+      const hostPath = context.poc343
+        ? poc343SegmentPath(context.poc343, componentType.displayName, reactElement.key)
+        : undefined
+      const propsContext: VoltraRenderingContext =
+        hostPath !== undefined ? { ...context, poc343: poc343LevelCursor(hostPath) } : context
       const childContext: VoltraRenderingContext = {
         ...context,
         inStringOnlyContext: isTextComponent,
+        ...(hostPath !== undefined ? { poc343: poc343LevelCursor(hostPath) } : {}),
       }
       const renderedChildren =
         children !== null && children !== undefined ? renderNode(children, childContext) : isTextComponent ? '' : []
 
       const id = typeof parameters.id === 'string' ? parameters.id : undefined
       const { id: _id, ...cleanParameters } = parameters
+      if (hostPath !== undefined && id) {
+        poc343RecordControl(id)
+      }
 
       if (isDevEnvironment() && !isTextComponent) {
         componentType.validate?.({
@@ -266,7 +301,7 @@ function renderNodeInternal(element: ReactNode, context: VoltraRenderingContext)
           )
         }
 
-        const transformedProps = transformProps(cleanParameters, context)
+        const transformedProps = transformProps(cleanParameters, propsContext)
         const hasProps = Object.keys(transformedProps).length > 0
 
         return {
@@ -281,7 +316,7 @@ function renderNodeInternal(element: ReactNode, context: VoltraRenderingContext)
         throw new Error('Unexpected string in non-Text component children.')
       }
 
-      const transformedProps = transformProps(cleanParameters, context)
+      const transformedProps = transformProps(cleanParameters, propsContext)
       const hasProps = Object.keys(transformedProps).length > 0
       const hasChildren = Array.isArray(renderedChildren) ? renderedChildren.length > 0 : true
 
@@ -293,7 +328,7 @@ function renderNodeInternal(element: ReactNode, context: VoltraRenderingContext)
       }
     }
 
-    return renderFunctionalComponent(componentType, reactElement.props, context)
+    return renderFunctionalComponent(componentType, reactElement.props, context, reactElement.key)
   }
 
   throw new Error(
@@ -306,13 +341,24 @@ function renderNodeInternal(element: ReactNode, context: VoltraRenderingContext)
 export const renderFunctionalComponent = <TProps>(
   Component: FunctionComponent<TProps>,
   props: TProps,
-  context: VoltraRenderingContext
+  context: VoltraRenderingContext,
+  /** PoC for issue #343; not API. The element key, used only by the positional slot. */
+  elementKey?: string | null
 ): VoltraNodeJson => {
   const reactDispatcher = getReactCurrentDispatcher()
   const prevHooksDispatcher = reactDispatcher.H
+  // PoC #343: push the component segment with a hook counter at 0 (only with a positional slot).
+  const componentPath = context.poc343
+    ? poc343SegmentPath(context.poc343, poc343TypeName(Component), elementKey)
+    : undefined
+  const frame = componentPath !== undefined ? poc343EnterComponent(componentPath) : undefined
 
   try {
-    reactDispatcher.H = getHooksDispatcher(context.registry)
+    const hooksDispatcher = getHooksDispatcher(context.registry)
+    if (frame) {
+      hooksDispatcher.useState = poc343UseState
+    }
+    reactDispatcher.H = hooksDispatcher
     const result = Component(props)
 
     if (result instanceof Promise) {
@@ -321,6 +367,11 @@ export const renderFunctionalComponent = <TProps>(
           Component.name || 'Anonymous'
         }" tried to suspend (returned a Promise). Async components are not supported in this synchronous renderer.`
       )
+    }
+
+    if (frame && componentPath !== undefined) {
+      poc343FreezeComponent(frame)
+      return renderNode(result, { ...context, poc343: poc343LevelCursor(componentPath) })
     }
 
     return renderNode(result, context)
@@ -334,6 +385,9 @@ export const renderFunctionalComponent = <TProps>(
     throw error
   } finally {
     reactDispatcher.H = prevHooksDispatcher
+    if (frame) {
+      poc343ExitComponent(frame)
+    }
   }
 }
 
@@ -342,6 +396,10 @@ export const renderVariantToJson = (element: ReactNode, componentRegistry: Compo
   const context: VoltraRenderingContext = {
     registry,
     componentRegistry,
+  }
+  const rootCursor = poc343RootCursor()
+  if (rootCursor) {
+    context.poc343 = rootCursor
   }
 
   return renderNode(element, context)
@@ -422,6 +480,7 @@ export function transformProps(
         duplicates: context.duplicates,
         inStringOnlyContext: false,
         componentRegistry: context.componentRegistry,
+        ...(context.poc343 ? { poc343: poc343LevelCursor(`${context.poc343.path}/$${key}`) } : {}),
       })
       const shortKey = shorten(key)
       transformed[shortKey] = serializedComponent
@@ -486,6 +545,10 @@ export const createVoltraRenderer = (componentRegistry: ComponentRegistry) => {
         elementRegistry,
         duplicates,
         componentRegistry,
+      }
+      const rootCursor = poc343RootCursor()
+      if (rootCursor) {
+        context.poc343 = rootCursor
       }
       return renderNode(element, context)
     }

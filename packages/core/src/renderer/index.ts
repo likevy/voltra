@@ -14,3 +14,10 @@ export { createStylesheetRegistry, type StylesheetRegistry } from './stylesheet-
 export type { NativeModifiersProp, NoNativeModifier } from './native-modifiers.js'
 export type { VoltraVariantRenderer } from './types.js'
 export { runWithVoltraState, useVoltraState, type VoltraStateRecord } from './voltra-state.js'
+/** PoC for issue #343; not API. The positional useState design note, for the identity harness only. */
+export {
+  __poc343Positional,
+  type PositionalCommitResult as Poc343PositionalCommitResult,
+  type PositionalStore as Poc343PositionalStore,
+  type PositionalStoreOptions as Poc343PositionalStoreOptions,
+} from './voltra-state-positional.js'
