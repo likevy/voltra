@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
-import Module from 'node:module'
+import Module, { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import { afterEach, describe, mock, test } from 'node:test'
 import { createElement } from 'react'
@@ -13,6 +13,54 @@ import { createLiveActivityRegistry } from './liveActivityRegistry.ts'
 import { createWidgetRegistry } from './widgetRegistry.ts'
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..')
+
+// The real built Android client package, used to execute generated entries end to end. React is
+// resolved from the same place so elements and the renderer share one React instance.
+const androidPackagePath = path.join(repoRoot, 'packages', 'android')
+const requireFromAndroid = createRequire(path.join(androidPackagePath, 'package.json'))
+
+type GeneratedEntryExports = {
+  render: (propsJSON: string, envJSON: string) => string
+  interact: (payloadJSON: string) => string
+}
+
+/**
+ * Turns a generated Dynamic Widget entry into a callable module by dropping its imports and
+ * injecting them as arguments instead.
+ */
+function loadGeneratedEntry(
+  generatedEntryPath: string,
+  imports: {
+    createElement: unknown
+    renderVariantToJson: unknown
+    runWithVoltraState: unknown
+    WidgetModule: Record<string, unknown>
+  }
+): GeneratedEntryExports {
+  const executableEntry = fs
+    .readFileSync(generatedEntryPath, 'utf8')
+    .split('\n')
+    .filter((line) => !line.startsWith('import '))
+    .join('\n')
+    .replace('export function render(propsJSON, envJSON)', 'function render(propsJSON, envJSON)')
+    .replace('export function interact(payloadJSON)', 'function interact(payloadJSON)')
+    .replace('export default render', 'return { render, interact }')
+
+  const createEntry = new Function(
+    'createElement',
+    'renderVariantToJson',
+    'runWithVoltraState',
+    'WidgetModule',
+    executableEntry
+  ) as (...args: unknown[]) => GeneratedEntryExports
+
+  return createEntry(
+    imports.createElement,
+    imports.renderVariantToJson,
+    imports.runWithVoltraState,
+    imports.WidgetModule
+  )
+}
 
 type TempProject = {
   projectRoot: string
@@ -110,8 +158,11 @@ describe('@use-voltra/metro manifest registry', () => {
       const iosEntryImport = toPosix(
         path.relative(path.dirname(iosWidget!.generatedEntryPath), path.join(projectRoot, iosWidget!.entry))
       )
-      assert.ok(iosGenerated.includes(`import Widget from ${JSON.stringify(iosEntryImport)}`))
-      assert.ok(!iosGenerated.includes('import * as WidgetModule'))
+      // The entry imports the author module as a namespace so an optional `onInteraction` export
+      // reaches native through `interact`.
+      assert.ok(iosGenerated.includes(`import * as WidgetModule from ${JSON.stringify(iosEntryImport)}`))
+      assert.ok(!iosGenerated.includes('import Widget from'))
+      assert.match(iosGenerated, /export function interact\(payloadJSON\)/)
       assert.ok(!iosGenerated.includes('export { Widget }'))
       assert.match(iosGenerated, /export function render\(propsJSON, envJSON\)/)
 
@@ -154,6 +205,7 @@ describe('@use-voltra/metro manifest registry', () => {
           .filter((line) => !line.startsWith('import '))
           .join('\n')
           .replace('export function render(propsJSON, envJSON)', 'function render(propsJSON, envJSON)')
+          .replace('export function interact(payloadJSON)', 'function interact(payloadJSON)')
           .replace('export default render', 'return render')
 
         type DynamicWidgetRender = (propsJSON: string, envJSON: string) => string
@@ -166,16 +218,24 @@ describe('@use-voltra/metro manifest registry', () => {
           props: Record<string, unknown>
         ) => DynamicWidgetElement
 
-        const createAdapter = new Function('createElement', 'renderVariantToJson', 'Widget', executableAdapter) as (
+        const createAdapter = new Function(
+          'createElement',
+          'renderVariantToJson',
+          'runWithVoltraState',
+          'WidgetModule',
+          executableAdapter
+        ) as (
           createElement: CreateDynamicWidgetElement,
           renderVariantToJson: (element: DynamicWidgetElement) => unknown,
-          Widget: (props: Record<string, unknown>, env: Record<string, unknown>) => unknown
+          runWithVoltraState: (state: unknown, fn: () => unknown) => unknown,
+          WidgetModule: { default: (props: Record<string, unknown>, env: Record<string, unknown>) => unknown }
         ) => DynamicWidgetRender
 
         const render = createAdapter(
           createElement as unknown as CreateDynamicWidgetElement,
           (element) => element.type(element.props),
-          (props, env) => ({ props, env })
+          (_state, fn) => fn(),
+          { default: (props, env) => ({ props, env }) }
         )
         const dynamicWidgetProps = {
           key: 'primary-inbox',
@@ -197,6 +257,164 @@ describe('@use-voltra/metro manifest registry', () => {
       }
     })
   }
+
+  describe('widget state contract (PoC for issue #343)', () => {
+    const android = requireFromAndroid(androidPackagePath)
+    const react = requireFromAndroid('react')
+
+    function makeStateWidgetProject(widgetModule: Record<string, unknown>): GeneratedEntryExports & {
+      generatedSource: string
+    } {
+      const { projectRoot, cleanup } = makeTempProject({
+        '.voltra/manifest.android.json': JSON.stringify({
+          version: 1,
+          platform: 'android',
+          widgets: [{ id: 'todo', entry: 'widgets/todo.js' }],
+        }),
+        'widgets/todo.js': 'export default function TodoWidget() { return null }\n',
+      })
+      cleanups.push(cleanup)
+
+      const registry = createWidgetRegistry({ projectRoot })
+      try {
+        const widget = registry.getWidget('android', 'todo')
+        assert.ok(widget)
+
+        return {
+          generatedSource: fs.readFileSync(widget.generatedEntryPath, 'utf8'),
+          ...loadGeneratedEntry(widget.generatedEntryPath, {
+            createElement: react.createElement,
+            renderVariantToJson: android.renderAndroidVariantToJson,
+            runWithVoltraState: android.runWithVoltraState,
+            WidgetModule: widgetModule,
+          }),
+        }
+      } finally {
+        registry.close()
+      }
+    }
+
+    function createTodoWidgetModule(seenEnvs: Array<Record<string, unknown>>): Record<string, unknown> {
+      return {
+        default: (_props: Record<string, unknown>, env: Record<string, unknown>) => {
+          seenEnvs.push(env)
+          return react.createElement(
+            android.VoltraAndroid.Column,
+            null,
+            react.createElement(android.VoltraAndroid.CheckBox, {
+              id: 'a',
+              checked: android.useVoltraState('done.a', false),
+            })
+          )
+        },
+      }
+    }
+
+    test('generated source exposes interact and wraps render in runWithVoltraState', () => {
+      const { generatedSource } = makeStateWidgetProject(createTodoWidgetModule([]))
+
+      assert.match(generatedSource, /export function interact\(/)
+      assert.match(generatedSource, /runWithVoltraState\(/)
+      assert.match(generatedSource, /import \{ renderVariantToJson, runWithVoltraState \} from /)
+    })
+
+    test('render reads env.__voltraState through useVoltraState and hides it from the widget env', () => {
+      const seenEnvs: Array<Record<string, unknown>> = []
+      const { render } = makeStateWidgetProject(createTodoWidgetModule(seenEnvs))
+
+      const rendered = JSON.parse(
+        render('{}', JSON.stringify({ widgetFamily: '200x100', __voltraState: { 'done.a': true } }))
+      )
+
+      assert.deepEqual(rendered, { t: 9, c: { t: 3, i: 'a', p: { chk: true } } })
+      assert.equal(seenEnvs.length, 1)
+      assert.deepEqual(seenEnvs[0], { widgetFamily: '200x100' })
+      assert.ok(!Object.prototype.hasOwnProperty.call(seenEnvs[0], '__voltraState'))
+    })
+
+    test('render without env.__voltraState renders initial values', () => {
+      const { render } = makeStateWidgetProject(createTodoWidgetModule([]))
+
+      const rendered = JSON.parse(render('{}', JSON.stringify({ widgetFamily: '200x100' })))
+
+      assert.deepEqual(rendered, { t: 9, c: { t: 3, i: 'a', p: { chk: false } } })
+    })
+
+    test('interact reports handled false when the widget has no onInteraction', () => {
+      const { interact } = makeStateWidgetProject(createTodoWidgetModule([]))
+
+      assert.deepEqual(JSON.parse(interact(JSON.stringify({ event: { componentId: 'a' } }))), { handled: false })
+    })
+
+    test('interact calls onInteraction with event, props, state and env and returns its state patch', () => {
+      const calls: unknown[] = []
+      const event = {
+        componentId: 'a',
+        componentType: 'CheckBox',
+        value: true,
+        renderedRevision: 3,
+        stateKey: null,
+        timestamp: 1760000000000,
+      }
+      const { interact } = makeStateWidgetProject({
+        ...createTodoWidgetModule([]),
+        onInteraction: (receivedEvent: unknown, context: Record<string, unknown>) => {
+          calls.push({
+            event: receivedEvent,
+            context,
+            stateSlot: android.useVoltraState('done.b', 'missing'),
+          })
+          return { state: { 'done.a': true } }
+        },
+      })
+
+      const result = JSON.parse(
+        interact(
+          JSON.stringify({
+            event,
+            props: { title: 'Buy bread' },
+            state: { 'done.b': false },
+            env: { widgetFamily: '200x100' },
+          })
+        )
+      )
+
+      assert.deepEqual(result, { handled: true, state: { 'done.a': true } })
+      assert.deepEqual(calls, [
+        {
+          event,
+          context: { props: { title: 'Buy bread' }, state: { 'done.b': false }, env: { widgetFamily: '200x100' } },
+          stateSlot: false,
+        },
+      ])
+    })
+
+    test('interact defaults missing payload fields and returns a null patch for a result without state', () => {
+      const calls: unknown[] = []
+      const { interact } = makeStateWidgetProject({
+        ...createTodoWidgetModule([]),
+        onInteraction: (receivedEvent: unknown, context: unknown) => {
+          calls.push({ event: receivedEvent, context })
+          return undefined
+        },
+      })
+
+      assert.deepEqual(JSON.parse(interact('')), { handled: true, state: null })
+      assert.deepEqual(calls, [{ event: {}, context: { props: {}, state: {}, env: {} } }])
+    })
+
+    test('interact rejects an async onInteraction', () => {
+      const { interact } = makeStateWidgetProject({
+        ...createTodoWidgetModule([]),
+        onInteraction: async () => ({ state: { 'done.a': true } }),
+      })
+
+      assert.throws(
+        () => interact(JSON.stringify({ event: { componentId: 'a' } })),
+        /Voltra widget "todo" onInteraction must be synchronous/
+      )
+    })
+  })
 
   test('surfaces a missing platform manifest when a widget is requested', () => {
     const { projectRoot, cleanup } = makeTempProject({

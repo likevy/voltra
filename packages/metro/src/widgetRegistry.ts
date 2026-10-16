@@ -20,15 +20,16 @@ const ANDROID_INTL_PRELUDE_BASENAME = 'voltra-intl-polyfills.android.js'
 
 /**
  * Per-platform render shims. The Android one imports the Intl prelude first when it is enabled, so
- * the polyfills run before any widget module; the iOS one never does.
+ * the polyfills run before any widget module; the iOS one never does. Both also re-export
+ * `runWithVoltraState` (PoC for issue #343; not API) so the generated entry can expose widget state.
  */
 function renderShimFiles(androidIntlPolyfills: boolean): Record<string, string> {
   return {
     [`${RENDER_SHIM_BASENAME}.ios.js`]:
-      "export { renderVoltraVariantToJson as renderVariantToJson } from '@use-voltra/ios'\n",
+      "export { renderVoltraVariantToJson as renderVariantToJson, runWithVoltraState } from '@use-voltra/ios'\n",
     [`${RENDER_SHIM_BASENAME}.android.js`]:
       (androidIntlPolyfills ? `import './${ANDROID_INTL_PRELUDE_BASENAME}'\n` : '') +
-      "export { renderAndroidVariantToJson as renderVariantToJson } from '@use-voltra/android'\n",
+      "export { renderAndroidVariantToJson as renderVariantToJson, runWithVoltraState } from '@use-voltra/android'\n",
   }
 }
 
@@ -352,8 +353,12 @@ function createGeneratedEntry(
 
   const content = [
     "import { createElement } from 'react'",
-    `import { renderVariantToJson } from ${JSON.stringify(renderShimImportPath)}`,
-    `import Widget from ${JSON.stringify(entryImportPath)}`,
+    `import { renderVariantToJson, runWithVoltraState } from ${JSON.stringify(renderShimImportPath)}`,
+    // The author module is imported as a namespace: the default export is the widget, and an
+    // optional `onInteraction` export handles taps through `interact` below.
+    `import * as WidgetModule from ${JSON.stringify(entryImportPath)}`,
+    '',
+    'const Widget = WidgetModule.default',
     '',
     `if (typeof Widget === 'undefined') {`,
     `  throw new Error(${JSON.stringify(
@@ -375,12 +380,47 @@ function createGeneratedEntry(
     '  }',
     '}',
     '',
+    "// Widget state (PoC for issue #343; not API): native passes the placement's persisted state record",
+    '// as the reserved `env.__voltraState` key. It is removed from the env the widget sees and exposed',
+    '// to `useVoltraState` for the whole render, including element-valued props.',
     'export function render(propsJSON, envJSON) {',
     '  const props = parseJSONInput(propsJSON, "propsJSON")',
     '  const env = parseJSONInput(envJSON, "envJSON")',
+    '  const state = env.__voltraState && typeof env.__voltraState === "object" ? env.__voltraState : {}',
+    '  delete env.__voltraState',
     '  const WidgetWithEnv = ({ __voltraProps }) => Widget(__voltraProps, env)',
-    '  const resolved = renderVariantToJson(createElement(WidgetWithEnv, { __voltraProps: props }))',
+    '  const resolved = runWithVoltraState(state, () =>',
+    '    renderVariantToJson(createElement(WidgetWithEnv, { __voltraProps: props }))',
+    '  )',
     '  return JSON.stringify(resolved)',
+    '}',
+    '',
+    '// Tap path (PoC for issue #343; not API): native calls `interact` with',
+    '// `{ event, props, state, env }`, where `event` is',
+    '// `{ componentId: string, componentType: string, value: boolean | null, renderedRevision: number,',
+    '// stateKey: string | null, timestamp: number }`. The optional author export',
+    '// `onInteraction(event, { props, state, env })` runs synchronously and may return',
+    '// `{ state: patch }`; native merges the patch into the persisted record and re-renders.',
+    '// Returns `{ handled: false }` when the widget has no `onInteraction`, otherwise',
+    '// `{ handled: true, state: patch | null }`.',
+    'export function interact(payloadJSON) {',
+    '  const payload = parseJSONInput(payloadJSON, "payloadJSON")',
+    '  const event = payload.event || {}',
+    '  const props = payload.props || {}',
+    '  const state = payload.state || {}',
+    '  const env = payload.env || {}',
+    '  const onInteraction = WidgetModule.onInteraction',
+    '  if (typeof onInteraction !== "function") {',
+    '    return JSON.stringify({ handled: false })',
+    '  }',
+    '  const result = runWithVoltraState(state, () => onInteraction(event, { props, state, env }))',
+    '  if (result && typeof result.then === "function") {',
+    `    throw new Error(${JSON.stringify(`Voltra widget "${widget.id}" onInteraction must be synchronous`)})`,
+    '  }',
+    '  return JSON.stringify({',
+    '    handled: true,',
+    '    state: result && typeof result === "object" && result.state && typeof result.state === "object" ? result.state : null,',
+    '  })',
     '}',
     '',
     'export default render',
