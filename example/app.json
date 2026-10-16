@@ -323,6 +323,21 @@
               "resizeMode": "horizontal|vertical",
               "widgetCategory": "home_screen",
               "initialStatePath": "./widgets/android/TodoStateKeyWidget.tsx"
+            },
+            {
+              "id": "TodoStateSetterWidget",
+              "entry": "./widgets/android/TodoStateSetterWidget.tsx",
+              "displayName": {
+                "en": "Todo (inline setters)"
+              },
+              "description": {
+                "en": "PoC #343: ticks are written by inline setters, replayed on tap without the app"
+              },
+              "targetCellWidth": 3,
+              "targetCellHeight": 3,
+              "resizeMode": "horizontal|vertical",
+              "widgetCategory": "home_screen",
+              "initialStatePath": "./widgets/android/TodoStateSetterWidget.tsx"
             }
           ],
           "fonts": [

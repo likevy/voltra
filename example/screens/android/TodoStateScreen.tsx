@@ -1,5 +1,5 @@
-// PoC for issue #343 (in-widget state). Throwaway configuration screen for the two Todo Dynamic
-// Widgets: push items, pin, inspect and reset each placement's state record, read the events the
+// PoC for issue #343 (in-widget state). Throwaway configuration screen for the three Todo Dynamic
+// Widgets (onInteraction, stateKey and inline setters): push items, pin, inspect and reset each placement's state record, read the events the
 // widgets queued while the app was not involved, and switch the PoC flags.
 import { useRouter } from 'expo-router'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
@@ -22,12 +22,13 @@ import { Button } from '~/components/Button'
 import { Card } from '~/components/Card'
 import { ScreenLayout } from '~/components/ScreenLayout'
 
-const TODO_WIDGET_IDS = ['TodoStateWidget', 'TodoStateKeyWidget'] as const
+const TODO_WIDGET_IDS = ['TodoStateWidget', 'TodoStateKeyWidget', 'TodoStateSetterWidget'] as const
 type TodoWidgetId = (typeof TODO_WIDGET_IDS)[number]
 
 const WIDGET_LABELS: Record<TodoWidgetId, string> = {
   TodoStateWidget: 'Todo · onInteraction (option C)',
   TodoStateKeyWidget: 'Todo · stateKey (option D)',
+  TodoStateSetterWidget: 'Todo · inline setters (hybrid)',
 }
 
 type TodoItem = { id: string; title: string }
@@ -224,7 +225,7 @@ export default function TodoStateScreen() {
   return (
     <ScreenLayout
       title="In-widget state (PoC #343)"
-      description="Two Dynamic Widgets whose taps change their own state without the app: one through an onInteraction handler, one through the stateKey prop. Throwaway PoC, not API."
+      description="Three Dynamic Widgets whose taps change their own state without the app: one through an onInteraction handler, one through the stateKey prop, one through inline setters replayed on tap. Throwaway PoC, not API."
     >
       <Card>
         <Card.Title>Items</Card.Title>
@@ -272,7 +273,7 @@ export default function TodoStateScreen() {
 
       <Card>
         <Card.Title>Pin</Card.Title>
-        <Card.Text>Shows the system &quot;Add widget&quot; dialog for one of the two widgets.</Card.Text>
+        <Card.Text>Shows the system &quot;Add widget&quot; dialog for one of the three widgets.</Card.Text>
         <View style={styles.buttonColumn}>
           {TODO_WIDGET_IDS.map((widgetId) => (
             <Button
