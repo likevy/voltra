@@ -22,6 +22,8 @@ callstackincubator/voltra#343, plan of 2026-10-15). Nothing here is API.
 | JS bridge             | `packages/android-client/src/dynamic-widget/api.ts`: `readAndroidDynamicWidgetState`, `resetAndroidDynamicWidgetState`, `drainAndroidDynamicWidgetEvents`, `setAndroidDynamicWidgetStateFlags` (TurboModule methods in `VoltraModule.kt`)                                                                                                                                                                                              |
 | Example app           | `example/widgets/android/TodoStateWidget.tsx` (option C) and `TodoStateKeyWidget.tsx` (option D), their `app.json` entries, `example/screens/android/TodoStateScreen.tsx` (route `/android-widgets/todo-state`, deep link `voltra://android-widgets/todo-state`), four Appduct tools in `example/appduct/AndroidVoltraTools.tsx`                                                                                                       |
 
+Positional `useState` (the "Voltra useState Identity" design note) vs option C: `packages/core/test/voltra-state-positional-identity.test.js` (throwaway walker in `packages/core/src/renderer/voltra-state-positional.ts`, exported only as `__poc343Positional`), matrix in `poc/343/evidence/t7-positional-identity.md`, write-up in `REPORT.md` §8.
+
 ## Authoring: `stateKey` (option D) vs `useVoltraState` + `onInteraction` (option C)
 
 Reading is the same in both: `useVoltraState(key, initial)` returns the value the host persisted for this
