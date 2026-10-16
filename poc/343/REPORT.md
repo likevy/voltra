@@ -569,3 +569,42 @@ type WithPress = { id: string; onPress: () => void } | { onPress?: never }
 - Robolectric with the JDK 17 init script and `--rerun`: 24 tests, 0 failures (StateInteraction 8, StateStore 7, EventQueue 4, StateFlags 3, PushStateReset 2). A first run without `--rerun` reported the task UP-TO-DATE and is not counted.
 - `pnpm run typecheck`: 12/12 tasks. `pnpm run lint`: 12/12 tasks.
 - All on Node 24.13.0, recorded in `evidence/t8-tests.txt`.
+
+## 10. Public API proposal (draft for the ADR)
+
+Written after the hybrid measurement (§9). PoC names (`useVoltraStateTuple`, `DynamicWidgetState…`) are not the API; this is the surface the ADR would decide on.
+
+One hook, three write paths, one native record per placement (Android) or per scope (iOS); nothing else is public.
+
+```tsx
+import { useVoltraState, VoltraAndroid } from '@use-voltra/android'
+
+export default function Todo({ items }: Props, env: WidgetEnvironment) {
+  const [done, setDone] = useVoltraState<Record<string, boolean>>('done', {}) // React-shaped tuple, explicit key
+  return (
+    <VoltraAndroid.Column>
+      {items.map((it) => (
+        <VoltraAndroid.CheckBox
+          id={it.id}
+          text={it.title}
+          checked={!!done[it.id]}
+          onCheckedChange={(checked) => setDone((d) => ({ ...d, [it.id]: checked }))} // inline handler, replayed on the tap
+        />
+      ))}
+      <VoltraAndroid.FilledButton id="clear" text="Clear all" onPress={() => setDone({})} />
+    </VoltraAndroid.Column>
+  )
+}
+```
+
+- `useVoltraState(key, initial): [value, setValue]`. Not a React hook: no dispatcher, callable in loops and conditions, works at prerender and inside element-valued props. `key` is a non-empty string; the value is JSON. The setter accepts a value or an updater `(prev) => next`.
+- The setter is effective only inside a control's handler prop (`onCheckedChange`, `onPress`) during a tap. Called in the render body it is ignored and logs a dev warning; render stays pure.
+- Handlers run synchronously, as a replay render in the widget's own process (Android app process without React Native; iOS widget extension). They receive the value the platform delivered (absolute on Android 31+; render-time value below 31 and on iOS, so authors use the argument, never toggle relative to the previous value).
+- Controls that react need an explicit `id`. A handler on a control without an `id` is a dev-time error.
+- `stateKey` on `CheckBox`/`Switch` is the declarative fast path (`state[stateKey] = checked`, no JS); it takes precedence over a handler on the same control.
+- `onInteraction` is not part of the public API (kept only if the ADR wants an escape hatch; the replay covers its cases and keeps the widget file a Fast Refresh boundary).
+- `useState` in widget code becomes a dev-time error pointing at `useVoltraState` (or stays a no-op with a one-time warning; ADR decision).
+
+App side: `getDynamicWidgetState(scopeOrAppWidgetId)`, `setDynamicWidgetState(...)`, `resetDynamicWidgetState(...)`; tap events through the #314 channel (`addVoltraListener('interaction')`) with `handledInWidget` and `stateChange`; `VoltraView` previews take a `state` prop. Props pushes never touch the record (`precedence = survive`); the app resets explicitly.
+
+Types exported: `VoltraStateRecord`, the setter type, and (if kept) `VoltraInteractionEvent`. iOS: identical surface; the replay runs in the plain `AppIntent` in the extension.
