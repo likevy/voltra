@@ -4,11 +4,30 @@ Branch `poc/343-in-widget-state` (worktree `../voltra-poc-343`, cut from `main` 
 
 Scope decided on 2026-10-15: option **C** (`useVoltraState` + `onInteraction`) is the design, option **D** (`stateKey`, no JS on the tap) is touched on the same seam, option **B** (positional `useState`) was dropped because it misattributes state on list insert and removal, option **A** (props as the only state) was not built because a props push overwrites the tap.
 
+## 0. C vs D in short (conclusions of this run)
+
+Both options passed the same emulator scenario on API 35: tap with the app in front, in the background and killed (D1), state kept across relaunch and reboot (D2), a props push that inserts an item at the front or the end keeps the right task ticked (D3), events reach the app in order with `handledInWidget` (D6), rapid double tap and two taps inside a delay window commit in order (K1, K3). D4 (two placements: independent per placement, shared per widget scope) was run for C only.
+
+|                         | C: `useVoltraState` + `onInteraction`                                                                          | D: `stateKey`                                                                   |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| What a tap does         | the callback evaluates the bundle in the app process and calls `onInteraction`, which returns a state patch    | the callback writes `state[stateKey] = checked`, no JS                          |
+| What it can express     | any patch: a `done` map keyed by item id, derived values, several keys at once                                 | one flat key = the toggle value                                                 |
+| Author code             | the hook in render plus an exported handler                                                                    | the hook in render, nothing on the tap                                          |
+| Repaint, debug (median) | 109 ms warm session, 520 ms warm process, 1.5 s cold                                                           | 60 ms, 473 ms, 1.4 s                                                            |
+| Repaint, release        | 83 ms warm session, 643 ms cold                                                                                | 61 ms warm session                                                              |
+| Own cost                | one bundle evaluation per tap in the callback (18–46 ms release); `interact` itself under 1 ms                 | none                                                                            |
+| Dev experience          | the `onInteraction` export makes the widget file a non-refresh boundary: every edit full-reloads the app (F33) | hot patch works; `stateKey` is not in the generated prop types yet (local cast) |
+
+The latency gap is almost entirely the bundle evaluation inside the callback; on a cold tap both options pay the same process start plus Glance session start (about 410 ms from `update()` to the first render). Recommendation for the ADR: build C as the core and D as the no-JS fast path on the same state record, and add a source-hash bundle-evaluation cache as a prerequisite for C.
+
+Not verified by this run: server-fetch precedence (D5), the K2/K4/K5 races (push during a tap, tap during a cold `provideGlance`, placement removed mid-tap), Android below API 31, state size caps, asynchronous handlers, cleanup on restore, iOS. One oddity to explain: a destructive drain of the event queue lost three events once (seq 12, 14, 16).
+
 ## 1. Summary of the run
 
 I verified the in-widget state PoC on the Brownfield_457_API_35 AVD for both widgets: C (TodoStateWidget, `onInteraction` + `useVoltraState`) and D (TodoStateKeyWidget, `stateKey`). D1, D2, D3, D4 and D6 pass, and K1/K3 behave consistently (details below). All four test suites, typecheck and lint pass; the Robolectric suite only runs with the JDK 17 init script.
 
 **What was built and why.** A tap on a CheckBox or Switch with an author `id` in a Dynamic Widget runs `DynamicWidgetStateActionCallback`, a Glance ActionCallback in the app process. No React Native runtime and no Activity are involved. The callback:
+
 - reads a JSON state record persisted per placement (Glance per-appWidgetId DataStore), or per WidgetScope behind a flag;
 - for C, evaluates the bundle and calls the new `interact` export, which runs `onInteraction(event, {props, state, env})` and returns `{state: patch}`;
 - for D, writes `state[stateKey] = checked` with no JS;
@@ -17,13 +36,15 @@ I verified the in-widget state PoC on the Brownfield_457_API_35 AVD for both wid
 Render receives the record as `env.__voltraState`. The generated Metro entry strips it into a module slot that `useVoltraState(key, initial)` reads. That slot is not React's dispatcher, so it also works at prerender and inside element-valued props. Props pushes never touch the record. B was dropped (positional state misattributes silently, plan §3/§2.4 and the Rescope under §4). A was not built (a push overwrites the tick, F23).
 
 **Fast Refresh (F33), with Metro running and the app in front:**
+
 - A control widget with only a default export got a hot patch.
 - Both example widgets as written trigger a full app reload on every edit, because they also export `DEFAULT_TODO_ITEMS`.
 - With that export removed temporarily, D (default only) got a hot patch, while C (default + `onInteraction`) still fully reloaded. So the lowercase `onInteraction` export alone breaks the refresh boundary. All probe edits were reverted byte-for-byte (shasum checked).
 - After the emulator reboot, HMR stayed disconnected until a dev-menu Reload.
-- Evidence: poc/343/evidence/t5-f33-summary.txt and t5-f33-*.log.
+- Evidence: poc/343/evidence/t5-f33-summary.txt and t5-f33-\*.log.
 
 **ADR list (plan §13) with this run's evidence:**
+
 1. Build C as the core and D as the no-JS fast path on the same record.
 2. Keep `onInteraction` explicit and synchronous. `interact` takes ≤1 ms; the cost is evaluating the bundle in the callback (debug 34–63 ms, release 18–46 ms).
 3. Require explicit keys. D3 kept the right item ticked on front and end inserts.
@@ -39,10 +60,12 @@ Render receives the record as `env.__voltraState`. The generated Metro entry str
 13. Size caps (13) and §13 items 14–17 (iOS, Live Activities, preview, prerender wrapping) were not run. A top-level `useVoltraState` did prerender fine.
 
 **What to keep vs what is throwaway.**
+
 - Candidates to keep: `useVoltraState`/`runWithVoltraState` with their tests; the namespace import, `__voltraState` strip and `interact` export in the generated entry; `nativeInvoke`/`VoltraJSRenderer.invoke`; the commit-plus-revision transaction with `update()` in `finally`; the event `seq` semantics; the Metro and Robolectric tests.
-- Throwaway: the `DynamicWidgetState*` names (Glance writes the callback class name into RemoteViews, so a shipped name is a compatibility commitment); the flags and TurboModule drain; the example TodoState* widgets and screen; the Appduct tools; everything under poc/343.
+- Throwaway: the `DynamicWidgetState*` names (Glance writes the callback class name into RemoteViews, so a shipped name is a compatibility commitment); the flags and TurboModule drain; the example TodoState\* widgets and screen; the Appduct tools; everything under poc/343.
 
 **How to run (about ten commands).**
+
 1. `source poc/343/env.sh`
 2. `pnpm install --frozen-lockfile && pnpm exec lefthook uninstall`
 3. `pnpm run build:all`
@@ -64,8 +87,8 @@ Render receives the record as `env.__voltraState`. The generated Metro entry str
 - D1 killed D: pass. Callback +919 ms, repaint +1556 ms, 1/1. Evidence: t5-d1-D-killed.png
 - D2 kill + relaunch C and D: pass. The DataStore kept all ticks (rev 3); android_reload_widgets re-rendered with stateRevision=3. Evidence: t5-d2-steps.txt, t5-d2-relaunch-C.png, t5-d2-relaunch-D.png, t5-d2-relaunch-reload-renders.log
 - D2 reboot C and D: pass. The boot-time update rendered stateRevision=3 with every row ticked. Debug caveat: adb reverse must be set again after boot. Evidence: t5-d2-reboot-C.png, t5-d2-reboot-D.png, t5-d2-reboot-logcat.log
-- D3 C: pass. With t1 ticked, a front push [t4,t1,t2,t3] kept 'Buy 🍞' (t1, now row 2) ticked; an end push kept row 1 (t1) ticked; the record was unchanged. With precedence=resetOnPush, a front push cleared the record ({} rev 26→27) and all rows rendered unticked. Evidence: t5-d3-*-C.png, t5-d3-steps.txt, t5-d3-logcat.log
-- D3 D: pass, same outcome (rev 25 unchanged; resetOnPush 25→26). Evidence: t5-d3-*-D.png
+- D3 C: pass. With t1 ticked, a front push [t4,t1,t2,t3] kept 'Buy 🍞' (t1, now row 2) ticked; an end push kept row 1 (t1) ticked; the record was unchanged. With precedence=resetOnPush, a front push cleared the record ({} rev 26→27) and all rows rendered unticked. Evidence: t5-d3-\*-C.png, t5-d3-steps.txt, t5-d3-logcat.log
+- D3 D: pass, same outcome (rev 25 unchanged; resetOnPush 25→26). Evidence: t5-d3-\*-D.png
 - D4 C scope=placement: pass (independent). Second placement awid 7: a tick in awid 4 left awid 7 at {}. Evidence: t5-d4-placement-placement1.png, t5-d4-placement-placement2.png, t5-d4-steps.txt, t5-d4-list-widgets.json
 - D4 C scope=widgetScope: pass (shared). After a reset, a tick in awid 4 showed in both; both read {done:{t1:true}} rev 3. Evidence: t5-d4-widgetScope-placement1.png, t5-d4-widgetScope-placement2.png
 - D4 D: not run (C only, as planned)
@@ -75,7 +98,7 @@ Render receives the record as `env.__voltraState`. The generated Metro entry str
 - K1 D: same, rev 28,29, final done.t1:false. Evidence: t5-k-K1-D.png
 - K3 C (interactDelayMs=1500, t2 then t3 0.3 s apart): both committed in tap order (rev 31 then 32; t3 renderedRevision 30 = stale by one). The second callback entered only after the first returned (+1.3 s): the system serialises broadcasts under goAsync. Evidence: t5-k-K3-C.png, t5-k-logcat.log
 - K3 D: same, rev 30 then 31. Evidence: t5-k-K3-D.png
-- F33 Fast Refresh: recorded. The onInteraction export alone causes a full reload; an exported non-component constant does too; a default-only widget gets a hot patch. Evidence: t5-f33-summary.txt, t5-f33-*.log, t5-f33-dev-menu.png
+- F33 Fast Refresh: recorded. The onInteraction export alone causes a full reload; an exported non-component constant does too; a default-only widget gets a hot patch. Evidence: t5-f33-summary.txt, t5-f33-\*.log, t5-f33-dev-menu.png
 - D5 (server fetch precedence), K2, K4, K5, pre-31 (API 30) and iOS: not run
 
 ## 3. Latency (plan §9 step 14)
@@ -97,7 +120,7 @@ Render receives the record as `env.__voltraState`. The generated Metro entry str
 - pnpm --filter @use-voltra/core test (Node 24.13.0): tests 32, pass 32, fail 0
 - pnpm --filter @use-voltra/metro test: tests 33, suites 7, pass 33, fail 0
 - pnpm --filter @use-voltra/android-client test: Jest dynamic-widget config 8 suites / 34 tests passed; expo-plugin config 11 suites / 57 tests passed
-- cd example/android && ./gradlew :use-voltra_android-client:testDebugUnitTest --tests "voltra.dynamicwidget.state.*": FAILED at configuration, verbatim: 'Cannot find a Java installation on your machine (Mac OS X 26.6.2 aarch64) matching: {languageVersion=21, vendor=any vendor, implementation=vendor-specific, nativeImageCapable=false}. Toolchain download repositories have not been configured.' (JDK 21 toolchain unavailable)
+- cd example/android && ./gradlew :use-voltra_android-client:testDebugUnitTest --tests "voltra.dynamicwidget.state.\*": FAILED at configuration, verbatim: 'Cannot find a Java installation on your machine (Mac OS X 26.6.2 aarch64) matching: {languageVersion=21, vendor=any vendor, implementation=vendor-specific, nativeImageCapable=false}. Toolchain download repositories have not been configured.' (JDK 21 toolchain unavailable)
 - Same with --init-script poc/343/scripts/jdk17-unit-tests.init.gradle (copied into the repo from the scratchpad): BUILD SUCCESSFUL, 23 tests, 0 failures (EventQueue 4, PushStateReset 2, StateFlags 3, StateInteraction 7, StateStore 7)
 - pnpm run typecheck: 12/12 tasks successful
 - pnpm run lint: 12/12 tasks successful, 0 warnings / 0 errors in every package; nothing to fix
@@ -125,7 +148,7 @@ Robolectric note: the repository's unit tests declare a JDK 21 toolchain (`packa
 ### metro
 
 - The spike widget example/widgets/android/poc343/PocTodoSpike.tsx still exports the old `onInteraction(payload: {note,title})`. With the new contract it receives (event, {props,state,env}). A spike payload without `event` now gets event={} and returns {handled:true,state:null}, so the spike's echo result no longer reaches native. That widget and the Kotlin caller of `interact` must move to the new payload `{event, props, state, env}` in a later task.
-- example/.voltra/metro/widgets/*.js and the render shims in example/.voltra/metro still hold the old spike output. They regenerate only when Metro starts (withVoltra) or bundleWidgets runs. Expo prebuild does not regenerate them, so it was not run.
+- example/.voltra/metro/widgets/\*.js and the render shims in example/.voltra/metro still hold the old spike output. They regenerate only when Metro starts (withVoltra) or bundleWidgets runs. Expo prebuild does not regenerate them, so it was not run.
 
 ### android
 
